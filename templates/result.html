@@ -16,19 +16,21 @@
 	    <script src="/static/js/main.js" type="text/javascript"></script>
 	</head>
 	
-	<body onload="Init();">
-		<p id=htmlLString>{{ name }}</p>
+	<body onload="Init();">		
 		
-		<form action="http://127.0.0.1:5000/interpret/toto" method="post">		
+		<form action={{ interpreter }} method="post">		
 		<H1>Welcome to Lpy Web program</H1>
 		<div>
 			<label for="name">Enter axiom and rules :</label>
-			<textarea placeholder="Axiom and rules" type="text" id="axiom_rules" name="code" rows=12 cols=70 wrap=off></textarea>
-		<div>
+        </div>            
+        <div>            
+			<textarea placeholder="Axiom and rules" type="text" id="axiom_rules" name="code" rows=12 cols=70 wrap=off>{{code}}</textarea>
+		</div>
 		<div class="button">
 			<button type="submit">Submit</button>
 		</div>
 
         <canvas id="renderCanvas"/>
+        <p id=htmlLString>{{ name }}</p>
 	</body>
 </html>
