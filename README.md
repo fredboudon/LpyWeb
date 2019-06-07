@@ -5,13 +5,14 @@ How to use LpyWeb project :
 
 2- open an anaconda prompt and go to this directory
 
-3- activate Lpy environnement with the command: "activate lpy"
+3- activate Lpy environnement with the command: "conda activate lpy"
 
-4- prepare the flask module with the command: "set FLASK_APP=communication.py"
+4- prepare the flask module with the command: 
+"set FLASK_APP=communication.py" on Mac or "export FLASK_APP=communication.py" on Linux systems
 
 5- launch the server with the command: "flask run"
 
-6- open the index.html web page
+6- Do CTRL + left click on the URL appearing on the shell
 
 7- enter an axiom and some rules as an input text, and submit them.
 
