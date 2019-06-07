@@ -14,9 +14,6 @@ footer {
 	left: 15%;
 }
 
-/*
- * Cover
- */
 .cover {
   padding: 0 1.5rem;
 }
@@ -29,4 +26,8 @@ main {
 	position: absolute;
 	top: 40%;
 	left: 30%;
+}
+
+#links {
+	background-color: #F5F5F5;
 }

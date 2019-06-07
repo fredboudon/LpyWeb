@@ -1,6 +1,6 @@
 {% extends "index.html" %}
 
-{% block title %} About L-Py Web {% endblock %}
+{% block title %} About L-Py{% endblock %}
 
 {% block body %}
 	<body>
@@ -9,6 +9,25 @@
 {% block about %}{% endblock %}
 
 {% block content %}
-	<div>
-	<h1>{{ self.title() }}</h1>
+	<div class="row">
+		<div class="col-lg-8">
+		</div>
+		<div class="col-lg-4">
+			<h1 class="text-center">{{ self.title() }}</h1>
+			<p class="text-justify">A precise type of formal grammar is used to describe the mecanisms involved in plants growth. Grammars of this type are called L-systems.
+			L-Py is a simulation software and a powerful language that mixes L-systems with the Python high-level modeling language. The software allows users to create their L-Py programs and to display the results thanks to the integrated PlantGL 3D Viewer.</p><br />
+			<div class="row" id="links">
+				<div class="col-lg-6">
+					<p class="text-center">To download and install the L-Py software :<br />
+					<a href="https://lpy.readthedocs.io/en/latest/user/installing.html" target="_blank" class="btn btn-md btn-info">Download L-Py >></a></p>	
+				</div>
+				<div class="col-lg-6">
+					<p class="text-center">To learn a little bit more about L-systems : <br />
+					<a href="https://en.wikipedia.org/wiki/L-system" target="_blank" class="btn btn-md btn-info">About L-systems >></a></p>
+				</div>
+			</div><br />
+			<h2 class="text-center">L-Py Web</h2>
+			<p class="text-justify">L-Py Web allows users to make their simulations online without installing any package.
+		</div>
+	</div>
 {% endblock %}
