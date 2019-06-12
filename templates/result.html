@@ -8,20 +8,34 @@
 {% endblock %}
 
 {% block editor %}{% endblock %}
+<!--{% block sidebar %}<button class="btn btn-dark toggle-sidebar" type="button"><i class="fas fa-sliders-h"></i></button>{% endblock %}-->
 
 {% block content %}
-	<div>
-		<div class="row">
-		    <div class="col-md-5">         
-		        <!--<label for="name">Enter axiom and rules :</label>-->
-				<textarea placeholder="Axiom and rules" type="text" id="axiom_rules" name="code" rows=30 cols=80 wrap=off>{{code}}</textarea>
-			</div>
-		    <canvas class="col-md-7" id="renderCanvas">
-		        <p id=htmlLString>{{ name }}</p>
-		    </canvas>
-	    </div>
-		<div class="row-2">
-		<button type="submit" class="btn btn-dark col-md-1 col-sd-1" id="submitCode">Simulate</button>
-			</div>
+	<div class="row" id="row-main">
+		<div class="col-md-1" id="sidebar">
+			<div id="sidebarTitle">Actions</div>
+			<input type="file" id="hiddenButton"/>
+			<button type="button" class="btn btn-primary btn-block" id="import" alt="Import a .lpy file." title="Import a .lpy file." 
+			onclick="upload();"><i class="fas fa-file-upload"></i> Import</button>
+			<button type="button" class="btn btn-danger btn-block" id="download" alt="Save your program in a .lpy file and download it." 
+			title="Save your program in a .lpy file and download it."><i class="fas fa-save"></i> Save</button>
+			<button type="submit" class="btn btn-success btn-block" id="submitCode" alt="Run your program and display the render." 
+			title="Run your program and display the render."><i class="fas fa-play"></i> Simulate</button>
 		</div>
+		<div class="col-md-5">         
+			<!--<label for="name">Enter axiom and rules :</label>-->
+			<textarea placeholder="Axiom and rules" type="text" id="axiom_rules" name="code" rows=40 cols=82 wrap=off>{{code}}</textarea>
+		</div>
+		<canvas class="col-md-6" width="auto" height="auto" id="renderCanvas">
+			<p id=htmlLString>{{ name }}</p>
+		</canvas>
+	</div>
+{% endblock %}
+
+{% block script %}
+	<script>
+		function upload() {
+			document.getElementById('hiddenButton').click();
+		}
+	</script>
 {% endblock %}
