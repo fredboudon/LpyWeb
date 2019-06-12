@@ -1,18 +1,30 @@
+body {
+	background-color: #e9fce9;
+}
 
 .btn-group{
     margin: 5px;
 }
 
 footer {
-	position: fixed;
+	position: absolute;
 	bottom: 0%;
 	width: 100%;
 }
 
-#submitCode {
-	position: relative;
-	left: 15%;
+#links {
+	background-color: #FFFAF0;
 }
+
+/*Canvas*/
+
+#renderCanvas {
+	width: 100%;
+  	height: auto;
+}
+
+
+/*Cover for the home page*/
 
 .cover {
   padding: 0 1.5rem;
@@ -28,6 +40,15 @@ main {
 	left: 30%;
 }
 
-#links {
-	background-color: #F5F5F5;
+#sidebarTitle {
+	position: relative;
+	text-align: center;
+	font-size: 18px;
+	border-bottom: 1px solid;
+	padding-bottom: 5px;
+	margin-bottom: 10px;
+}
+
+#hiddenButton {
+	display: none;
 }
