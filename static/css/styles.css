@@ -1,9 +1,13 @@
 body {
-	background-color: #e9fce9;
+	background-color: #e9fce9; /* in RGB : 233,252,233 */
 }
 
 .btn-group{
     margin: 5px;
+}
+
+#docButton{
+	padding-top: 25%;
 }
 
 footer {
@@ -12,7 +16,7 @@ footer {
 	width: 100%;
 }
 
-#links {
+.links {
 	background-color: #FFFAF0;
 }
 

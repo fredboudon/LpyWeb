@@ -12,17 +12,21 @@
 
 {% block content %}
 	<div class="row" id="row-main">
-		<div class="col-md-1" id="sidebar">
+		<div class="col-md-2" id="sidebar">
 			<div id="sidebarTitle">Actions</div>
 			<input type="file" id="hiddenButton"/>
-			<button type="button" class="btn btn-primary btn-block" id="import" alt="Import a .lpy file." title="Import a .lpy file." 
+			<button type="button" class="btn btn-primary btn-block " id="import" alt="Import a .lpy file." title="Import a .lpy file." 
 			onclick="upload();"><i class="fas fa-file-upload"></i> Import</button>
 			<button type="button" class="btn btn-danger btn-block" id="download" alt="Save your program in a .lpy file and download it." 
 			title="Save your program in a .lpy file and download it."><i class="fas fa-save"></i> Save</button>
 			<button type="submit" class="btn btn-success btn-block" id="submitCode" alt="Run your program and display the render." 
 			title="Run your program and display the render."><i class="fas fa-play"></i> Simulate</button>
+			<div id="docButton">
+				<a type="button" class="btn btn-info btn-block" alt="Read some documentation" title="Read some documentation" 
+				href="https://lpy-anthony.readthedocs.io/en/latest/user/turtleBasic.html"><i class="fas fa-book"></i> Documentation</a>
+			</div>
 		</div>
-		<div class="col-md-5 flex-column">
+		<div class="col-md-4 flex-column">
 			<textarea  placeholder="Axiom and rules" type="text" name="code" rows=40 cols=82 wrap=off>{{code}}</textarea>
 			<div id="code"></div>
 		</div>
