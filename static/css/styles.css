@@ -23,7 +23,6 @@ footer {
   	height: auto;
 }
 
-
 /*Cover for the home page*/
 
 .cover {
@@ -35,8 +34,8 @@ footer {
 }
 
 main {
-	position: absolute;
-	top: 40%;
+	position: relative
+	top: 50%;
 	left: 30%;
 }
 
@@ -51,4 +50,14 @@ main {
 
 #hiddenButton {
 	display: none;
+}
+
+/*Ace code editor*/
+#code { 
+	width: 800px;
+	height: 800px;
+}
+
+.ace_basic{
+	color: #FF00FF;
 }

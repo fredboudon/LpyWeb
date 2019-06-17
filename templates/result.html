@@ -22,11 +22,11 @@
 			<button type="submit" class="btn btn-success btn-block" id="submitCode" alt="Run your program and display the render." 
 			title="Run your program and display the render."><i class="fas fa-play"></i> Simulate</button>
 		</div>
-		<div class="col-md-5">         
-			<!--<label for="name">Enter axiom and rules :</label>-->
-			<textarea placeholder="Axiom and rules" type="text" id="axiom_rules" name="code" rows=40 cols=82 wrap=off>{{code}}</textarea>
+		<div class="col-md-5 flex-column">
+			<textarea  placeholder="Axiom and rules" type="text" name="code" rows=40 cols=82 wrap=off>{{code}}</textarea>
+			<div id="code"></div>
 		</div>
-		<canvas class="col-md-6" width="auto" height="auto" id="renderCanvas">
+		<canvas class="col-md-6 flex-column" width="auto" height="auto" id="renderCanvas">
 			<p id=htmlLString>{{ name }}</p>
 		</canvas>
 	</div>
@@ -37,5 +37,18 @@
 		function upload() {
 			document.getElementById('hiddenButton').click();
 		}
+
+    	var editor = ace.edit("code");
+    	var textarea = $('textarea[name="code"]').hide();
+
+    	document.getElementById('code').style.fontSize='16px';
+    	editor.setTheme("ace/theme/monokai");
+    	editor.session.setMode("ace/mode/python");
+    	editor.getSession().setValue(textarea.val());
+    	editor.getSession().on('change', function(){
+  			textarea.val(editor.getSession().getValue());
+		});
+
+</script>
 	</script>
 {% endblock %}
