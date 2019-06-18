@@ -14,10 +14,10 @@
 	<div class="row" id="row-main">
 		<div class="col-md-2" id="sidebar">
 			<div id="sidebarTitle">Actions</div>
-			<input type="file" id="hiddenButton"/>
-			<button type="button" class="btn btn-primary btn-block " id="import" alt="Import a .lpy file." title="Import a .lpy file." 
-			onclick="upload();"><i class="fas fa-file-upload"></i> Import</button>
-			<button type="button" class="btn btn-danger btn-block" id="download" alt="Save your program in a .lpy file and download it." 
+			<input type="file" id="hiddenButton" accept=".lpy"/>
+			<button type="button" class="btn btn-primary btn-block " id="importButton" alt="Import a .lpy file." title="Import a .lpy file and load it in the editor.">
+				<i class="fas fa-file-upload"></i> Import</button>
+			<button type="button" class="btn btn-danger btn-block" id="downloadButton" alt="Save your program in a .lpy file and download it." 
 			title="Save your program in a .lpy file and download it."><i class="fas fa-save"></i> Save</button>
 			<button type="submit" class="btn btn-success btn-block" id="submitCode" alt="Run your program and display the render." 
 			title="Run your program and display the render."><i class="fas fa-play"></i> Simulate</button>
@@ -38,9 +38,6 @@
 
 {% block script %}
 	<script>
-		function upload() {
-			document.getElementById('hiddenButton').click();
-		}
 
     	var editor = ace.edit("code");
     	var textarea = $('textarea[name="code"]').hide();
@@ -52,6 +49,44 @@
     	editor.getSession().on('change', function(){
   			textarea.val(editor.getSession().getValue());
 		});
+
+		document.getElementById("importButton").addEventListener("click", () => upload());
+		document.getElementById("hiddenButton").addEventListener("input", () => hiddenUpload(editor));
+		document.getElementById("downloadButton").addEventListener("click", () => downloadFile(editor));
+
+		function upload() {
+			document.getElementById('hiddenButton').click();
+		}
+
+		function hiddenUpload(editor) {
+			let fileInput = document.getElementById('hiddenButton');
+			let file = fileInput.files[0];
+			console.log(file);
+			let uploadFiletype = file.name.split('.')[1];
+			
+			if (!(uploadFiletype == 'lpy')){
+				alert("The imported file isn't a .lpy file. Please choose another one.");
+			}
+			else{
+				fileInput.addEventListener('change', function() {
+					let reader = new FileReader();
+					reader.addEventListener('load', function() {
+						editor.getSession().setValue(reader.result);
+					});
+					reader.readAsText(file, 'UTF-8');
+				});
+			}
+		}
+
+		function downloadFile(editor) {
+			let element = document.createElement('a');
+			element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(editor.getSession().getValue()));
+			element.setAttribute('download', "file.lpy");
+			element.style.display = 'none';
+			document.body.appendChild(element);
+			element.click();
+			document.body.removeChild(element);
+		}
 
 </script>
 	</script>
