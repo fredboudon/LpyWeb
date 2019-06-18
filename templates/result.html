@@ -3,53 +3,52 @@
 {% block title %} L-Py Editor {% endblock %}
 	
 {% block body %}
-<body onload="Init();">		
-	<form action={{ interpreter }} method="post">
+	<body onload="Init();">		
+		<form action={{ interpreter }} method="post">
 {% endblock %}
 
 {% block editor %}{% endblock %}
-<!--{% block sidebar %}<button class="btn btn-dark toggle-sidebar" type="button"><i class="fas fa-sliders-h"></i></button>{% endblock %}-->
 
 {% block content %}
-	<div class="row" id="row-main">
-		<div class="col-md-2" id="sidebar">
-			<div id="sidebarTitle">Actions</div>
-			<input type="file" id="hiddenButton" accept=".lpy"/>
-			<button type="button" class="btn btn-primary btn-block " id="importButton" alt="Import a .lpy file." title="Import a .lpy file and load it in the editor.">
-				<i class="fas fa-file-upload"></i> Import</button>
-			<button type="button" class="btn btn-danger btn-block" id="downloadButton" alt="Save your program in a .lpy file and download it." 
-			title="Save your program in a .lpy file and download it."><i class="fas fa-save"></i> Save</button>
-			<button type="submit" class="btn btn-success btn-block" id="submitCode" alt="Run your program and display the render." 
-			title="Run your program and display the render."><i class="fas fa-play"></i> Simulate</button>
-			<div id="docButton">
-				<a type="button" class="btn btn-info btn-block" alt="Read some documentation" title="Read some documentation" 
-				href="https://lpy-anthony.readthedocs.io/en/latest/user/turtleBasic.html" target="_blank"><i class="fas fa-book"></i> Documentation</a>
+			<div class="row" id="row-main">
+				<div class="col-md-2" id="sidebar">
+					<div id="sidebarTitle">Actions</div>
+					<input type="file" id="hiddenButton" accept=".lpy"/>
+					<button type="button" class="btn btn-primary btn-block " id="importButton" alt="Import a .lpy file." title="Import a .lpy file and load it in the editor.">
+						<i class="fas fa-file-upload"></i> Import</button>
+					<button type="button" class="btn btn-danger btn-block" id="downloadButton" alt="Save your program in a .lpy file and download it." 
+					title="Save your program in a .lpy file and download it."><i class="fas fa-save"></i> Save</button>
+					<button type="submit" class="btn btn-success btn-block" id="submitCode" alt="Run your program and display the render." 
+					title="Run your program and display the render."><i class="fas fa-play"></i> Simulate</button>
+					<div id="docButton">
+						<a type="button" class="btn btn-info btn-block" alt="Read some documentation" title="Read some documentation" 
+						href="https://lpy-anthony.readthedocs.io/en/latest/user/turtleBasic.html" target="_blank"><i class="fas fa-book"></i> Documentation</a>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<textarea  placeholder="Axiom and rules" type="text" name="code" rows=40 cols=82 wrap=off>{{code}}</textarea>
+					<div id="code"></div>
+				</div>
+				<canvas class="col-md-6" width="600" height="auto" id="renderCanvas">
+					<p id=htmlLString>{{ name }}</p>
+				</canvas>
 			</div>
-		</div>
-		<div class="col-md-4 flex-column">
-			<textarea  placeholder="Axiom and rules" type="text" name="code" rows=40 cols=82 wrap=off>{{code}}</textarea>
-			<div id="code"></div>
-		</div>
-		<canvas class="col-md-6 flex-column" width="auto" height="auto" id="renderCanvas">
-			<p id=htmlLString>{{ name }}</p>
-		</canvas>
-	</div>
 {% endblock %}
 
 {% block script %}
-	<script>
-		var editor = ace.edit("code");
-		var textarea = $('textarea[name="code"]').hide();
-		document.getElementById('code').style.fontSize='16px';
-		editor.setTheme("ace/theme/monokai");
-		editor.session.setMode("ace/mode/python");
-		editor.getSession().setValue(textarea.val());
-		editor.getSession().on('change', function(){
-			textarea.val(editor.getSession().getValue());
-		});
+		<script>
+			var editor = ace.edit("code");
+			var textarea = $('textarea[name="code"]').hide();
+			document.getElementById('code').style.fontSize='16px';
+			editor.setTheme("ace/theme/gruvbox");
+			editor.session.setMode("ace/mode/python");
+			editor.getSession().setValue(textarea.val());
+			editor.getSession().on('change', function(){
+				textarea.val(editor.getSession().getValue());
+			});
 
-		document.getElementById("importButton").addEventListener("click", () => upload());
-		document.getElementById("hiddenButton").addEventListener("input", () => hiddenUpload(editor));
-		document.getElementById("downloadButton").addEventListener("click", () => downloadFile(editor));
-	</script>
+			document.getElementById("importButton").addEventListener("click", () => upload());
+			document.getElementById("hiddenButton").addEventListener("input", () => hiddenUpload(editor));
+			document.getElementById("downloadButton").addEventListener("click", () => downloadFile(editor));
+		</script>
 {% endblock %}

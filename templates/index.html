@@ -38,7 +38,6 @@
 	  				{% block editor %}<a class='btn btn-secondary' type="button" title="Go to the L-Py Editor" href="{{ url_for('editor') }}"><i class="fab fa-pagelines"></i> L-Py Editor</a>
 	  				{% endblock %}
 	  				{% block about %}<a class='btn btn-info' type="button" title="To learn about L-Py" href="{{ url_for('about') }}" target="_blank"><i class="far fa-question-circle"></i> About L-Py</a>{% endblock %}
-	  				<!--{% block sidebar %}{% endblock %}-->
 	  			</div>
 	  		</nav>
 		</div>
@@ -46,12 +45,10 @@
 			{% block content %}
 			{% endblock %}
 		</div>
-		<footer class="bg-secondary ">
-			<div class="text-center text-light py-2 flex-md-row">L-PyWeb - &copy; 2019 Copyright: F. Boudon and C. Godin</div>
-		</footer>
+		<div class="bg-secondary footer">
+			<div class="text-center text-light">L-PyWeb - &copy; 2019 Copyright: F. Boudon and C. Godin</div>
+		</div>
 	    {% block script %}
-	    {% endblock %}
-	    {% block background %}
 	    {% endblock %}
 	</body>
 </html>

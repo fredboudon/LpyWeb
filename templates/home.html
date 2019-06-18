@@ -7,7 +7,7 @@
 {% block home %}{% endblock %}
 
 {% block content %}
-		<div class="flex-column" style="background-image: url( {{ url_for('static', filename='img/homepageimg.png') }} ); height: 600px; background-repeat: no-repeat; position: relative; left: 5%;"></div>
+		<div class="img-responsive" style="background-image: url( {{ url_for('static', filename='img/homepageimg.png') }} ); height: 600px; background-repeat: no-repeat;"></div>
 		<div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
 			<main role="main" class="inner cover text-center">
     			<h1 class="cover-heading">Welcome to the online L-Py application !</h1>
