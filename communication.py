@@ -4,6 +4,7 @@ from flask import request, render_template, url_for, redirect
 from flask import Markup
 	
 app = Flask(__name__)
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
 @app.route('/')
 def home():
@@ -35,6 +36,8 @@ def interpret(name=None):
 def about():
     return render_template('about.html')
 
+#Sometimes Flask doesn't interpret static files updates.
+#This function clears the issue.
 
 @app.context_processor
 def override_url_for():

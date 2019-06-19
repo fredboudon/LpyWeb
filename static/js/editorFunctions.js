@@ -23,11 +23,20 @@ function hiddenUpload(editor) {
 }
 
 function downloadFile(editor) {
+	document.getElementById("modalSaveButton").setAttribute('data-dismiss', 'modal');
 	let element = document.createElement('a');
-	element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(editor.getSession().getValue()));
-	element.setAttribute('download', "file.lpy");
-	element.style.display = 'none';
-	document.body.appendChild(element);
-	element.click();
-	document.body.removeChild(element);
+	let inputName = "" + document.getElementById('filename').value;
+	if(inputName.length == 0){
+		document.getElementById("modalSaveButton").removeAttribute('data-dismiss', 'modal');
+	}else {
+		if(!(inputName.split('.')[1] == 'lpy')) {
+			inputName = inputName + ".lpy";
+		}
+		element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(editor.getSession().getValue()));
+		element.setAttribute('download', inputName);
+		element.style.display = 'none';
+		document.body.appendChild(element);
+		element.click();
+		document.body.removeChild(element);
+	}
 }
