@@ -25,14 +25,18 @@
 						href="https://lpy-anthony.readthedocs.io/en/latest/user/turtleBasic.html" target="_blank"><i class="fas fa-book"></i> Documentation</a>
 					</div>
 				</div>
-				<div class="col-md-4">
-					<textarea  placeholder="Axiom and rules" type="text" name="code" rows=40 cols=82 wrap=off>{{code}}</textarea>
+				<div class="col-md-4" style="position: relative;">
+					<textarea placeholder="Axiom and rules" type="text" name="code" wrap=off>{{code}}</textarea>
 					<div id="code"></div>
 				</div>
-				<canvas class="col-md-6" width="600" height="auto" id="renderCanvas">
-					<p id=htmlLString>{{ name }}</p>
-				</canvas>
+				<div class="col-md-6">
+					<canvas width="600" height="600" id="renderCanvas">
+						<p id=htmlLString>{{ name }}</p>
+					</canvas>
+				</div>
 			</div>
+
+			<!-- Filename Modal -->
 
 			<div class="modal fade" id="modalFilename" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	 			<div class="modal-dialog" role="document">
@@ -52,6 +56,9 @@
 		        </div>
 		    </div>
 {% endblock %}
+{% block wrapper %}
+		<div id="wrapperEditor">
+{% endblock %}
 
 {% block script %}
 		<script>
@@ -64,6 +71,19 @@
 			editor.getSession().on('change', function(){
 				textarea.val(editor.getSession().getValue());
 			});
+
+			function resizeAce() {
+    			var h = window.innerHeight;
+    			console.log(h);
+		    	if (h > 800) {
+		       		$('#code').css('height', (h - 175).toString() + 'px');
+		    	}
+			};
+
+			$(window).on('resize', function () {
+		    	resizeAce();
+			});
+			resizeAce();
 
 			document.getElementById("importButton").addEventListener("click", () => upload());
 			document.getElementById("hiddenButton").addEventListener("input", () => hiddenUpload(editor));

@@ -45,8 +45,12 @@
 			{% block content %}
 			{% endblock %}
 		</div>
-		<div class="bg-secondary footer">
-			<div class="text-center text-light">L-PyWeb - &copy; 2019 Copyright: F. Boudon and C. Godin</div>
+		{% block wrapper %}
+		<div id="wrapperHome">
+		{% endblock %}
+			<div class="bg-secondary footer">
+				<div class="text-center text-light">L-PyWeb - &copy; 2019 Copyright: F. Boudon and C. Godin</div>
+			</div>
 		</div>
 	    {% block script %}
 	    {% endblock %}

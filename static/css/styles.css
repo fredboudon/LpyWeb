@@ -18,6 +18,21 @@ body {
 	height: 30px;
 }
 
+#wrapperHome {
+	height: 216px;
+    position: relative;
+}
+
+#wrapperEditor {
+	height: 119px;
+    position: relative;
+}
+
+#wrapperAbout {
+	height: 420px;
+    position: relative;
+}
+
 .links {
 	background-color: #FFFAF0;
 }
@@ -59,8 +74,7 @@ main {
 
 /*Ace code editor*/
 #code { 
-	width: 600px;
-	height: 800px;
+    width: 100%;
 }
 
 .ace_basic{
