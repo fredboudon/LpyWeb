@@ -12,9 +12,9 @@ def home():
 
 @app.route('/editor.html')
 def editor():
-    return render_template('result.html', name='', interpreter = url_for("interpret"), code = 'Axiom:\n\nderivation length: 1\nproduction:\n\ninterpretation:\n\nendlsystem\n'  )
+    return render_template('result.html', name='', interpreter = url_for("editor"), code = 'Axiom:\n\nderivation length: 1\nproduction:\n\ninterpretation:\n\nendlsystem\n'  )
 
-@app.route('/interpret.html', methods=['GET', 'POST'])
+@app.route('/editor.html', methods=['GET', 'POST'])
 def interpret(name=None):
     if request.method == 'POST':
 		import openalea.lpy as lpy
@@ -28,7 +28,7 @@ def interpret(name=None):
 		lstring = l.derive()
 		ilstring = l.interpret(lstring)
 		txtlstring = str(ilstring)
-		return render_template('result.html', name=txtlstring, interpreter = url_for("interpret"), code = code  )
+		return render_template('result.html', name=txtlstring, interpreter = url_for("editor"), code = code  )
     else:
         return 'error then return code'
 
