@@ -1,0 +1,82 @@
+body {
+	background-color: #e9fce9; /* in RGB : 233,252,233 */
+}
+
+.btn-group{
+    margin: 5px;
+}
+
+#docButton{
+	padding-top: 25%;
+}
+
+.footer {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	margin: 0 auto;
+	height: 30px;
+}
+
+#wrapperHome {
+	height: 216px;
+    position: relative;
+}
+
+#wrapperEditor {
+	height: 119px;
+    position: relative;
+}
+
+#wrapperAbout {
+	height: 420px;
+    position: relative;
+}
+
+.links {
+	background-color: #FFFAF0;
+}
+
+/*Canvas*/
+
+#renderCanvas {
+	width: 100%;
+  	height: auto;
+}
+/*Cover for the home page*/
+
+.cover {
+  padding: 0 1.5rem;
+}
+.cover .btn-lg {
+  padding: .75rem 1.25rem;
+  font-weight: 700;
+}
+
+main {
+	position: relative
+	top: 50%;
+	left: 30%;
+}
+
+#sidebarTitle {
+	position: relative;
+	text-align: center;
+	font-size: 18px;
+	border-bottom: 1px solid;
+	padding-bottom: 5px;
+	margin-bottom: 10px;
+}
+
+#hiddenButton {
+	display: none;
+}
+
+/*Ace code editor*/
+#code { 
+    width: 100%;
+}
+
+.ace_basic{
+	color: #FF00FF;
+}
