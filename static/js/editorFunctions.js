@@ -1,3 +1,29 @@
+$(document).ready(function() {
+	//$('#submitCode').on('click', function(){
+		$('form').on('submit', function(event) {
+
+			$.ajax({
+				data : {
+					LString : $('textarea[name="code"]').val(),
+					code : $('textarea[name="code"]').val()
+				},
+				type : "POST",
+				url : '/simulate',
+				success: function(data) {
+					if(data.error) {
+						console.log(data.error)
+						$('#htmlLString').val(data.error);
+					}else {
+						$('textarea[name="code"]').text(data.code);
+						display(data.LString);
+					}
+				}
+			});
+			event.preventDefault();
+		});
+	//});
+});
+
 function upload() {
 	document.getElementById('hiddenButton').click();
 }
