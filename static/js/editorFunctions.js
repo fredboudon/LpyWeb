@@ -12,7 +12,7 @@ $(document).ready(function() {
 				success: function(data) {
 					if(data.error) {
 						console.log(data.error)
-						$('#htmlLString').val(data.error);
+						display(data.error);
 					}else {
 						$('textarea[name="code"]').text(data.code);
 						display(data.LString);
