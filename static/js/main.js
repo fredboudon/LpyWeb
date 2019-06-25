@@ -6,8 +6,8 @@
 
 function Init()
 {
-	var LString = document.getElementById("htmlLString").innerHTML;		
-	console.log(LString);
+	var LString = $("#htmlLString").val();
+	//console.log(LString);
     var dTurtle = new drawTurtle();
     var wTurtle = new webTurtle(dTurtle);		
 

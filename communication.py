@@ -1,10 +1,22 @@
 import os
 from flask import Flask
-from flask import request, render_template, url_for, redirect
+from flask import request, render_template, url_for, redirect, jsonify, session
 from flask import Markup
+from flask_socketio import SocketIO, emit
 	
 app = Flask(__name__)
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
+app.secret_key = 'Iamasecretkey'
+socketio = SocketIO(app)
+
+@app.before_request
+def make_session_permanent():
+    session.permanent = False
+
+if __name__ == '__main__':
+	app.run(debug=True)
+
+#@socketio.on('disconnect')
 
 @app.route('/')
 def home():
@@ -12,26 +24,23 @@ def home():
 
 @app.route('/editor.html')
 def editor():
-    return render_template('result.html', name='', interpreter = url_for("editor"), code = 'Axiom:\n\nderivation length: 1\nproduction:\n\ninterpretation:\n\nendlsystem\n'  )
+    return render_template('result.html')
 
-@app.route('/editor.html', methods=['GET', 'POST'])
-def interpret(name=None):
-    if request.method == 'POST':
-		import openalea.lpy as lpy
-		l = lpy.Lsystem()
-		code = request.form['code']
-		code = code.encode('ascii', 'ignore')
-		try:
-			l.set(code)
-		except:
-			return render_template('result.html', name='Syntax error')
-		lstring = l.derive()
-		ilstring = l.interpret(lstring)
-		txtlstring = str(ilstring)
-		return render_template('result.html', name=txtlstring, interpreter = url_for("editor"), code = code  )
-    else:
-        return 'error then return code'
-
+@app.route('/simulate', methods=['POST'])
+def simulate():
+	import openalea.lpy as lpy
+	l = lpy.Lsystem()
+	code = request.form['code']
+	code = code.encode('ascii', 'ignore')
+	try:
+		l.set(code)
+	except:
+		return jsonify({'error' : 'Syntax error'})
+	lstring = l.derive()
+	ilstring = l.interpret(lstring)
+	txtlstring = str(ilstring)
+	return jsonify({'LString' : txtlstring, 'code' : code})
+    
 @app.route('/about.html')
 def about():
     return render_template('about.html')
