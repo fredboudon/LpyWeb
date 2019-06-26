@@ -20,7 +20,7 @@
 					title="Save your program in a .lpy file and download it." data-toggle="modal" data-target="#modalFilename"><i class="fas fa-save"></i> Save</button>
 					<div id="submitButtons">
 						<button type="submit" class="btn btn-success btn-block" id="submitCode" alt="Run your program and display the render." 
-						title="Run your program and display the render."><i class="fas fa-play"></i> Simulate</button>
+						title="Run your program and display the render."><i class="fas fa-play"></i> Run</button>
 						<button type="submit" class="btn btn-warning btn-block text-light" id="stepSubmit" alt="Run your program step by step." 
 						title="Run your program step by step."><i class="fas fa-step-forward"></i> Step</button>
 					</div>
@@ -83,7 +83,7 @@ endlsystem
 				textarea.val(editor.getSession().getValue());
 			});
 
-			function resizeAce() {
+			/*function resizeAce() {
     			var h = window.innerHeight;
     			console.log(h);
 		    	if (h > 800) {
@@ -94,7 +94,7 @@ endlsystem
 			$(window).on('resize', function () {
 		    	resizeAce();
 			});
-			resizeAce();
+			resizeAce();*/
 
 			document.getElementById("importButton").addEventListener("click", () => upload());
 			document.getElementById("hiddenButton").addEventListener("input", () => hiddenUpload(editor));

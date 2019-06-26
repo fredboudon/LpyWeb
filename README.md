@@ -8,7 +8,7 @@ How to use LpyWeb project :
 
 3- Activate Lpy environnement with the command: "conda activate lpy".
 
-4- Prepare the flask module with the command: "export FLASK_APP=communication.py".
+4- Prepare the flask module with the command: "export FLASK_APP=communication.py" or "set FLASK_APP=communication.py" on Windows
 
 5- Launch the server with the command: "flask run".
 
