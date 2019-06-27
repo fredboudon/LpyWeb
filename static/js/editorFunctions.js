@@ -1,7 +1,6 @@
 $(document).ready(function() {
-	//$('#submitCode').on('click', function(){
-		$('form').on('submit', function(event) {
-
+	if(document.getElementById('submitCode')) {
+		document.getElementById('submitCode').onclick = function(event) {
 			$.ajax({
 				data : {
 					LString : $('textarea[name="code"]').val(),
@@ -12,6 +11,7 @@ $(document).ready(function() {
 				success: function(data) {
 					if(data.error) {
 						console.log(data.error)
+						$('textarea[name="code"]').text(data.error);
 						display(data.error);
 					}else {
 						$('textarea[name="code"]').text(data.code);
@@ -20,8 +20,8 @@ $(document).ready(function() {
 				}
 			});
 			event.preventDefault();
-		});
-	//});
+		};
+	}
 });
 
 function upload() {

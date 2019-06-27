@@ -3,33 +3,34 @@
 {% block title %} L-Py Editor {% endblock %}
 	
 {% block body %}
-	<body onload="Init();">		
+	<body onload="Init();" class="bg-light">
 		<form>
 {% endblock %}
 
 {% block editor %}{% endblock %}
 
 {% block content %}
-			<div class="row" id="row-main">
-				<div class="col-md-2" id="sidebar">
-					<div id="sidebarTitle">Actions</div>
+			<div class="row bg-light">
+				<div id="fileButtons">
 					<input type="file" id="hiddenButton" accept=".lpy"/>
-					<button type="button" class="btn btn-primary btn-block " id="importButton" alt="Import a .lpy file." title="Import a .lpy file and load it in the editor.">
+					<button type="button" class="btn btn-light text-success" id="importButton" alt="Import a .lpy file." title="Import a .lpy file and load it in the editor.">
 						<i class="fas fa-file-upload"></i> Import</button>
-					<button type="button" class="btn btn-danger btn-block" id="downloadButton" alt="Save your program in a .lpy file and download it." 
+					<button type="button" class="btn btn-light text-success" id="downloadButton" alt="Save your program in a .lpy file and download it."
 					title="Save your program in a .lpy file and download it." data-toggle="modal" data-target="#modalFilename"><i class="fas fa-save"></i> Save</button>
-					<div id="submitButtons">
-						<button type="submit" class="btn btn-success btn-block" id="submitCode" alt="Run your program and display the render." 
-						title="Run your program and display the render."><i class="fas fa-play"></i> Run</button>
-						<button type="submit" class="btn btn-warning btn-block text-light" id="stepSubmit" alt="Run your program step by step." 
-						title="Run your program step by step."><i class="fas fa-step-forward"></i> Step</button>
-					</div>
-					<div id="docButton">
-						<a type="button" class="btn btn-info btn-block" alt="Read some documentation" title="Read some documentation" 
-						href="https://lpy-anthony.readthedocs.io/en/latest/user/turtleBasic.html" target="_blank"><i class="fas fa-book"></i> Documentation</a>
-					</div>
 				</div>
-				<div class="col-md-4" style="position: relative;">
+				<div id="submitButtons">
+					<button type="submit" class="btn btn-light text-success" id="submitCode" alt="Run your program and display the render."
+					title="Run your program and display the render."><i class="fas fa-play"></i> Run</button>
+					<button type="submit" class="btn btn-light text-success" id="stepSubmit" alt="Run your program step by step."
+					title="Run your program step by step." style="display: none;"><i class="fas fa-step-forward"></i> Step</button>
+				</div>
+				<div id="docButton">
+					<a type="button" class="btn btn-light text-success" alt="Read some documentation" title="Read some documentation"
+					href="https://lpy-anthony.readthedocs.io/en/latest/user/turtleBasic.html" target="_blank"><i class="fas fa-book"></i> Documentation</a>
+				</div>
+			</div>
+			<div class="row" id="row-main">
+				<div class="col-md-5" style="position: relative;">
 					<textarea placeholder="Axiom and rules" type="text" name="code" wrap=off>Axiom:
 
 derivation length: 1
@@ -41,8 +42,8 @@ endlsystem
 	</textarea>
 					<div id="code"></div>
 				</div>
-				<div class="col-md-6">
-					<canvas width="600" height="600" id="renderCanvas"></canvas>
+				<div class="col-md-7">
+					<canvas width="600" height="800" id="renderCanvas"></canvas>
 				</div>
 			</div>
 
@@ -67,9 +68,6 @@ endlsystem
 		    </div>
 		</form>
 {% endblock %}
-{% block wrapper %}
-		<div id="wrapperEditor">
-{% endblock %}
 
 {% block script %}
 		<script>
@@ -83,18 +81,20 @@ endlsystem
 				textarea.val(editor.getSession().getValue());
 			});
 
-			/*function resizeAce() {
+			function resize() {
     			var h = window.innerHeight;
     			console.log(h);
-		    	if (h > 800) {
-		       		$('#code').css('height', (h - 175).toString() + 'px');
+		    	if (h > 1050) {
+		    		$('#code').css('height', (h - 109).toString() + 'px');
+		    		$('#renderCanvas').css('height', (h - 109).toString() + 'px');
 		    	}
 			};
 
 			$(window).on('resize', function () {
-		    	resizeAce();
+		    	resize();
 			});
-			resizeAce();*/
+			resize();
+
 
 			document.getElementById("importButton").addEventListener("click", () => upload());
 			document.getElementById("hiddenButton").addEventListener("input", () => hiddenUpload(editor));

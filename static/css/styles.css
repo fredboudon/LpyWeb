@@ -1,17 +1,24 @@
+html {
+    position: relative;
+    min-height: 100%;
+}
+
 body {
-	background-color: #e9fce9; /* in RGB : 233,252,233 */
+	background-color: #e9fce9;  /*in RGB : 233,252,233 */
 }
 
-.btn-group{
-    margin: 5px;
+.img-responsive {
+	height: 600px;
+	background-repeat: no-repeat;
+	min-height : 100%;
+	min-width : 100%;
+	background-size: 100% 100%;
+	overflow-y: hidden;
+	overflow-x: hidden;
 }
 
-#submitButtons {
-	padding-top: 25%;
-}
-
-#docButton{
-	padding-top: 25%;
+#fileButtons{
+	padding-left: 3%;
 }
 
 .footer {
@@ -20,21 +27,6 @@ body {
 	width: 100%;
 	margin: 0 auto;
 	height: 30px;
-}
-
-#wrapperHome {
-	height: 216px;
-    position: relative;
-}
-
-#wrapperEditor {
-	height: 119px;
-    position: relative;
-}
-
-#wrapperAbout {
-	height: 420px;
-    position: relative;
 }
 
 .links {
@@ -78,8 +70,8 @@ main {
 
 /*Ace code editor*/
 #code {
-    height: 100%;
-    width: 100%;
+	width: 100%;
+	height: 100%;
 }
 
 .ace_basic{

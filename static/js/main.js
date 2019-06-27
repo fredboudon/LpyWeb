@@ -6,7 +6,7 @@
 
 function Init()
 {
-	display(LString="");
+	display("");
 }
 
 function display(LString) {
@@ -20,7 +20,7 @@ function display(LString) {
         //ATTENTION PROBLEME AVEC LES SYMBOLES VIRUGULES (dans le lstring parser)
         lstrParser.lstr = LString;
         lstrParser.ParseLString();
-        console.log(lstrParser.result);
+        //console.log(lstrParser.result);
         wTurtle.Start(lstrParser.result);
     }
 
