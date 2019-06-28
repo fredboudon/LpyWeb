@@ -25,3 +25,5 @@ conda create -n lpy openalea.lpy boost=1.66 'mpfr<4' -c openalea
 If you want to access to the application with other machines, you can run it with the command : flask run --host=IP_HOST_MACHINE.
 (IP_HOST_MACHINE is the IP adress of the machine which run the flask application)
 You can check the IP adress using : "ip a show" or "ifconfig" (or ipconfig on Windows)
+
+You can also use ngrok (https://ngrok.com/) to share your local host with all users.

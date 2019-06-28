@@ -366,6 +366,7 @@ this.underscore(modules[i].paramList[0]);
         // if (length > 0 && this.currentParams.guide) { // Not implemented yet
         //     this.applyGuide();
         // }
+
         if (this.currentParams.elasticity > GEOM_EPSILON) {
             this.applyTropism();
         }
@@ -386,7 +387,8 @@ this.underscore(modules[i].paramList[0]);
      * @param {Number} color The color of the cylinder
      * @param {Number} budId The id of the cylinder mesh
      */
-    F(length, topRadius = this.radius, materialColor, id) {
+    F(length = this.defaultStep, topRadius = this.radius, materialColor, id) {
+
         if (length > 0) {
             if (this.currentParams.elasticity > GEOM_EPSILON) {
                 this.applyTropism();
@@ -423,7 +425,7 @@ this.underscore(modules[i].paramList[0]);
      * @param {Number} radius	The radius on the top of the cylinder
      * @param {Number} id		The id of the cylinder
      */
-    nF(length, nbSteps, endRadius, id, materialColor) {
+    nF(length = this.defaultStep, nbSteps, endRadius, id, materialColor) {
 		var dl = length / nbSteps;
 		var radiusEvolution = (this.radius - endRadius) / nbSteps;
 
@@ -553,7 +555,7 @@ this.underscore(modules[i].paramList[0]);
 	}
 	
 	//Set the radius of the Turtle
-	underscore(radius) {
+	underscore(radius = this.radius) {
 		this.radius = radius;
 	}
     
@@ -564,7 +566,7 @@ this.underscore(modules[i].paramList[0]);
      *
      * @param {Number} angle The turning angle
      */
-    left(angle) {
+    left(angle = this.angleIncrement) {
         var ra = angle * GEOM_RAD;
         var matrix = new BABYLON.Matrix.RotationAxis(this.currentParams.up, ra);
         this.currentParams.heading = new BABYLON.Vector3.TransformCoordinates(this.currentParams.heading, matrix);
@@ -578,7 +580,7 @@ this.underscore(modules[i].paramList[0]);
      *
      * @param {Number} angle The turning angle
      */
-    right(angle) {
+    right(angle = this.angleIncrement) {
         this.left(-angle);
     }
     
@@ -589,7 +591,7 @@ this.underscore(modules[i].paramList[0]);
      *
      * @param {Number} angle The turning angle
      */
-    down(angle) {
+    down(angle = this.angleIncrement) {
         var ra = angle * GEOM_RAD;
         var matrix = new BABYLON.Matrix.RotationAxis(this.currentParams.left, ra);
         this.currentParams.heading = new BABYLON.Vector3.TransformCoordinates(this.currentParams.heading, matrix);
@@ -603,7 +605,7 @@ this.underscore(modules[i].paramList[0]);
      *
      * @param {Number} angle The turning angle
      */
-    up(angle) {
+    up(angle = this.angleIncrement) {
         this.down(-angle);
     }
     
@@ -614,7 +616,7 @@ this.underscore(modules[i].paramList[0]);
 
      * @param {Number} angle The turning angle
      */
-    rollL(angle) {
+    rollL(angle = this.angleIncrement) {
         var ra = angle * GEOM_RAD;
         var matrix = new BABYLON.Matrix.RotationAxis(this.currentParams.heading, ra);
         this.currentParams.up = new BABYLON.Vector3.TransformCoordinates(this.currentParams.up, matrix);
@@ -628,7 +630,7 @@ this.underscore(modules[i].paramList[0]);
 
      * @param {Number} angle The turning angle
      */
-    rollR(angle) {
+    rollR(angle = this.angleIncrement) {
         this.rollL(-angle);
     }
 
@@ -639,7 +641,7 @@ this.underscore(modules[i].paramList[0]);
      *
      * @param {Number} angle The turning angle
      */
-    iRollL(angle) {
+    iRollL(angle = this.angleIncrement) {
         //TODO
 
         this.rollL(angle);
@@ -659,7 +661,7 @@ this.underscore(modules[i].paramList[0]);
      *
      * @param {Number} angle The turning angle
      */
-    iRollR(angle) {
+    iRollR(angle = this.angleIncrement) {
         this.iRollL(-angle);
     }
 

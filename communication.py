@@ -15,6 +15,7 @@ def make_session_permanent():
 
 if __name__ == '__main__':
 	app.run(debug=True)
+	#host=140.77.13.200
 
 #@socketio.on('disconnect')
 

@@ -13,8 +13,12 @@
 			<div class="row bg-light">
 				<div id="fileButtons">
 					<input type="file" id="hiddenButton" accept=".lpy"/>
-					<button type="button" class="btn btn-light text-success" id="importButton" alt="Import a .lpy file." title="Import a .lpy file and load it in the editor.">
-						<i class="fas fa-file-upload"></i> Import</button>
+					<button type="button" class="btn btn-light text-success" id="importFile" alt="Import a .lpy file from your local storage." title="Import a .lpy file from your local storage.">
+						<i class="fas fa-file-upload"></i> Load from file</button>
+					<button type="button" class="btn btn-light text-success" id="importExample" alt="Import a .lpy file from an URL." title="Import a .lpy example file from the database." data-toggle="modal" data-target="#modalExample" style="display: none;">
+					<i class="fas fa-file-upload"></i> Load Example</button>
+					<!--<button type="button" class="btn btn-light text-success" id="importURL" alt="Import a .lpy file from an URL." title="Import a .lpy file from an URL." data-toggle="modal" data-target="#modalFileURL">
+						<i class="fas fa-file-upload"></i> Load from URL</button>-->
 					<button type="button" class="btn btn-light text-success" id="downloadButton" alt="Save your program in a .lpy file and download it."
 					title="Save your program in a .lpy file and download it." data-toggle="modal" data-target="#modalFilename"><i class="fas fa-save"></i> Save</button>
 				</div>
@@ -57,8 +61,8 @@ endlsystem
 	        				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 	      				</div>
 	      				<div class="modal-body">
-	        				<b><center><label for="filename">Enter a name for the file (between 1 and 50 caracters) : </label></center></b>
-		        			<input class="flex-column" type="text" name="filename" id="filename" minlength="1" maxlength="50" size="48" value="file.lpy" required>
+	        				<b><center><label for="filename">Enter a name for the file (between 1 and 50 caracters) : </label></b>
+		        			<input class="flex-column" type="text" name="filename" id="filename" minlength="1" maxlength="50" size="48" value="file.lpy" required></center>
 		        		</div>
 		        		<div class="modal-footer">
         					<button type="button" class="btn btn-primary" id="modalSaveButton">Save</button>
@@ -66,6 +70,44 @@ endlsystem
 		        	</div>
 		        </div>
 		    </div>
+
+		    <div class="modal fade" id="modalExample" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	 			<div class="modal-dialog" role="document">
+	    			<div class="modal-content">
+	      				<div class="modal-header">
+	      					<h3 class="modal-title"> Load an example</h3>
+	        				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	      				</div>
+	      				<div class="modal-body">
+	        				<b><center><label for="exampleFile">Choose the example file you want to load in the editor : </label></b><br />
+		        			<select class="flex-column" type="url" name="exampleFile" id="exampleFile" required>
+		        			</select></center>
+		        		</div>
+		        		<div class="modal-footer">
+        					<button type="button" class="btn btn-primary" id="modalLoadExample">Load</button>
+      					</div>     
+		        	</div>
+		        </div>
+		    </div>
+
+		    <!--<div class="modal fade" id="modalFileURL" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	 			<div class="modal-dialog" role="document">
+	    			<div class="modal-content">
+	      				<div class="modal-header">
+	      					<h3 class="modal-title"> Load a file from the Web</h3>
+	        				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	      				</div>
+	      				<div class="modal-body">
+	        				<b><center><label for="fileURL">Enter the URL of the file you want to load in the editor : </label></b>
+		        			<input class="flex-column" type="url" name="fileURL" id="fileURL" placeholder="https://example.com" pattern="https://.*" size="48" required></center>
+		        		</div>
+		        		<div class="modal-footer">
+        					<button type="button" class="btn btn-primary" id="modalLoadButton">Load</button>
+      					</div>     
+		        	</div>
+		        </div>
+		    </div>-->
+
 		</form>
 {% endblock %}
 
@@ -96,9 +138,11 @@ endlsystem
 			resize();
 
 
-			document.getElementById("importButton").addEventListener("click", () => upload());
+			document.getElementById("importFile").addEventListener("click", () => upload());
 			document.getElementById("hiddenButton").addEventListener("input", () => hiddenUpload(editor));
 			document.getElementById("modalSaveButton").addEventListener("click", () => downloadFile(editor));
+			document.getElementById("modalLoadExample").addEventListener("click", () => loadExample(editor));
+			//document.getElementById("modalLoadButton").addEventListener("click", () => loadFromURL(editor));
 			
 		</script>
 {% endblock %}

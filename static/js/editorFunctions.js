@@ -66,3 +66,29 @@ function downloadFile(editor) {
 		document.body.removeChild(element);
 	}
 }
+
+function loadExample(editor) {
+	
+}
+/*function loadFromURL(editor) {
+	document.getElementById("modalLoadButton").setAttribute('data-dismiss', 'modal');
+	let inputURL = document.getElementById('fileURL').value;
+	if(inputURL.length == 0){
+		document.getElementById("modalLoadButton").removeAttribute('data-dismiss', 'modal');
+	}else {
+		$.ajax({
+			url : inputURL,
+			crossDomain: true,
+			contentType: 'text/html',
+			xhrFields: { withCredentials: false },
+			headers: {  'Access-Control-Allow-Origin' : '*' , },
+			type : 'GET',
+			dataType: 'jsonp',
+			success: function(data) {
+				$('textarea[name=code]').val(data);
+			}
+		});
+		$('textarea[name=code]').load(inputURL);
+		console.log($('textarea[name=code]').val());
+	}
+}*/
