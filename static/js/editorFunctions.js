@@ -1,20 +1,16 @@
 $(document).ready(function() {
-	if(document.getElementById('submitCode')) {
-		document.getElementById('submitCode').onclick = function(event) {
+	if(document.getElementById('runCode')) {
+		document.getElementById('runCode').onclick = function(event) {
 			$.ajax({
 				data : {
-					LString : $('textarea[name="code"]').val(),
 					code : $('textarea[name="code"]').val()
 				},
 				type : "POST",
-				url : '/simulate',
+				url : '/run',
 				success: function(data) {
 					if(data.error) {
-						console.log(data.error)
-						$('textarea[name="code"]').text(data.error);
 						display(data.error);
 					}else {
-						$('textarea[name="code"]').text(data.code);
 						display(data.LString);
 					}
 				}
@@ -23,6 +19,43 @@ $(document).ready(function() {
 		};
 	}
 });
+
+
+$(document).ready(function() {
+	if(document.getElementById('stepCode')) {
+		document.getElementById('stepCode').onclick = function(event) {
+
+			var lines = $('textarea[name="code"]').val().split(/\r\n|\n|\r/);
+			var derivation = 1;
+			lines.forEach(function(line){
+				if(line.includes("derivation length:")){
+					return derivation = line.split(" ")[2];
+				}
+			});
+			$('step').val(derivation);
+
+			$.ajax({
+				data : {
+					code : $('textarea[name="code"]').val(),
+					step: derivation
+				},
+				type : "POST",
+				url : '/step',
+				success: function(data) {
+					if(data.error) {
+						display(data.error);
+					}
+					else {
+						display(data.LString);
+					}
+				}
+			});
+			event.preventDefault();
+		};
+	}
+});
+
+
 
 function upload() {
 	document.getElementById('hiddenButton').click();

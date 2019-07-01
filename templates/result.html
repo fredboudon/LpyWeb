@@ -23,10 +23,10 @@
 					title="Save your program in a .lpy file and download it." data-toggle="modal" data-target="#modalFilename"><i class="fas fa-save"></i> Save</button>
 				</div>
 				<div id="submitButtons">
-					<button type="submit" class="btn btn-light text-success" id="submitCode" alt="Run your program and display the render."
+					<button type="submit" class="btn btn-light text-success" id="runCode" alt="Run your program and display the render."
 					title="Run your program and display the render."><i class="fas fa-play"></i> Run</button>
-					<button type="submit" class="btn btn-light text-success" id="stepSubmit" alt="Run your program step by step."
-					title="Run your program step by step." style="display: none;"><i class="fas fa-step-forward"></i> Step</button>
+					<button type="submit" class="btn btn-light text-success" id="stepCode" alt="Run your program step by step."
+					title="Run your program step by step."><i class="fas fa-step-forward"></i> Step</button>
 				</div>
 				<div id="docButton">
 					<a type="button" class="btn btn-light text-success" alt="Read some documentation" title="Read some documentation"
@@ -45,6 +45,7 @@ interpretation:
 endlsystem
 	</textarea>
 					<div id="code"></div>
+					<input type="hidden" name="step" id="step" readonly>
 				</div>
 				<div class="col-md-7">
 					<canvas width="600" height="800" id="renderCanvas"></canvas>

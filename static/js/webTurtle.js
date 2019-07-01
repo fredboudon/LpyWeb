@@ -7,7 +7,8 @@
 const GEOM_EPSILON = 1e-5;
 //const GEOM_TOLERANCE = 1e-10;
 const GEOM_RAD = 0.01745329052;
-const GEOM_PI = 3.141592653589793;
+const GEOM_PI = Math.PI.toFixed(48);
+
 const SHAPE_NOID = -1;
 
 /**
@@ -153,6 +154,12 @@ class webTurtle {
 
 			case '@o':
 				break;
+
+            case '@B':
+                break;
+
+            case '@b':
+                break;
 
 			case '@L':
 				break;
@@ -555,7 +562,7 @@ this.underscore(modules[i].paramList[0]);
 	}
 	
 	//Set the radius of the Turtle
-	underscore(radius = this.radius) {
+	underscore(radius = 0.1) {
 		this.radius = radius;
 	}
     
@@ -592,7 +599,7 @@ this.underscore(modules[i].paramList[0]);
      * @param {Number} angle The turning angle
      */
     down(angle = this.angleIncrement) {
-        var ra = angle * GEOM_RAD;
+        var ra = angle * (GEOM_PI/180.);
         var matrix = new BABYLON.Matrix.RotationAxis(this.currentParams.left, ra);
         this.currentParams.heading = new BABYLON.Vector3.TransformCoordinates(this.currentParams.heading, matrix);
         this.currentParams.up = new BABYLON.Vector3.TransformCoordinates(this.currentParams.up, matrix);
@@ -617,7 +624,7 @@ this.underscore(modules[i].paramList[0]);
      * @param {Number} angle The turning angle
      */
     rollL(angle = this.angleIncrement) {
-        var ra = angle * GEOM_RAD;
+        var ra = angle * (GEOM_PI/180.);
         var matrix = new BABYLON.Matrix.RotationAxis(this.currentParams.heading, ra);
         this.currentParams.up = new BABYLON.Vector3.TransformCoordinates(this.currentParams.up, matrix);
         this.currentParams.left = new BABYLON.Vector3.TransformCoordinates(this.currentParams.left, matrix);
