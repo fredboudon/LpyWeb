@@ -1,4 +1,8 @@
 $(document).ready(function() {
+	var dTurtle = new drawTurtle();
+	var wTurtle = new webTurtle(dTurtle);
+    Init(dTurtle, wTurtle);
+
 	if(document.getElementById('runCode')) {
 		document.getElementById('runCode').onclick = function(event) {
 			$.ajax({
@@ -8,20 +12,19 @@ $(document).ready(function() {
 				type : "POST",
 				url : '/run',
 				success: function(data) {
+					dTurtle.DeleteTrees();
+					wTurtle.reinitialise();
 					if(data.error) {
-						display(data.error);
+						display(dTurtle, wTurtle, data.error);
 					}else {
-						display(data.LString);
+						display(dTurtle, wTurtle, data.LString);
 					}
 				}
 			});
 			event.preventDefault();
 		};
 	}
-});
 
-
-$(document).ready(function() {
 	if(document.getElementById('stepCode')) {
 		document.getElementById('stepCode').onclick = function(event) {
 
@@ -42,11 +45,13 @@ $(document).ready(function() {
 				type : "POST",
 				url : '/step',
 				success: function(data) {
+					dTurtle.DeleteTrees();
+					wTurtle.reinitialise();
 					if(data.error) {
-						display(data.error);
+						display(dTurtle, wTurtle, data.error);
 					}
 					else {
-						display(data.LString);
+						display(dTurtle, wTurtle, data.LString);
 					}
 				}
 			});

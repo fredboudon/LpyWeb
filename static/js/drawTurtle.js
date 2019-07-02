@@ -268,8 +268,9 @@ class drawTurtle {
      */
 	DeleteTrees() {
 		for (var i in this.graphicElems) {
+            this.graphicElems[i].dispose()
 			this.scene.removeMesh(this.graphicElems[i]);
 		}
 		this.graphicElems = []
-	}
+    }
 }

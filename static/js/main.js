@@ -4,14 +4,11 @@
  * @version 0.1
  */
 
-function Init()
-{
-	display("");
+function Init(drawTurtle, webTurtle) {
+	display(drawTurtle, webTurtle, "");
 }
 
-function display(LString) {
-    var dTurtle = new drawTurtle();
-    var wTurtle = new webTurtle(dTurtle);       
+function display(drawTurtle, webTurtle, LString) {
 
     if (LString == "Syntax error")
         console.log("Syntax error");
@@ -21,22 +18,22 @@ function display(LString) {
         lstrParser.lstr = LString;
         lstrParser.ParseLString();
         //console.log(lstrParser.result);
-        wTurtle.Start(lstrParser.result);
+        webTurtle.Start(lstrParser.result);
     }
 
     // Compteur de FPS
     //var fpsDiv = document.getElementById("fpsCounter");
 
     // Render loop
-    dTurtle.engine.runRenderLoop(function()
+    drawTurtle.engine.runRenderLoop(function()
     {
         //UpdateFPS();
-        dTurtle.scene.render();
+        drawTurtle.scene.render();
     });
 
     // Resize event
     window.addEventListener("resize", function()
     {
-        dTurtle.engine.resize();
+        drawTurtle.engine.resize();
     });
 }

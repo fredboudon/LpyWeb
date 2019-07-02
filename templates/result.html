@@ -3,7 +3,7 @@
 {% block title %} L-Py Editor {% endblock %}
 	
 {% block body %}
-	<body onload="Init();" class="bg-light">
+	<body class="bg-light">
 		<form>
 {% endblock %}
 
@@ -12,7 +12,7 @@
 {% block content %}
 			<div class="row bg-light">
 				<div id="fileButtons">
-					<button type="button" class="btn btn-light text-success" id="clearEditor" alt="Reset the editor text." title="Reset the editor text."><i class="fas fa-power-off"></i> Clear</button>
+					<button type="button" class="btn btn-light text-success" id="clearEditor" alt="Reset the editor text." title="Reset the editor text."><i class="fas fa-eraser"></i> Clear</button>
 					<input type="file" id="hiddenButton" accept=".lpy"/>
 					<button type="button" class="btn btn-light text-success" id="importFile" alt="Import a .lpy file from your local storage." title="Import a .lpy file from your local storage.">
 						<i class="fas fa-file-upload"></i> Load from file</button>
@@ -141,9 +141,6 @@ endlsystem
 		    	resize();
 			});
 			resize();
-
-
-
 
 			document.getElementById("importFile").addEventListener("click", () => upload());
 			document.getElementById("hiddenButton").addEventListener("input", () => hiddenUpload(editor));

@@ -288,7 +288,7 @@ this.underscore(modules[i].paramList[0]);
     Dump() {
         console.log("Turtle params:", this.currentParams);
     }
-    
+
     /**
      * Stopping the turtle
      */
@@ -395,7 +395,6 @@ this.underscore(modules[i].paramList[0]);
      * @param {Number} budId The id of the cylinder mesh
      */
     F(length = this.defaultStep, topRadius = this.radius, materialColor, id) {
-
         if (length > 0) {
             if (this.currentParams.elasticity > GEOM_EPSILON) {
                 this.applyTropism();
@@ -1194,5 +1193,40 @@ this.underscore(modules[i].paramList[0]);
 	// void headingReflection();
     headingReflection() {
         //TODO
+    }
+
+    reinitialise() {
+        this.paramStack = [];
+        this.currentParams = {};
+        this.defaultStep = 1;
+        this.angleIncrement = 60;
+        this.widthIncrement = 1;
+        this.colorIncrement = 1;
+        this.scaleMultiplier = 0.5;
+        this.radius = 0.1;
+        this.id = SHAPE_NOID;
+        this.parentId = SHAPE_NOID;
+        this.dynamicmode = true;
+        this.currentParams = {
+            position: new BABYLON.Vector3(0,0,0),
+            heading: new BABYLON.Vector3(0,1,0),
+            left: new BABYLON.Vector3(-1,0,0),
+            up: new BABYLON.Vector3(0,0,1),
+            scale: new BABYLON.Vector3(1,1,1),
+            reflection: new BABYLON.Vector3(1,1,1),
+            lastId: SHAPE_NOID,
+            width: 0.1,
+            tropism: new BABYLON.Vector3(0,1,0),
+            elasticity: 0.02,
+            angle: 30,
+            screenCoordinates: false,
+            polygon: false,
+            generalizedCylinder: false,
+            pointList: [],
+            shapeSection: [],
+            colorIndex: 1,
+            customId: SHAPE_NOID,
+            customParentId: SHAPE_NOID
+        }
     }
 };
