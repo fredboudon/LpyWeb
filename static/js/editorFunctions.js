@@ -32,9 +32,12 @@ $(document).ready(function() {
 			var derivation = 1;
 			lines.forEach(function(line){
 				if(line.includes("derivation length:")){
-					return derivation = line.split(" ")[2];
+					return derivation = parseInt(line.split(" ")[2], 10);
+				}else {
+					return derivation;
 				}
 			});
+			
 			$('step').val(derivation);
 
 			$.ajax({
@@ -107,9 +110,32 @@ function downloadFile(editor) {
 	}
 }
 
-function loadExample(editor) {
+function animate(i) {
 	
+	var lines = $('textarea[name="code"]').val().split(/\r\n|\n|\r/);
+	var derivation = 1;
+	lines.forEach(function(line){
+		if(line.includes("derivation length:")){
+			return derivation = parseInt(line.split(" ")[2], 10);
+		}else {
+			return derivation;
+		}
+	});
+	console.log(derivation);
+	var interval = setInterval(function() {
+	    $('#stepCode').click();
+	    //console.log("J'ai cliqué sur Step ! ");
+	    if(i === derivation){
+	    	clearInterval(interval);
+	    }
+	    i++;
+	}, 1000 );
 }
+
+
+/*function loadExample(editor) {
+	
+}*/
 /*function loadFromURL(editor) {
 	document.getElementById("modalLoadButton").setAttribute('data-dismiss', 'modal');
 	let inputURL = document.getElementById('fileURL').value;

@@ -28,6 +28,7 @@
 					title="Run your program and display the render."><i class="fas fa-play"></i> Run</button>
 					<button type="submit" class="btn btn-light text-success" id="stepCode" alt="Run your program step by step."
 					title="Run your program step by step."><i class="fas fa-step-forward"></i> Step</button>
+					<button type="button" class="btn btn-light text-success" id="animate" alt="Play the growth animation" title="Play the growth animation"><i class="fas fa-film"></i> Animate</button>
 				</div>
 				<div id="docButton">
 					<a type="button" class="btn btn-light text-success" alt="Read some documentation" title="Read some documentation"
@@ -145,8 +146,9 @@ endlsystem
 			document.getElementById("importFile").addEventListener("click", () => upload());
 			document.getElementById("hiddenButton").addEventListener("input", () => hiddenUpload(editor));
 			document.getElementById("modalSaveButton").addEventListener("click", () => downloadFile(editor));
-			document.getElementById("modalLoadExample").addEventListener("click", () => loadExample(editor));
+			//document.getElementById("modalLoadExample").addEventListener("click", () => loadExample(editor));
 			document.getElementById("clearEditor").addEventListener('click', () => clearEditor(editor));
+			document.getElementById("animate").addEventListener('click', () => animate(1));
 			//document.getElementById("modalLoadButton").addEventListener("click", () => loadFromURL(editor));
 			
 		</script>

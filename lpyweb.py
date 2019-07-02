@@ -10,7 +10,6 @@ app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 app.secret_key = 'Iamasecretkey'
 socketio = SocketIO(app)
 LSystem = None
-lock = Lock()
 
 @app.before_request
 def make_session_permanent():
@@ -75,8 +74,7 @@ def step():
 			lstring = l.derive(session['currentStep'])
 			ilstring = l.interpret(lstring)
 			txtlstring = str(ilstring)
-			with lock:
-				LSystem = l
+			LSystem = l
 			return jsonify({'LString' : txtlstring})
 
 		else:
