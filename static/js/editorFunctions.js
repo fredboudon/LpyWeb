@@ -55,7 +55,9 @@ $(document).ready(function() {
 	}
 });
 
-
+function clearEditor(editor) {
+	editor.getSession().setValue(sessionStorage.getItem('genesisCode'));
+}
 
 function upload() {
 	document.getElementById('hiddenButton').click();

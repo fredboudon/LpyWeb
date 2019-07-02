@@ -1,4 +1,5 @@
 import os
+from threading import Lock
 from flask import Flask
 from flask import request, render_template, url_for, redirect, jsonify, session
 from flask import Markup
@@ -9,6 +10,7 @@ app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 app.secret_key = 'Iamasecretkey'
 socketio = SocketIO(app)
 LSystem = None
+lock = Lock()
 
 @app.before_request
 def make_session_permanent():
@@ -37,6 +39,7 @@ def editor():
 
 @app.route('/run', methods=['POST'])
 def run():
+	disconnect()
 	import openalea.lpy as lpy
 	l = lpy.Lsystem()
 	code = request.form['code']
@@ -72,7 +75,8 @@ def step():
 			lstring = l.derive(session['currentStep'])
 			ilstring = l.interpret(lstring)
 			txtlstring = str(ilstring)
-			LSystem = l
+			with lock:
+				LSystem = l
 			return jsonify({'LString' : txtlstring})
 
 		else:
@@ -95,7 +99,8 @@ def step():
 		lstring = l.derive(session['currentStep'])
 		ilstring = l.interpret(lstring)
 		txtlstring = str(ilstring)
-		LSystem = l
+		with lock:
+			LSystem = l
 		return jsonify({'LString' : txtlstring})
     
 @app.route('/about.html')

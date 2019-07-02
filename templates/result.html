@@ -12,6 +12,7 @@
 {% block content %}
 			<div class="row bg-light">
 				<div id="fileButtons">
+					<button type="button" class="btn btn-light text-success" id="clearEditor" alt="Reset the editor text." title="Reset the editor text."><i class="fas fa-power-off"></i> Clear</button>
 					<input type="file" id="hiddenButton" accept=".lpy"/>
 					<button type="button" class="btn btn-light text-success" id="importFile" alt="Import a .lpy file from your local storage." title="Import a .lpy file from your local storage.">
 						<i class="fas fa-file-upload"></i> Load from file</button>
@@ -120,6 +121,9 @@ endlsystem
 			editor.setTheme("ace/theme/gruvbox");
 			editor.session.setMode("ace/mode/python");
 			editor.getSession().setValue(textarea.val());
+			if(!sessionStorage.getItem('genesisCode')) {
+				sessionStorage.setItem('genesisCode', editor.getSession().getValue());
+			}
 			editor.getSession().on('change', function(){
 				textarea.val(editor.getSession().getValue());
 			});
@@ -139,10 +143,13 @@ endlsystem
 			resize();
 
 
+
+
 			document.getElementById("importFile").addEventListener("click", () => upload());
 			document.getElementById("hiddenButton").addEventListener("input", () => hiddenUpload(editor));
 			document.getElementById("modalSaveButton").addEventListener("click", () => downloadFile(editor));
 			document.getElementById("modalLoadExample").addEventListener("click", () => loadExample(editor));
+			document.getElementById("clearEditor").addEventListener('click', () => clearEditor(editor));
 			//document.getElementById("modalLoadButton").addEventListener("click", () => loadFromURL(editor));
 			
 		</script>

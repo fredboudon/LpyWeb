@@ -12,7 +12,7 @@ conda create -n lpy openalea.lpy boost=1.66 'mpfr<4' -c openalea
 
 5- Clone the LPyWeb project anywhere you want and go to the root of the LpyWeb directory
 
-6- Prepare the flask module with the command: "export FLASK_APP=communication.py" On Linux or Mac or "set FLASK_APP=communication.py" on Windows
+6- Prepare the flask module with the command: "export FLASK_APP=lpyweb.py" On Linux or Mac or "set FLASK_APP=lpyweb.py" on Windows
 
 7- Launch the server with the command: "flask run".
 
