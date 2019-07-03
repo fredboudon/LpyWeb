@@ -7,7 +7,7 @@
 const GEOM_EPSILON = 1e-5;
 //const GEOM_TOLERANCE = 1e-10;
 const GEOM_RAD = 0.01745329052;
-const GEOM_PI = Math.PI.toFixed(48);
+const GEOM_PI = Math.PI;
 
 const SHAPE_NOID = -1;
 
@@ -396,9 +396,9 @@ this.underscore(modules[i].paramList[0]);
      */
     F(length = this.defaultStep, topRadius = this.radius, materialColor, id) {
         if (length > 0) {
-            if (this.currentParams.elasticity > GEOM_EPSILON) {
+            /*if (this.currentParams.elasticity > GEOM_EPSILON) {
                 this.applyTropism();
-            }
+            }*/
             if (length > GEOM_EPSILON) {
                 if (!this.currentParams.generalizedCylinder) {
                     this.drawTurtle.CreateCylinder(id, { diameterBottom: this.radius, diameterTop: topRadius, height: length }, this.currentParams, materialColor);
@@ -573,7 +573,7 @@ this.underscore(modules[i].paramList[0]);
      * @param {Number} angle The turning angle
      */
     left(angle = this.angleIncrement) {
-        var ra = angle * GEOM_RAD;
+        var ra = (angle * (GEOM_PI/180));
         var matrix = new BABYLON.Matrix.RotationAxis(this.currentParams.up, ra);
         this.currentParams.heading = new BABYLON.Vector3.TransformCoordinates(this.currentParams.heading, matrix);
         this.currentParams.left = new BABYLON.Vector3.TransformCoordinates(this.currentParams.left, matrix);
