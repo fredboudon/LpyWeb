@@ -43,7 +43,7 @@ class webTurtle {
             lastId: SHAPE_NOID,
             width: 0.1,
             tropism: new BABYLON.Vector3(0,1,0),
-            elasticity: 0.02,
+            elasticity: 0.,
 			angle: 30,
             screenCoordinates: false,
             polygon: false,
@@ -396,9 +396,9 @@ this.underscore(modules[i].paramList[0]);
      */
     F(length = this.defaultStep, topRadius = this.radius, materialColor, id) {
         if (length > 0) {
-            /*if (this.currentParams.elasticity > GEOM_EPSILON) {
+            if (this.currentParams.elasticity > GEOM_EPSILON) {
                 this.applyTropism();
-            }*/
+            }
             if (length > GEOM_EPSILON) {
                 if (!this.currentParams.generalizedCylinder) {
                     this.drawTurtle.CreateCylinder(id, { diameterBottom: this.radius, diameterTop: topRadius, height: length }, this.currentParams, materialColor);
@@ -1217,7 +1217,7 @@ this.underscore(modules[i].paramList[0]);
             lastId: SHAPE_NOID,
             width: 0.1,
             tropism: new BABYLON.Vector3(0,1,0),
-            elasticity: 0.02,
+            elasticity: 0.,
             angle: 30,
             screenCoordinates: false,
             polygon: false,
