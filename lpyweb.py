@@ -1,5 +1,4 @@
 import os
-import time
 from flask import Flask
 from flask import request, render_template, url_for, redirect, jsonify, session
 from flask import Markup
@@ -97,10 +96,9 @@ def step():
 		lstring = l.derive(session['currentStep'])
 		ilstring = l.interpret(lstring)
 		txtlstring = str(ilstring)
-		with lock:
-			LSystem = l
+		LSystem = l
 		return jsonify({'LString' : txtlstring})
-    
+
 @app.route('/about.html')
 def about():
     return render_template('about.html')
