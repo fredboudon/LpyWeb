@@ -22,7 +22,7 @@ class drawTurtle {
 		this.camera.setPosition(new BABYLON.Vector3(0, 0, 15));
 		this.camera.attachControl(this.canvas, true);
 
-        this.light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 5, -3), this.scene);
+        this.light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, -5, 3), this.scene);
         this.light.intensity = 1;
 
         this.graphicElems = [];
@@ -30,7 +30,11 @@ class drawTurtle {
         this.materialTextures = [];
 
         var CoT = this.LocalAxes(2, 0);
-		
+
+        var options = new BABYLON.SceneOptimizerOptions.LowDegradationAllowed();
+        options.addOptimization(new BABYLON.HardwareScalingOptimization(0, 1));
+        this.optimizer = new BABYLON.SceneOptimizer(this.scene, options);
+
 		this.InitializeMaterialsColors();
     }
 

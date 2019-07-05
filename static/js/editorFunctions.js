@@ -61,10 +61,18 @@ $(document).ready(function() {
 			event.preventDefault();
 		};
 	}
+
 });
 
 function clearEditor(editor) {
-	editor.getSession().setValue(sessionStorage.getItem('genesisCode'));
+	if(!(editor.getSession().getValue() == sessionStorage.getItem('genesisCode'))) {
+		if(confirm("Do you really want to reset the text editor and the 3D render ?")) {
+			editor.getSession().setValue(sessionStorage.getItem('genesisCode'));
+			document.getElementById('runCode').click();
+		}else {
+
+		}
+	}
 }
 
 function upload() {
@@ -129,7 +137,7 @@ function animate(i) {
 	    	clearInterval(interval);
 	    }
 	    i++;
-	}, 1000 );
+	}, 500 );
 }
 
 

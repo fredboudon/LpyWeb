@@ -10,6 +10,7 @@ function Init(drawTurtle, webTurtle) {
 
 function display(drawTurtle, webTurtle, LString) {
 
+    drawTurtle.engine.stopRenderLoop();
     if (LString == "Syntax error")
         console.log("Syntax error");
     else {
@@ -19,6 +20,15 @@ function display(drawTurtle, webTurtle, LString) {
         lstrParser.ParseLString();
         //console.log(lstrParser.result);
         webTurtle.Start(lstrParser.result);
+        drawTurtle.optimizer.start();
+        /*drawTurtle.optimizer.onSuccessObservable.add(function() {
+            console.log("Optimization Succeed !");
+            console.log(drawTurtle.optimizer.currentFrameRate);
+        });
+        drawTurtle.optimizer.onFailureObservable.add(function() {
+            console.log("Optimization Failed !");
+            console.log(drawTurtle.optimizer.currentFrameRate);
+        });*/
     }
 
     // Compteur de FPS
