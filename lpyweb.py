@@ -59,6 +59,7 @@ def step():
 	global LSystem
 	code = request.form['code']
 	code = code.encode('ascii', 'ignore')
+	step = 0
 
 	if session.get('step') is not None:
 		if code != session['code']:
@@ -74,16 +75,20 @@ def step():
 			ilstring = l.interpret(lstring)
 			txtlstring = str(ilstring)
 			LSystem = l
-			return jsonify({'LString' : txtlstring})
+			return jsonify({'LString' : txtlstring, 'currentStep' : session['currentStep']})
 
 		else:
 			session['currentStep'] += 1
 			lstring = LSystem.derive(session['currentStep'])
 			ilstring = LSystem.interpret(lstring)
 			txtlstring = str(ilstring)
-			if session['currentStep'] == session['step']:
+			if session['currentStep'] < session['step']:
+				return jsonify({'LString' : txtlstring, 'currentStep' : session['currentStep']})
+			else:
+				step = session['step']
 				disconnect()
-			return jsonify({'LString' : txtlstring})
+				return jsonify({'LString' : txtlstring, 'currentStep' : step})
+				
 	else:
 		l = lpy.Lsystem()
 		session['code'] = code
@@ -97,7 +102,7 @@ def step():
 		ilstring = l.interpret(lstring)
 		txtlstring = str(ilstring)
 		LSystem = l
-		return jsonify({'LString' : txtlstring})
+		return jsonify({'LString' : txtlstring, 'currentStep' : session['currentStep']})
 
 @app.route('/about.html')
 def about():

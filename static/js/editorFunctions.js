@@ -54,6 +54,7 @@ $(document).ready(function() {
 						display(dTurtle, wTurtle, data.error);
 					}
 					else {
+						$('#currentStep').val(parseInt(data.currentStep, 10));
 						display(dTurtle, wTurtle, data.LString);
 					}
 				}
@@ -65,13 +66,11 @@ $(document).ready(function() {
 });
 
 function clearEditor(editor) {
-	if(!(editor.getSession().getValue() == sessionStorage.getItem('genesisCode'))) {
-		if(confirm("Do you really want to reset the text editor and the 3D render ?")) {
-			editor.getSession().setValue(sessionStorage.getItem('genesisCode'));
-			document.getElementById('runCode').click();
-		}else {
+	if(confirm("Do you really want to reset the text editor and the 3D render ?")) {
+		editor.getSession().setValue(sessionStorage.getItem('genesisCode'));
+		document.getElementById('runCode').click();
+	}else {
 
-		}
 	}
 }
 
@@ -129,10 +128,15 @@ function animate(i) {
 			return derivation;
 		}
 	});
-	console.log(derivation);
+
+	if($('#currentStep').val() == derivation) {
+		$('#currentStep').val(1);
+	}
 	var interval = setInterval(function() {
-	    $('#stepCode').click();
-	    //console.log("J'ai cliqué sur Step ! ");
+		var currentStep = $('#currentStep').val();
+		if(currentStep < derivation) {
+			$('#stepCode').click();
+		}
 	    if(i === derivation){
 	    	clearInterval(interval);
 	    }

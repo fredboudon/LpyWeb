@@ -989,7 +989,7 @@ this.underscore(modules[i].paramList[0]);
      */
     setColor(colorIdx) {
         if (colorIdx >= this.drawTurtle.materialColors.length) {
-            console.warning("The color '" + colorIdx.toString() + "' hasn't been configured, this attempt will be ignored..");
+            console.log("The color '" + colorIdx.toString() + "' hasn't been configured, this attempt will be ignored..");
         } else {
             this.currentParams.colorIndex = colorIdx;
         }
@@ -1006,7 +1006,7 @@ this.underscore(modules[i].paramList[0]);
         if (this.currentParams.colorIndex + colorInc < this.drawTurtle.materialColors.length) {
             this.currentParams.colorIndex += colorInc;
         } else {
-            console.warning("The color '" + (this.currentParams.colorIndex + colorInc).toString() + "' hasn't been configured, this attempt will be ignored..");
+            console.log("The color '" + (this.currentParams.colorIndex + colorInc).toString() + "' hasn't been configured, this attempt will be ignored..");
         }
     }
     
@@ -1018,10 +1018,10 @@ this.underscore(modules[i].paramList[0]);
      * @param {Number} colorDec The decrementing value
      */
     decColor(colorDec = this.colorIncrement) {
-        if (this.currentParams.colorIndex - colorInc >= 0) {
-            this.currentParams.colorIndex -= colorInc;
+        if (this.currentParams.colorIndex - colorDec >= 0) {
+            this.currentParams.colorIndex -= colorDec;
         } else {
-            console.warning("The color index '" + (this.currentParams.colorIndex - colorInc).toString() + "' is negative, this attempt will be ignored..");
+            console.log("The color index '" + (this.currentParams.colorIndex - colorDec).toString() + "' is negative, this attempt will be ignored..");
         }
     }
 

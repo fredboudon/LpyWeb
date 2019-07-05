@@ -10,7 +10,9 @@ function Init(drawTurtle, webTurtle) {
 
 function display(drawTurtle, webTurtle, LString) {
 
+//Stopping the render loop when creating shapes improve CPU's performances.
     drawTurtle.engine.stopRenderLoop();
+
     if (LString == "Syntax error")
         console.log("Syntax error");
     else {
@@ -29,6 +31,7 @@ function display(drawTurtle, webTurtle, LString) {
             console.log("Optimization Failed !");
             console.log(drawTurtle.optimizer.currentFrameRate);
         });*/
+        console.log(drawTurtle.optimizer.currentFrameRate);
     }
 
     // Compteur de FPS
