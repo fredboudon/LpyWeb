@@ -65,17 +65,19 @@ def step():
 		if code != session['code']:
 			l = lpy.Lsystem()
 			session['code'] = code
-			session['step'] = int(request.form['step'])
-			session['currentStep'] = 1
+			#session['step'] = int(request.form['step'])
 			try:
 				l.set(code)
 			except:
 				return jsonify({'error' : 'Syntax error'})
+
+			session['step'] = l.derivationLength
+			session['currentStep'] = 1
 			lstring = l.derive(session['currentStep'])
 			ilstring = l.interpret(lstring)
 			txtlstring = str(ilstring)
 			LSystem = l
-			return jsonify({'LString' : txtlstring, 'currentStep' : session['currentStep']})
+			return jsonify({'LString' : txtlstring, 'currentStep' : session['currentStep'], 'step' : session['step']})
 
 		else:
 			session['currentStep'] += 1
@@ -83,26 +85,28 @@ def step():
 			ilstring = LSystem.interpret(lstring)
 			txtlstring = str(ilstring)
 			if session['currentStep'] < session['step']:
-				return jsonify({'LString' : txtlstring, 'currentStep' : session['currentStep']})
+				return jsonify({'LString' : txtlstring, 'currentStep' : session['currentStep'], 'step' : session['step']})
 			else:
 				step = session['step']
 				disconnect()
-				return jsonify({'LString' : txtlstring, 'currentStep' : step})
+				return jsonify({'LString' : txtlstring, 'currentStep' : step, 'step' : step})
 				
 	else:
 		l = lpy.Lsystem()
 		session['code'] = code
-		session['step'] = int(request.form['step'])
-		session['currentStep'] = 1
+		#session['step'] = int(request.form['step'])
 		try:
 			l.set(code)
 		except:
 			return jsonify({'error' : 'Syntax error'})
+
+		session['step'] = l.derivationLength
+		session['currentStep'] = 1
 		lstring = l.derive(session['currentStep'])
 		ilstring = l.interpret(lstring)
 		txtlstring = str(ilstring)
 		LSystem = l
-		return jsonify({'LString' : txtlstring, 'currentStep' : session['currentStep']})
+		return jsonify({'LString' : txtlstring, 'currentStep' : session['currentStep'], 'step' : session['step']})
 
 @app.route('/about.html')
 def about():

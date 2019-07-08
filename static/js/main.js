@@ -14,7 +14,7 @@ function display(drawTurtle, webTurtle, LString) {
     drawTurtle.engine.stopRenderLoop();
 
     if (LString == "Syntax error")
-        console.log("Syntax error");
+        alert("Syntax error");
     else {
         var lstrParser = new LStringParser();
         //ATTENTION PROBLEME AVEC LES SYMBOLES VIRUGULES (dans le lstring parser)
@@ -23,15 +23,7 @@ function display(drawTurtle, webTurtle, LString) {
         //console.log(lstrParser.result);
         webTurtle.Start(lstrParser.result);
         drawTurtle.optimizer.start();
-        /*drawTurtle.optimizer.onSuccessObservable.add(function() {
-            console.log("Optimization Succeed !");
-            console.log(drawTurtle.optimizer.currentFrameRate);
-        });
-        drawTurtle.optimizer.onFailureObservable.add(function() {
-            console.log("Optimization Failed !");
-            console.log(drawTurtle.optimizer.currentFrameRate);
-        });*/
-        console.log(drawTurtle.optimizer.currentFrameRate);
+        //console.log(drawTurtle.optimizer.currentFrameRate);
     }
 
     // Compteur de FPS

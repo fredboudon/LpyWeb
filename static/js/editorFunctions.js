@@ -1,4 +1,9 @@
 $(document).ready(function() {
+	$('[data-toggle="popover"]').popover();
+	$('.popover-dismiss').popover({
+ 		trigger: 'focus'
+	})
+
 	var dTurtle = new drawTurtle();
 	var wTurtle = new webTurtle(dTurtle);
     Init(dTurtle, wTurtle);
@@ -54,7 +59,8 @@ $(document).ready(function() {
 						display(dTurtle, wTurtle, data.error);
 					}
 					else {
-						$('#currentStep').val(parseInt(data.currentStep, 10));
+						$('#step').val(data.step);
+						$('#currentStep').val(data.currentStep);
 						display(dTurtle, wTurtle, data.LString);
 					}
 				}
@@ -137,25 +143,21 @@ function animate(i) {
 	$("#animate").attr("disabled", true);
 	$("#animate").attr("title", "You can't use Animate when an animation is in progress.");
 	
-	var lines = $('textarea[name="code"]').val().split(/\r\n|\n|\r/);
-	var derivation = 1;
-	lines.forEach(function(line){
-		if(line.includes("derivation length:")){
-			return derivation = parseInt(line.split(" ")[2], 10);
-		}else {
-			return derivation;
-		}
-	});
-
-	if($('#currentStep').val() == derivation) {
-		$('#currentStep').val(1);
+	var speed = parseInt($('#animationSpeed').val(), 10);
+	if(isNaN(speed)) {
+		speed = 500;
 	}
+	if(speed < 50) {
+		speed = 50
+	}
+	$('#stepCode').click();
 	var interval = setInterval(function() {
-		var currentStep = $('#currentStep').val();
+		var currentStep = parseInt($('#currentStep').val(), 10);
+		var derivation = parseInt($('#step').val(), 10);
 		if(currentStep < derivation) {
 			$('#stepCode').click();
 		}
-	    if(i === derivation){
+	    if(i === derivation - 1){
 	    	clearInterval(interval);
 			$("#runCode").attr("disabled", false);
 			$("#runCode").attr("title", "Run your program and display the render.");
@@ -167,7 +169,7 @@ function animate(i) {
 			$("#animate").attr("title", "Play the growth animation.");
 	    }
 	    i++;
-	}, 500 );
+	}, speed);
 }
 
 
