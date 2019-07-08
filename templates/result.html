@@ -12,11 +12,11 @@
 {% block content %}
 			<div class="row bg-light">
 				<div id="fileButtons">
-					<button type="button" class="btn btn-light text-success" id="clearEditor" alt="Reset the editor text." title="Reset the editor text."><i class="fas fa-eraser"></i> Clear</button>
+					<button type="button" class="btn btn-light text-success" id="clearEditor" title="Reset the editor text."><i class="fas fa-eraser"></i> Clear</button>
 					<input type="file" id="hiddenButton" accept=".lpy"/>
-					<button type="button" class="btn btn-light text-success" id="importFile" alt="Import a .lpy file from your local storage." title="Import a .lpy file from your local storage.">
+					<button type="button" class="btn btn-light text-success" id="importFile" title="Import a .lpy file from your local storage.">
 						<i class="fas fa-file-upload"></i> Load from file</button>
-					<button type="button" class="btn btn-light text-success" id="importExample" alt="Import a .lpy file from an URL." title="Import a .lpy example file from the database." data-toggle="modal" data-target="#modalExample" style="display: none;">
+					<button type="button" class="btn btn-light text-success" id="importExample" title="Import a .lpy example file from the database." data-toggle="modal" data-target="#modalExample" style="display: none;">
 					<i class="fas fa-file-upload"></i> Load Example</button>
 					<!--<button type="button" class="btn btn-light text-success" id="importURL" alt="Import a .lpy file from an URL." title="Import a .lpy file from an URL." data-toggle="modal" data-target="#modalFileURL">
 						<i class="fas fa-file-upload"></i> Load from URL</button>-->
@@ -24,11 +24,11 @@
 					title="Save your program in a .lpy file and download it." data-toggle="modal" data-target="#modalFilename"><i class="fas fa-save"></i> Save</button>
 				</div>
 				<div id="submitButtons">
-					<button type="submit" class="btn btn-light text-success" id="runCode" alt="Run your program and display the render."
+					<button type="submit" class="btn btn-light text-success" id="runCode"
 					title="Run your program and display the render."><i class="fas fa-play"></i> Run</button>
-					<button type="submit" class="btn btn-light text-success" id="stepCode" alt="Run your program step by step."
+					<button type="submit" class="btn btn-light text-success" id="stepCode"
 					title="Run your program step by step."><i class="fas fa-step-forward"></i> Step</button>
-					<button type="button" class="btn btn-light text-success" id="animate" alt="Play the growth animation" title="Play the growth animation"><i class="fas fa-film"></i> Animate</button>
+					<button type="button" class="btn btn-light text-success" id="animate" title="Play the growth animation."><i class="fas fa-film"></i> Animate</button>
 				</div>
 				<div id="docButton">
 					<a type="button" class="btn btn-light text-success" alt="Read some documentation" title="Read some documentation"
@@ -65,8 +65,8 @@ endlsystem
 	        				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 	      				</div>
 	      				<div class="modal-body">
-	        				<b><center><label for="filename">Enter a name for the file (between 1 and 50 caracters) : </label></b>
-		        			<input class="flex-column" type="text" name="filename" id="filename" minlength="1" maxlength="50" size="48" value="file.lpy" required></center>
+	        				<b><center><label for="filename">Enter a name for the file (up to 100 caracters) : </label></b>
+		        			<input class="flex-column" type="text" name="filename" id="filename" minlength="1" maxlength="100" size="40" value="file.lpy" required></center>
 		        		</div>
 		        		<div class="modal-footer">
         					<button type="button" class="btn btn-primary" id="modalSaveButton">Save</button>

@@ -118,6 +118,15 @@ function downloadFile(editor) {
 }
 
 function animate(i) {
+
+	$("#runCode").attr("disabled", true);
+	$("#runCode").attr("title", "You can't use Run when an animation is in progress.");
+
+	$("#stepCode").attr("disabled", true);
+	$("#stepCode").attr("title", "You can't use Step when an animation is in progress.");
+
+	$("#animate").attr("disabled", true);
+	$("#animate").attr("title", "You can't use Animate when an animation is in progress.");
 	
 	var lines = $('textarea[name="code"]').val().split(/\r\n|\n|\r/);
 	var derivation = 1;
@@ -139,6 +148,14 @@ function animate(i) {
 		}
 	    if(i === derivation){
 	    	clearInterval(interval);
+			$("#runCode").attr("disabled", false);
+			$("#runCode").attr("title", "Run your program and display the render.");
+
+			$("#stepCode").attr("disabled", false);
+			$("#stepCode").attr("title", "Run your program step by step.");
+
+			$("#animate").attr("disabled", false);
+			$("#animate").attr("title", "Play the growth animation.");
 	    }
 	    i++;
 	}, 500 );
