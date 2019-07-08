@@ -69,6 +69,15 @@ function clearEditor(editor) {
 	if(confirm("Do you really want to reset the text editor and the 3D render ?")) {
 		editor.getSession().setValue(sessionStorage.getItem('genesisCode'));
 		document.getElementById('runCode').click();
+		$("#runCode").attr("disabled", false);
+		$("#runCode").attr("title", "Run your program and display the render.");
+
+		$("#stepCode").attr("disabled", false);
+		$("#stepCode").attr("title", "Run your program step by step.");
+
+		$("#animate").attr("disabled", false);
+		$("#animate").attr("title", "Play the growth animation.");
+		
 	}else {
 
 	}
