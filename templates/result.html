@@ -26,9 +26,12 @@
 				<div id="submitButtons">
 					<button type="submit" class="btn btn-light text-success" id="runCode"
 					title="Run your program and display the render."><i class="fas fa-play"></i> Run</button>
+					<button type="submit" class="btn btn-light text-success" id="rewind"
+					title="Run only the Axiom of the LSystem."><i class="fas fa-history"></i> Rewind</button>
 					<button type="submit" class="btn btn-light text-success" id="stepCode"
 					title="Run your program step by step."><i class="fas fa-step-forward"></i> Step</button>
 					<button type="button" class="btn btn-light text-success" id="animate" title="Play the growth animation."><i class="fas fa-film"></i> Animate</button>
+					<button type="button" class="btn btn-light text-success" id="stop" title="Stop the current animation."><i class="fas fa-hand-paper"></i> Stop</button>
 				</div>
 				<div>
 					<button type="button" class="btn btn-light text-success" id="parameters" title="Toggle fields where you can set some advanced parameters." data-toggle="collapse" data-target="#paramFields"
@@ -162,6 +165,7 @@ endlsystem
 			//document.getElementById("modalLoadExample").addEventListener("click", () => loadExample(editor));
 			document.getElementById("clearEditor").addEventListener('click', () => clearEditor(editor));
 			document.getElementById("animate").addEventListener('click', () => animate());
+			document.getElementById("stop").addEventListener('click', () => stop());
 			//document.getElementById("modalLoadButton").addEventListener("click", () => loadFromURL(editor));
 			
 		</script>

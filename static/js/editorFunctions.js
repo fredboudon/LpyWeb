@@ -4,6 +4,9 @@ $(document).ready(function() {
  		trigger: 'focus'
 	})
 
+	$("#stop").attr("disabled", true);
+	$("#stop").attr("title", "There is no animation currently processing");
+
 	var dTurtle = new drawTurtle();
 	var wTurtle = new webTurtle(dTurtle);
     Init(dTurtle, wTurtle);
@@ -18,7 +21,7 @@ $(document).ready(function() {
 				url : '/run',
 				success: function(data) {
 					dTurtle.DeleteTrees();
-					wTurtle.reinitialise();
+					wTurtle.Reset();
 					if(data.error) {
 						display(dTurtle, wTurtle, data.error);
 					}else {
@@ -54,7 +57,7 @@ $(document).ready(function() {
 				url : '/step',
 				success: function(data) {
 					dTurtle.DeleteTrees();
-					wTurtle.reinitialise();
+					wTurtle.Reset();
 					if(data.error) {
 						display(dTurtle, wTurtle, data.error);
 					}
@@ -69,21 +72,51 @@ $(document).ready(function() {
 		};
 	}
 
+	if(document.getElementById('rewind')) {
+		document.getElementById('rewind').onclick = function(event) {
+			$.ajax({
+				data : {
+					code : $('textarea[name="code"]').val()
+				},
+				type : "POST",
+				url : '/rewind',
+				success: function(data) {
+					dTurtle.DeleteTrees();
+					wTurtle.Reset();
+					if(data.error) {
+						display(dTurtle, wTurtle, data.error);
+					}else {
+						display(dTurtle, wTurtle, data.LString);
+					}
+				}
+			});
+			event.preventDefault();
+		};
+	}
 });
+
+function unlockButtons() {
+	$("#runCode").attr("disabled", false);
+	$("#runCode").attr("title", "Run your program and display the render.");
+
+	$("#rewind").attr("disabled", false);
+	$("#rewind").attr("title", "Run only the Axiom of the LSystem.");
+
+	$("#stepCode").attr("disabled", false);
+	$("#stepCode").attr("title", "Run your program step by step.");
+
+	$("#animate").attr("disabled", false);
+	$("#animate").attr("title", "Play the growth animation.");
+
+	$("#stop").attr("disabled", true);
+	$("#stop").attr("title", "There is no animation currently processing");
+}
 
 function clearEditor(editor) {
 	if(confirm("Do you really want to reset the text editor and the 3D render ?")) {
 		editor.getSession().setValue(sessionStorage.getItem('genesisCode'));
 		document.getElementById('runCode').click();
-		$("#runCode").attr("disabled", false);
-		$("#runCode").attr("title", "Run your program and display the render.");
-
-		$("#stepCode").attr("disabled", false);
-		$("#stepCode").attr("title", "Run your program step by step.");
-
-		$("#animate").attr("disabled", false);
-		$("#animate").attr("title", "Play the growth animation.");
-
+		unlockButtons();
 	}else {
 
 	}
@@ -134,8 +167,14 @@ function downloadFile(editor) {
 
 function animate() {
 
+	$("#stop").attr("disabled", false);
+	$("#stop").attr("title", "Stop the current animation.");
+
 	$("#runCode").attr("disabled", true);
 	$("#runCode").attr("title", "You can't use Run when an animation is in progress.");
+
+	$("#rewind").attr("disabled", true);
+	$("#rewind").attr("title", "You can't use Rewind when an animation is in progress.");
 
 	$("#stepCode").attr("disabled", true);
 	$("#stepCode").attr("title", "You can't use Step when an animation is in progress.");
@@ -161,19 +200,28 @@ function animate() {
 			$('#stepCode').click();
 		}
 
-	    if(currentStep === derivation){
+	    if(currentStep === derivation) {
 	    	clearInterval(interval);
-			$("#runCode").attr("disabled", false);
-			$("#runCode").attr("title", "Run your program and display the render.");
-
-			$("#stepCode").attr("disabled", false);
-			$("#stepCode").attr("title", "Run your program step by step.");
-
-			$("#animate").attr("disabled", false);
-			$("#animate").attr("title", "Play the growth animation.");
+	    	unlockButtons();
 			$("#runCode").click();
 	    }
+
+	    if($('#stop').data('clicked')) {
+	    	clearInterval(interval);
+	    	unlockButtons();
+	    	$('#stop').data('clicked', false);
+	    }
+
 	}, speed);
+}
+
+function stop() {
+	$("#stop").click(function(){
+    	$(this).data('clicked', true);
+	});
+	$("#stop").click();
+	$("#stop").attr("disabled", true);
+	$("#stop").attr("title", "There is no animation currently processing");
 }
 
 

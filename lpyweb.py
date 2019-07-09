@@ -112,6 +112,22 @@ def step():
 		LSystem = l
 		return jsonify({'LString' : txtlstring, 'currentStep' : session['currentStep'], 'step' : session['step']})
 
+@app.route('/rewind', methods=['POST'])
+def rewind():
+	disconnect()
+	import openalea.lpy as lpy
+	l = lpy.Lsystem()
+	code = request.form['code']
+	code = code.encode('ascii', 'ignore')
+	try:
+		l.set(code)
+	except:
+		return jsonify({'error' : 'Syntax error'})
+	lstring = l.axiom
+	ilstring = l.interpret(lstring)
+	txtlstring = str(ilstring)
+	return jsonify({'LString' : txtlstring})
+
 @app.route('/about.html')
 def about():
     return render_template('about.html')
