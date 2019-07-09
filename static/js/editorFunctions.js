@@ -210,6 +210,7 @@ function animate() {
 	    	clearInterval(interval);
 	    	unlockButtons();
 	    	$('#stop').data('clicked', false);
+	    	console.log("You are at the " + (currentStep + 1) + "th derivation of the LSystem.");
 	    }
 
 	}, speed);
@@ -224,6 +225,22 @@ function stop() {
 	$("#stop").attr("title", "There is no animation currently processing");
 }
 
+function displayParameters() {
+	if($("#paramFields").hasClass("paramHidden")) {
+		$("#paramFields").removeClass("paramHidden");
+		$("#colCanvas").removeClass("col-md-7");
+		$("#colCanvas").addClass("col-md-6");
+		$("#colTextEditor").removeClass("col-md-5");
+		$("#colTextEditor").addClass("col-md-4");
+
+	}else {
+		$("#paramFields").addClass("paramHidden");
+		$("#colCanvas").removeClass("col-md-6");
+		$("#colCanvas").addClass("col-md-7");
+		$("#colTextEditor").removeClass("col-md-4");
+		$("#colTextEditor").addClass("col-md-5");
+	}
+}
 
 /*function loadExample(editor) {
 	
