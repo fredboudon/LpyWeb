@@ -3,13 +3,14 @@
 {% block title %} L-Py Editor {% endblock %}
 	
 {% block body %}
-	<body class="bg-light">
-		<form>
+<body class="bg-light">
+	<form>
 {% endblock %}
 
 {% block editor %}{% endblock %}
 
 {% block content %}
+		<div class="container-fluid">
 			<div class="row bg-light">
 				<div id="fileButtons">
 					<button type="button" class="btn btn-light text-success" id="clearEditor" title="Reset the editor text."><i class="fas fa-eraser"></i> New File</button>
@@ -126,8 +127,8 @@ endlsystem
 		        	</div>
 		        </div>
 		    </div>-->
-
-		</form>
+		</div>
+	</form>
 {% endblock %}
 
 {% block script %}

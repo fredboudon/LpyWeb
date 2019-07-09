@@ -2,7 +2,7 @@ $(document).ready(function() {
 	$('[data-toggle="popover"]').popover();
 	$('.popover-dismiss').popover({
  		trigger: 'focus'
-	})
+	});
 
 	$("#stop").attr("disabled", true);
 	$("#stop").attr("title", "There is no animation currently processing");

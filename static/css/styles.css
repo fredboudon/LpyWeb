@@ -55,15 +55,6 @@ main {
 	left: 30%;
 }
 
-#sidebarTitle {
-	position: relative;
-	text-align: center;
-	font-size: 18px;
-	border-bottom: 1px solid;
-	padding-bottom: 5px;
-	margin-bottom: 10px;
-}
-
 #hiddenButton {
 	display: none;
 }

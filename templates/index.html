@@ -39,10 +39,8 @@
 	  			{% block about %}<a class='btn btn-success' type="button" title="To learn about L-Py" href="{{ url_for('about') }}" target="_blank"><i class="far fa-question-circle"></i> About L-Py</a>{% endblock %}
 	  		</nav>
 		</div>
-		<div class="container-fluid">
-			{% block content %}
-			{% endblock %}
-		</div>
+		{% block content %}
+		{% endblock %}
 		
 		<div class="bg-light footer">
 			<div class="text-center text-success">L-PyWeb - &copy; 2019 Copyright: F. Boudon and C. Godin</div>
