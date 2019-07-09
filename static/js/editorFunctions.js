@@ -83,7 +83,7 @@ function clearEditor(editor) {
 
 		$("#animate").attr("disabled", false);
 		$("#animate").attr("title", "Play the growth animation.");
-		
+
 	}else {
 
 	}
@@ -132,7 +132,7 @@ function downloadFile(editor) {
 	}
 }
 
-function animate(i) {
+function animate() {
 
 	$("#runCode").attr("disabled", true);
 	$("#runCode").attr("title", "You can't use Run when an animation is in progress.");
@@ -150,14 +150,18 @@ function animate(i) {
 	if(speed < 50) {
 		speed = 50
 	}
+
 	$('#stepCode').click();
+
 	var interval = setInterval(function() {
-		var currentStep = parseInt($('#currentStep').val(), 10);
 		var derivation = parseInt($('#step').val(), 10);
+		var currentStep = parseInt($('#currentStep').val(), 10);
+
 		if(currentStep < derivation) {
 			$('#stepCode').click();
 		}
-	    if(i === derivation - 1){
+
+	    if(currentStep === derivation){
 	    	clearInterval(interval);
 			$("#runCode").attr("disabled", false);
 			$("#runCode").attr("title", "Run your program and display the render.");
@@ -167,8 +171,8 @@ function animate(i) {
 
 			$("#animate").attr("disabled", false);
 			$("#animate").attr("title", "Play the growth animation.");
+			$("#runCode").click();
 	    }
-	    i++;
 	}, speed);
 }
 

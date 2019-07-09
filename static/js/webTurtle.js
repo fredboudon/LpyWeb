@@ -1006,7 +1006,7 @@ this.underscore(modules[i].paramList[0]);
         if (this.currentParams.colorIndex + colorInc < this.drawTurtle.materialColors.length) {
             this.currentParams.colorIndex += colorInc;
         } else {
-            console.log("The color '" + (this.currentParams.colorIndex + colorInc).toString() + "' hasn't been configured, this attempt will be ignored..");
+            //console.log("The color '" + (this.currentParams.colorIndex + colorInc).toString() + "' hasn't been configured, this attempt will be ignored..");
         }
     }
     

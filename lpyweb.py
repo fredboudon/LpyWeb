@@ -3,12 +3,15 @@ from flask import Flask
 from flask import request, render_template, url_for, redirect, jsonify, session
 from flask import Markup
 from flask_socketio import SocketIO
+from threading import Lock
+
 	
 app = Flask(__name__)
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 app.secret_key = 'Iamasecretkey'
 socketio = SocketIO(app)
 LSystem = None
+lock = Lock()
 
 @app.before_request
 def make_session_permanent():
@@ -17,7 +20,7 @@ def make_session_permanent():
 if __name__ == '__main__':
 	app.run(debug=True)
 	#host=140.77.193.122
-	
+
 @socketio.on('disconnect')
 def disconnect():
     session.pop('step', None)
@@ -80,16 +83,17 @@ def step():
 			return jsonify({'LString' : txtlstring, 'currentStep' : session['currentStep'], 'step' : session['step']})
 
 		else:
-			session['currentStep'] += 1
-			lstring = LSystem.derive(session['currentStep'])
-			ilstring = LSystem.interpret(lstring)
-			txtlstring = str(ilstring)
-			if session['currentStep'] < session['step']:
-				return jsonify({'LString' : txtlstring, 'currentStep' : session['currentStep'], 'step' : session['step']})
-			else:
-				step = session['step']
-				disconnect()
-				return jsonify({'LString' : txtlstring, 'currentStep' : step, 'step' : step})
+			with lock:
+				session['currentStep'] += 1
+				lstring = LSystem.derive(session['currentStep'])
+				ilstring = LSystem.interpret(lstring)
+				txtlstring = str(ilstring)
+				if session['currentStep'] < session['step']:
+					return jsonify({'LString' : txtlstring, 'currentStep' : session['currentStep'], 'step' : session['step']})
+				else:
+					step = session['step']
+					disconnect()
+					return jsonify({'LString' : txtlstring, 'currentStep' : step, 'step' : step})
 				
 	else:
 		l = lpy.Lsystem()
