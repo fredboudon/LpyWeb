@@ -113,6 +113,8 @@ class LStringParser {
 		size = searchSymbol(lstr, i, size, "OLineRel");
 		size = searchSymbol(lstr, i, size, "@O");		size = searchSymbol(lstr, i, size, "Sphere");
 		size = searchSymbol(lstr, i, size, "@o");		size = searchSymbol(lstr, i, size, "Circle");
+		size = searchSymbol(lstr, i, size, "@B");		size = searchSymbol(lstr, i, size, "Box");
+		size = searchSymbol(lstr, i, size, "@b");		size = searchSymbol(lstr, i, size, "Quad");
 		size = searchSymbol(lstr, i, size, "@L");		size = searchSymbol(lstr, i, size, "Label");
 		size = searchSymbol(lstr, i, size, "Surface");
 		size = searchSymbol(lstr, i, size, "~");

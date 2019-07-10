@@ -170,6 +170,29 @@ class drawTurtle {
     }
 
     /**
+     * Create a plane mesh with the turtle parameters given
+     *
+     * @param {String} id The plane identifier
+     * @param {Object} settings The plane settings
+     * @param {Object} currentParams Current turtle parameters
+     * @param {BABYLON.StandardMaterial} material The material to be applied on the plane
+     */
+    CreatePlane(id, settings, currentParams, material) {
+        this.graphicElems.push(BABYLON.MeshBuilder.CreatePlane(id, settings, this.scene));
+        var plane = this.graphicElems[this.graphicElems.length - 1];
+        plane.material = material;
+
+        var rotationMatrix = BABYLON.Vector3.RotationFromAxis(currentParams.up, currentParams.heading, currentParams.left);
+        var planeHeight = plane.getBoundingInfo().boundingBox.vectorsWorld[1].y + -(plane.getBoundingInfo().boundingBox.vectorsWorld[0].y);
+        plane.translate(BABYLON.Axis.Y, planeHeight / 2, BABYLON.Space.LOCAL);
+
+        var CoT = new BABYLON.TransformNode("root");
+        CoT.position = currentParams.position;
+        CoT.rotation = rotationMatrix;
+        plane.parent = CoT;
+    }
+
+    /**
      * Create a sphere with the turtle parameters given
      *
      * @param {String} id The sphere identifier
@@ -189,6 +212,28 @@ class drawTurtle {
         CoT.position = currentParams.position;
         CoT.rotation = rotationMatrix;
         sphere.parent = CoT;
+    }
+
+    /**
+     * Create a disc with the turtle parameters given
+     *
+     * @param {String} id The disc identifier
+     * @param {Object} settings The disc settings
+     * @param {Object} currentParams Current turtle parameters
+     * @param {BABYLON.StandardMaterial} material The material to be applied on the disc
+     */
+    CreateDisc(id, settings, currentParams, material) {
+        this.graphicElems.push(BABYLON.MeshBuilder.CreateDisc(id, settings, this.scene));
+
+        var disc = this.graphicElems[this.graphicElems.length - 1];
+        disc.material = material;
+
+        var rotationMatrix = BABYLON.Vector3.RotationFromAxis(currentParams.up, currentParams.heading, currentParams.left);
+
+        var CoT = new BABYLON.TransformNode("root");
+        CoT.position = currentParams.position;
+        CoT.rotation = rotationMatrix;
+        disc.parent = CoT;
     }
 
     /**

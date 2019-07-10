@@ -150,15 +150,19 @@ class webTurtle {
 				break;
 
 			case '@O':
+                this.sphere(modules[i].paramList[0], this.drawTurtle.materialColors[0], "sphere");
 				break;
 
 			case '@o':
+                this.disc(modules[i].paramList[0], this.drawTurtle.materialColors[0], "disc");
 				break;
 
             case '@B':
+                this.box(modules[i].paramList[0], modules[i].paramList[1], this.drawTurtle.materialColors[0], "box");
                 break;
 
             case '@b':
+                this.plane(modules[i].paramList[0], modules[i].paramList[1], this.drawTurtle.materialColors[0], "plane");
                 break;
 
 			case '@L':
@@ -418,6 +422,75 @@ this.underscore(modules[i].paramList[0]);
             this.turnAround();
             this.F(-length, topRadius);
             this.turnAround();
+        }
+    }
+
+    /**
+    * Draw a sphere of a given radius
+    *
+    * @param {Number} radius  The radius of the sphere.
+    * @param {Number} color The color of the sphere.
+    * @param {Number} id The id of the sphere mesh.
+    *
+    */
+    sphere(radius = this.radius, materialColor, id) {
+        if (radius > 0) {
+            this.drawTurtle.CreateSphere(id, { diameter: radius }, this.currentParams, materialColor);
+        }
+    }
+
+    /**
+    * Draw a disc of a given radius
+    *
+    * @param {Number} radius  The radius of the disc.
+    * @param {Number} color The color of the disc.
+    * @param {Number} id The id of the disc mesh.
+    *
+    */
+    disc(radius = this.radius, materialColor, id) {
+        if (radius > 0) {
+            this.drawTurtle.CreateDisc(id, { radius: radius / 2, sideOrientation: BABYLON.Mesh.DOUBLESIDE }, this.currentParams, materialColor);
+        }
+    }
+
+    // void quad(real_t length, real_t topradius);
+    // inline void quad(real_t length) { quad(length,getWidth());}
+    // inline void quad() { quad(default_step,getWidth());}
+    /**
+     * Draw a box of a given length
+     *
+     * @param {Number} length The distance movement and length of the box
+     * @param {Number} topRadius The radius on the top of the box
+     * @param {Number} color The color of the box
+     * @param {Number} id The id of the box mesh
+     */
+    box(length = this.defaultStep, topRadius = this.radius, materialColor, id) {
+        if (length > 0) {
+            this.drawTurtle.CreateBox(id, {height: length, width: topRadius, depth: topRadius}, this.currentParams, materialColor);
+
+            if (topRadius > -GEOM_EPSILON) {
+                this.currentParams.width = topRadius;
+            }
+            this.currentParams.position = this.currentParams.position.add(this.currentParams.heading.scale(length * this.currentParams.scale.z));
+        }
+    }
+
+    /**
+     * Draw a plane of a given length
+     *
+     * @param {Number} length The distance movement and length of the plane
+     * @param {Number} topRadius The radius on the top of the plane
+     * @param {Number} color The color of the plane
+     * @param {Number} id The id of the plane mesh
+     */
+    plane(length = this.defaultStep, topRadius = this.radius, materialColor, id,) {
+        if (length > 0) {
+            this.drawTurtle.CreatePlane(id, {height: length, width: topRadius, sideOrientation: BABYLON.Mesh.DOUBLESIDE}, this.currentParams, materialColor);
+
+            if (topRadius > -GEOM_EPSILON) {
+                this.currentParams.width = topRadius;
+            }
+            this.currentParams.position = this.currentParams.position.add(this.currentParams.heading.scale(length * this.currentParams.scale.z));
         }
     }
 
@@ -1103,13 +1176,6 @@ this.underscore(modules[i].paramList[0]);
      */
     applyTropism() {
         this.tendTo(this.currentParams.tropism, this.currentParams.elasticity);
-    }
-    
-    // void quad(real_t length, real_t topradius);
-    // inline void quad(real_t length) { quad(length,getWidth());}
-    // inline void quad() { quad(default_step,getWidth());}
-    quad(length, topRadius) {
-        //TODO
     }
 
     // virtual void label(const std::string& text, int size = -1 );
