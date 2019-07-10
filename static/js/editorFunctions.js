@@ -228,17 +228,17 @@ function stop() {
 function displayParameters() {
 	if($("#paramFields").hasClass("paramHidden")) {
 		$("#paramFields").removeClass("paramHidden");
-		$("#colCanvas").removeClass("col-md-7");
-		$("#colCanvas").addClass("col-md-6");
-		$("#colTextEditor").removeClass("col-md-5");
-		$("#colTextEditor").addClass("col-md-4");
+		$("#colCanvas").removeClass("col-7");
+		$("#colCanvas").addClass("col-6");
+		$("#colTextEditor").removeClass("col-5");
+		$("#colTextEditor").addClass("col-4");
 
 	}else {
 		$("#paramFields").addClass("paramHidden");
-		$("#colCanvas").removeClass("col-md-6");
-		$("#colCanvas").addClass("col-md-7");
-		$("#colTextEditor").removeClass("col-md-4");
-		$("#colTextEditor").addClass("col-md-5");
+		$("#colCanvas").removeClass("col-6");
+		$("#colCanvas").addClass("col-7");
+		$("#colTextEditor").removeClass("col-4");
+		$("#colTextEditor").addClass("col-5");
 	}
 }
 

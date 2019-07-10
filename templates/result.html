@@ -44,7 +44,7 @@
 				</div>
 			</div>
 			<div class="row" id="row-main">
-				<div class="col-md-5" id="colTextEditor" style="position: relative;">
+				<div class="col-5" id="colTextEditor" style="position: relative;">
 					<textarea placeholder="Axiom and rules" type="text" name="code" wrap=off>Axiom: 
 
 derivation length: 1
@@ -58,10 +58,10 @@ endlsystem
 					<input type="hidden" name="step" id="step" readonly>
 					<input type="hidden" name="currentStep" id="currentStep" readonly>
 				</div>
-				<div class="col-md-7" id="colCanvas">
+				<div class="col-7" id="colCanvas">
 					<canvas width="600" height="800" id="renderCanvas"></canvas>
 				</div>
-				<div class="col-md-2 collapse paramHidden" id="paramFields">
+				<div class="col-2 collapse paramHidden" id="paramFields">
 					<h3 class="text-success">Parameters</h3>
 					<label for="animationSpeed" class="text-success">Animation Speed (ms) :</label>
 					<input type="text" class="text-success" name="animationSpeed" id="animationSpeed" minlength="2" size="5" class="flex-column" value="500" data-toggle="popover" data-placement="top" data-trigger="focus" title="About animation speed : "data-content="Animation speed must be set above 50ms for performance reasons. (If the value is too low, some instructions may be skipped and the shape will not be drawn as expected. If the input value is less than 50ms, it will be set to 50ms automatically.)" required>
