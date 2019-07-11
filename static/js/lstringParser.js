@@ -118,6 +118,7 @@ class LStringParser {
 		size = searchSymbol(lstr, i, size, "@L");		size = searchSymbol(lstr, i, size, "Label");
 		size = searchSymbol(lstr, i, size, "Surface");
 		size = searchSymbol(lstr, i, size, "~");
+		size = searchSymbol(lstr, i, size, "~l");
 		size = searchSymbol(lstr, i, size, "@g");		size = searchSymbol(lstr, i, size, "PglShape");
 		size = searchSymbol(lstr, i, size, "Frame");
 		size = searchSymbol(lstr, i, size, "SetContour");
@@ -140,7 +141,7 @@ class LStringParser {
 		return (size);
     }
 }
-function	searchSymbol(lstr, i, tmp, symbol) {//true if finded
+function searchSymbol(lstr, i, tmp, symbol) {//true if finded
 	for (j = 0; j < symbol.length; j++) {
 		if (lstr[i+j] != symbol[j])
 			return (tmp);

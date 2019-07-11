@@ -27,7 +27,6 @@ class webTurtle {
         this.defaultStep = 1;
         this.angleIncrement = 60;
         this.widthIncrement = 1;
-        this.colorIncrement = 1;
         this.scaleMultiplier = 0.5;
 		this.radius = 0.1;
         this.id = SHAPE_NOID;
@@ -67,7 +66,7 @@ class webTurtle {
 				break;
 
 			case 'F':
-				this.F(modules[i].paramList[0], modules[i].paramList[1], this.drawTurtle.materialColors[0], "cylinder");
+				this.F(modules[i].paramList[0], modules[i].paramList[1], this.drawTurtle.materialColors[this.currentParams.colorIndex], "cylinder");
 				break;
 
 			case 'f':
@@ -150,22 +149,23 @@ class webTurtle {
 				break;
 
 			case '@O':
-                this.sphere(modules[i].paramList[0], this.drawTurtle.materialColors[0], "sphere");
+                this.sphere(modules[i].paramList[0], this.drawTurtle.materialColors[this.currentParams.colorIndex], "sphere");
 				break;
 
 			case '@o':
-                this.disc(modules[i].paramList[0], this.drawTurtle.materialColors[0], "disc");
+                this.disc(modules[i].paramList[0], this.drawTurtle.materialColors[this.currentParams.colorIndex], "disc");
 				break;
 
             case '@B':
-                this.box(modules[i].paramList[0], modules[i].paramList[1], this.drawTurtle.materialColors[0], "box");
+                this.box(modules[i].paramList[0], modules[i].paramList[1], this.drawTurtle.materialColors[this.currentParams.colorIndex], "box");
                 break;
 
             case '@b':
-                this.plane(modules[i].paramList[0], modules[i].paramList[1], this.drawTurtle.materialColors[0], "plane");
+                this.plane(modules[i].paramList[0], modules[i].paramList[1], this.drawTurtle.materialColors[this.currentParams.colorIndex], "plane");
                 break;
 
 			case '@L':
+                //this.label(modules[i].paramList[0], modules[i].paramList[1], this.drawTurtle.materialColors[0], "label")
 				break;
 
 			case '_':
@@ -449,7 +449,7 @@ this.underscore(modules[i].paramList[0]);
     */
     disc(radius = this.radius, materialColor, id) {
         if (radius > 0) {
-            this.drawTurtle.CreateDisc(id, { radius: radius / 2, sideOrientation: BABYLON.Mesh.DOUBLESIDE }, this.currentParams, materialColor);
+            this.drawTurtle.CreateDisc(id, { radius: radius, sideOrientation: BABYLON.Mesh.DOUBLESIDE }, this.currentParams, materialColor);
         }
     }
 
@@ -1073,13 +1073,17 @@ this.underscore(modules[i].paramList[0]);
     /**
      * Increment the index for material colors
      *
-     * @param {Number} colorInc The incrementing value
+     * @param {Number} colorInc The color index
      */
-    incColor(colorInc = this.colorIncrement) {
-        if (this.currentParams.colorIndex + colorInc < this.drawTurtle.materialColors.length) {
-            this.currentParams.colorIndex += colorInc;
+    incColor(colorInc) {
+        if (colorInc === undefined) {
+            if (this.currentParams.colorIndex + 1 < this.drawTurtle.materialColors.length) {
+                this.currentParams.colorIndex += 1;
+            } else {
+                console.log("The color '" + (this.currentParams.colorIndex + 1).toString() + "' hasn't been configured, this attempt will be ignored..");
+            }
         } else {
-            //console.log("The color '" + (this.currentParams.colorIndex + colorInc).toString() + "' hasn't been configured, this attempt will be ignored..");
+            this.setColor(colorInc);
         }
     }
     
@@ -1088,13 +1092,17 @@ this.underscore(modules[i].paramList[0]);
     /**
      * Decrement the index for material colors
      *
-     * @param {Number} colorDec The decrementing value
+     * @param {Number} colorDec The color index
      */
-    decColor(colorDec = this.colorIncrement) {
-        if (this.currentParams.colorIndex - colorDec >= 0) {
-            this.currentParams.colorIndex -= colorDec;
+    decColor(colorDec) {
+        if (colorDec === undefined) {
+            if (this.currentParams.colorIndex - 1 >= 0) {
+                this.currentParams.colorIndex -= 1;
+            } else {
+                console.log("The color '" + (this.currentParams.colorIndex - 1).toString() + "' is negative, this attempt will be ignored..");
+            }
         } else {
-            console.log("The color index '" + (this.currentParams.colorIndex - colorDec).toString() + "' is negative, this attempt will be ignored..");
+            this.setColor(colorDec);
         }
     }
 
