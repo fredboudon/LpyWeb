@@ -322,4 +322,10 @@ class drawTurtle {
 		}
 		this.graphicElems = []
     }
+
+    ResetCamera() {
+        this.camera.setPosition(new BABYLON.Vector3(0, 0, 15));
+        this.camera.target = new BABYLON.Vector3(0,0,0);
+        this.camera.attachControl(this.canvas, true);
+    }
 }

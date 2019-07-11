@@ -11,6 +11,10 @@ $(document).ready(function() {
 	var wTurtle = new webTurtle(dTurtle);
     Init(dTurtle, wTurtle);
 
+    document.getElementById('resetCamera').onclick = function() {
+		dTurtle.ResetCamera();
+	};
+
 	if(document.getElementById('runCode')) {
 		document.getElementById('runCode').onclick = function(event) {
 			$.ajax({
@@ -35,7 +39,6 @@ $(document).ready(function() {
 
 	if(document.getElementById('stepCode')) {
 		document.getElementById('stepCode').onclick = function(event) {
-
 			var lines = $('textarea[name="code"]').val().split(/\r\n|\n|\r/);
 			var derivation = 1;
 			lines.forEach(function(line){

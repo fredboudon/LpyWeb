@@ -28,9 +28,9 @@ var PythonHighlightRules = function() {
         "cmp|globals|max|reversed|zip|compile|hasattr|memoryview|round|" +
         "__import__|complex|hash|min|apply|delattr|help|next|setattr|set|" +
         "buffer|dict|hex|object|slice|coerce|dir|id|oct|sorted|intern|" +
-        "ascii|breakpoint|bytes|F|f|setColor|setGuide|Frame|MoveTo|MoveRel|" +
+        "ascii|breakpoint|bytes|F|f|SetColor|SetGuide|Frame|MoveTo|MoveRel|" +
         "Pinpoint|PinpointRel|LineTo|LineRel|OLineTo|OLineRel|setHead|" +
-        "EulerAngles|nF|setGuide|SectionResolution|StartScreenProjection|" +
+        "EulerAngles|nF|SectionResolution|StartScreenProjection|" +
         "InterpolateColors|TurnAround|GetPos|GetHead|GetUp|GetLeft|GetRight|" +
         "GetFrame"
     );
