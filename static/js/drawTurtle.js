@@ -18,8 +18,8 @@ class drawTurtle {
         this.scene = new BABYLON.Scene(this.engine);
 		this.scene.clearColor = new BABYLON.Color3(0.8, 0.8, 0.8);
 
-		this.camera = new BABYLON.ArcRotateCamera("Camera", 0, 0, 15, new BABYLON.Vector3(0, 0, 0), this.scene);
-		this.camera.setPosition(new BABYLON.Vector3(0, 0, 15));
+		this.camera = new BABYLON.ArcRotateCamera("Camera", 0, 0, 5, new BABYLON.Vector3(0, 0, 0), this.scene);
+		this.camera.setPosition(new BABYLON.Vector3(0, 0, 5));
 		this.camera.attachControl(this.canvas, true);
 
         this.light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, -5, 3), this.scene);
@@ -29,7 +29,7 @@ class drawTurtle {
 		this.materialColors = [];
         this.materialTextures = [];
 
-        var CoT = this.LocalAxes(2, 0);
+        var CoT = this.LocalAxes(42, 0);
 
         var options = new BABYLON.SceneOptimizerOptions.LowDegradationAllowed();
         options.addOptimization(new BABYLON.HardwareScalingOptimization(0, 1));
@@ -63,9 +63,9 @@ class drawTurtle {
      */
     InitializeMaterialsColors() {
         this.materialColors = [];
-        var hexColors = ["#FFFFFFFF", "#FFB71CFF", "#53FF00FF", "#FF0000FF", "#FFFF00FF", "#0000FFFF", "#FF00FFFF"];
+        var hexColors = ["#FFFFFFFF", "#FFB71CFF", "#53FF00FF", "#FF0000FF", "#FFFF00FF", "#0000FFFF", "#FF00FFFF"]; //Alpha value has been deleted because <input type="color"/> use "RRGGBB" format
         for (var i in hexColors) {
-            this.AddMaterialColor(hexColors[i] + "Color", hexColors[i], "#00000000", "#00000000", "#00000000");
+            this.AddMaterialColor(hexColors[i], hexColors[i], "#00000000", "#00000000", "#00000000");
         }
     }
 	
@@ -95,21 +95,21 @@ class drawTurtle {
      */
     LocalAxes(size, shade) {
         var pilot_local_axisX = BABYLON.Mesh.CreateLines("pilot_local_axisX", [
-            new BABYLON.Vector3.Zero(), new BABYLON.Vector3(size, 0, 0), new BABYLON.Vector3(size * 0.95, 0.05 * size, 0),
-            new BABYLON.Vector3(size, 0, 0), new BABYLON.Vector3(size * 0.95, -0.05 * size, 0)
+            new BABYLON.Vector3.Zero(), new BABYLON.Vector3(0, 0, size)
         ], this.scene);
+        //new BABYLON.Vector3(size * 0.95, 0.05 * size, 0), new BABYLON.Vector3(0, size, 0), new BABYLON.Vector3(size * 0.95, -0.05 * size, 0)
         pilot_local_axisX.color = new BABYLON.Color3(1, shade, shade);
 
         var pilot_local_axisY = BABYLON.Mesh.CreateLines("pilot_local_axisY", [
-            new BABYLON.Vector3.Zero(), new BABYLON.Vector3(0, size, 0), new BABYLON.Vector3(-0.05 * size, size * 0.95, 0),
-            new BABYLON.Vector3(0, size, 0), new BABYLON.Vector3(0.05 * size, size * 0.95, 0)
+            new BABYLON.Vector3.Zero(), new BABYLON.Vector3(-size, 0, 0)
         ], this.scene);
+        //new BABYLON.Vector3(-0.05 * size, size * 0.95, 0), new BABYLON.Vector3(size, 0, 0), new BABYLON.Vector3(0.05 * size, size * 0.95, 0)
         pilot_local_axisY.color = new BABYLON.Color3(shade, 1, shade);
 
         var pilot_local_axisZ = BABYLON.Mesh.CreateLines("pilot_local_axisZ", [
-            new BABYLON.Vector3.Zero(), new BABYLON.Vector3(0, 0, size), new BABYLON.Vector3(0, -0.05 * size, size * 0.95),
-            new BABYLON.Vector3(0, 0, size), new BABYLON.Vector3(0, 0.05 * size, size * 0.95)
+            new BABYLON.Vector3.Zero(), new BABYLON.Vector3(0, size, 0)
         ], this.scene);
+        //new BABYLON.Vector3(0, -0.05 * size, size * 0.95), new BABYLON.Vector3(0, 0, size), new BABYLON.Vector3(0, 0.05 * size, size * 0.95)
         pilot_local_axisZ.color = new BABYLON.Color3(shade, shade, 1);
 
         var local_origin = BABYLON.MeshBuilder.CreateBox("local_origin", { size: 1 }, this.scene);
@@ -324,7 +324,7 @@ class drawTurtle {
     }
 
     ResetCamera() {
-        this.camera.setPosition(new BABYLON.Vector3(0, 0, 15));
+        this.camera.setPosition(new BABYLON.Vector3(0, 0, 5));
         this.camera.target = new BABYLON.Vector3(0,0,0);
         this.camera.attachControl(this.canvas, true);
     }

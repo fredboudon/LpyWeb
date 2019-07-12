@@ -135,6 +135,7 @@ class LStringParser {
 		size = searchSymbol(lstr, i, size, ";");		size = searchSymbol(lstr, i, size, "IncColor");
 		size = searchSymbol(lstr, i, size, ",");		size = searchSymbol(lstr, i, size, "DecColor");
 		size = searchSymbol(lstr, i, size, "SetColor");
+		size = searchSymbol(lstr, i, size, "InterpolateColors");
 
 		size = searchSymbol(lstr, i, size, "@Ts");		size = searchSymbol(lstr, i, size, "Elasticity");
 		size = searchSymbol(lstr, i, size, "@Tp");		size = searchSymbol(lstr, i, size, "Tropism");

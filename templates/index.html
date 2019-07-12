@@ -27,8 +27,7 @@
 	    <script src="static/js/editorFunctions.js" type="text/javascript"></script>
 	</head>
 	{% block body %}
-	<body>
-		<form action="http://127.0.0.1:5000/interpret.html" method="post">
+		<body>
 	{% endblock %}
     	<div class="row-2 d-flex flex-column flex-md-row align-items-center p-0 px-md-4 bg-success border-bottom shadow-sm">
 			<a class="my-0 mr-md-auto font-weight-normal text-light navbar-brand" href="{{ url_for('home') }}">L-PyWeb</a>
@@ -43,7 +42,10 @@
 		{% endblock %}
 		
 		<div class="bg-light footer">
-			<div class="text-center text-success">L-PyWeb - &copy; 2019 Copyright: F. Boudon and C. Godin</div>
+			<div class="text-center text-success"><p>L-PyWeb - &copy; 2019 Copyright: F. Boudon and C. Godin
+			{% block footer %}
+			{% endblock %}
+			</p></div>
 		</div>
 	    {% block script %}
 	    {% endblock %}

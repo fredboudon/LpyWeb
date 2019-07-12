@@ -192,6 +192,9 @@ this.underscore(modules[i].paramList[0]);
 				this.setColor(modules[i].paramList[0]);
 				break;
 
+            case 'InterpolateColors':
+                this.interpolateColors(modules[i].paramList[0], modules[i].paramList[1], modules[i].paramList[2]);
+
 			case '@Dd':
 				break;
 
@@ -646,10 +649,7 @@ this.underscore(modules[i].paramList[0]);
      * @param {Number} angle The turning angle
      */
     left(angle = this.angleIncrement) {
-        var ra = (angle * (GEOM_PI/180));
-        var matrix = new BABYLON.Matrix.RotationAxis(this.currentParams.up, ra);
-        this.currentParams.heading = new BABYLON.Vector3.TransformCoordinates(this.currentParams.heading, matrix);
-        this.currentParams.left = new BABYLON.Vector3.TransformCoordinates(this.currentParams.left, matrix);
+        this.right(-angle);
     }
 
     // inline void right()
@@ -660,7 +660,10 @@ this.underscore(modules[i].paramList[0]);
      * @param {Number} angle The turning angle
      */
     right(angle = this.angleIncrement) {
-        this.left(-angle);
+        var ra = (angle * (GEOM_PI/180));
+        var matrix = new BABYLON.Matrix.RotationAxis(this.currentParams.up, ra);
+        this.currentParams.heading = new BABYLON.Vector3.TransformCoordinates(this.currentParams.heading, matrix);
+        this.currentParams.left = new BABYLON.Vector3.TransformCoordinates(this.currentParams.left, matrix);
     }
     
     // inline void down()
@@ -1115,7 +1118,9 @@ this.underscore(modules[i].paramList[0]);
      * @param {Number} alpha The mixing alpha
      */
     interpolateColors(val1, val2, alpha = 0.5) {
-        //TODO
+        /*var newColor = new BABYLON.Color4.Lerp(this.drawTurtle.materialColors[val1], this.drawTurtle.materialColors[val2], alpha);
+        this.drawTurtle.materialColors.push(newColor);
+        this.setColor(this.drawTurtle.materialColors.length - 1);*/
     }
     
     // void setCustomAppearance(const AppearancePtr app);

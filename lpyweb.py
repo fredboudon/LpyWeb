@@ -1,4 +1,6 @@
 import os
+import sys
+import openalea.lpy as lpy
 from flask import Flask
 from flask import request, render_template, url_for, redirect, jsonify, session
 from flask import Markup
@@ -40,25 +42,39 @@ def editor():
 
 @app.route('/run', methods=['POST'])
 def run():
+	out = sys.stdout
+	outlog = open('outlog.txt', 'w')
+	sys.stdout = outlog
+
 	disconnect()
-	import openalea.lpy as lpy
 	l = lpy.Lsystem()
 	code = request.form['code']
 	code = code.encode('ascii', 'ignore')
+
 	try:
 		l.set(code)
 	except:
-		return jsonify({'error' : 'Syntax error'})
+		outlog.close()
+		sys.stdout = out
+		outlog = open('outlog.txt', 'r')
+		output = outlog.read()
+		return jsonify({'error': "Syntax Error", 'output': output})
+
 	lstring = l.derive()
 	ilstring = l.interpret(lstring)
 	txtlstring = str(ilstring)
-	return jsonify({'LString' : txtlstring})
+
+	outlog.close()
+	sys.stdout = out
+
+	outlog = open('outlog.txt', 'r')
+	output = outlog.read()
+	return jsonify({'LString' : txtlstring, 'output': output})
 
 #When Step is clicked, the server receives the code, derive and interpret one time the LString, sends the result and keeps the new LString in the session array.
 
 @app.route('/step', methods=['POST'])
 def step():
-	import openalea.lpy as lpy
 	global LSystem
 	code = request.form['code']
 	code = code.encode('ascii', 'ignore')
@@ -68,7 +84,6 @@ def step():
 		if code != session['code']:
 			l = lpy.Lsystem()
 			session['code'] = code
-			#session['step'] = int(request.form['step'])
 			try:
 				l.set(code)
 			except:
@@ -98,7 +113,6 @@ def step():
 	else:
 		l = lpy.Lsystem()
 		session['code'] = code
-		#session['step'] = int(request.form['step'])
 		try:
 			l.set(code)
 		except:
@@ -115,7 +129,6 @@ def step():
 @app.route('/rewind', methods=['POST'])
 def rewind():
 	disconnect()
-	import openalea.lpy as lpy
 	l = lpy.Lsystem()
 	code = request.form['code']
 	code = code.encode('ascii', 'ignore')

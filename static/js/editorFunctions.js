@@ -10,9 +10,18 @@ $(document).ready(function() {
 	var dTurtle = new drawTurtle();
 	var wTurtle = new webTurtle(dTurtle);
     Init(dTurtle, wTurtle);
+    initialiseColorPanel(dTurtle);
 
     document.getElementById('resetCamera').onclick = function() {
 		dTurtle.ResetCamera();
+	};
+
+	document.getElementById('addColor').onclick = function() {
+		createNewColor(dTurtle);
+	};
+
+	document.getElementById('deleteColor').onclick = function() {
+		deleteLastColor(dTurtle);
 	};
 
 	if(document.getElementById('runCode')) {
@@ -26,11 +35,20 @@ $(document).ready(function() {
 				success: function(data) {
 					dTurtle.DeleteTrees();
 					wTurtle.Reset();
-					if(data.error) {
-						display(dTurtle, wTurtle, data.error);
+
+					$('#printOutput').val(data.output);
+					/*if(data.output != undefined) {
+						window.open("output.html", "LPyWeb Output", "resizable=yes");
+					}*/
+					
+					if(data.error != undefined) {
+						console.log(data.error);
 					}else {
 						display(dTurtle, wTurtle, data.LString);
 					}
+				},
+				error: function(xhr) {
+					console.log(xhr.statusText + xhr.responseText);
 				}
 			});
 			event.preventDefault();
@@ -120,8 +138,6 @@ function clearEditor(editor) {
 		editor.getSession().setValue(sessionStorage.getItem('genesisCode'));
 		document.getElementById('runCode').click();
 		unlockButtons();
-	}else {
-
 	}
 }
 
@@ -245,28 +261,40 @@ function displayParameters() {
 	}
 }
 
-/*function loadExample(editor) {
-	
-}*/
-/*function loadFromURL(editor) {
-	document.getElementById("modalLoadButton").setAttribute('data-dismiss', 'modal');
-	let inputURL = document.getElementById('fileURL').value;
-	if(inputURL.length == 0){
-		document.getElementById("modalLoadButton").removeAttribute('data-dismiss', 'modal');
-	}else {
-		$.ajax({
-			url : inputURL,
-			crossDomain: true,
-			contentType: 'text/html',
-			xhrFields: { withCredentials: false },
-			headers: {  'Access-Control-Allow-Origin' : '*' , },
-			type : 'GET',
-			dataType: 'jsonp',
-			success: function(data) {
-				$('textarea[name=code]').val(data);
-			}
+function initialiseColorPanel(drawTurtle) {
+	for (let i in drawTurtle.materialColors) {
+		var colorValue = drawTurtle.materialColors[i].name.slice(0, 7);
+		var colorId = "color" + i;
+		var colorInput = '<input type="color"  id="' + colorId + '" value="' + colorValue + '" title="Color ' + i + '" />';
+		document.getElementById('addColor').insertAdjacentHTML('beforebegin', colorInput);
+		document.getElementById(colorId).addEventListener("change", function() {
+			drawTurtle.materialColors[i].diffuseColor = new BABYLON.Color4.FromHexString(this.value + "FF");
 		});
-		$('textarea[name=code]').load(inputURL);
-		console.log($('textarea[name=code]').val());
 	}
-}*/
+}
+
+function createNewColor(drawTurtle) {
+
+	var colorId = "color" + (drawTurtle.materialColors.length);
+	var newColor = '<input type="color" id="' + colorId + '" value="#FFFFFF" title="Color '+ drawTurtle.materialColors.length + '" />';
+	document.getElementById('addColor').insertAdjacentHTML('beforebegin', newColor);
+
+	var mat = new BABYLON.StandardMaterial(colorId, drawTurtle.scene);
+    mat.diffuseColor = new BABYLON.Color4.FromHexString(document.getElementById(colorId).value + "FF");
+    mat.specularColor = new BABYLON.Color4.FromHexString("#00000000");
+    mat.emissiveColor = new BABYLON.Color4.FromHexString("#00000000");
+    mat.ambientColor = new BABYLON.Color4.FromHexString("#00000000");
+    drawTurtle.materialColors.push(mat);
+
+    document.getElementById(colorId).addEventListener("change", function() {
+		drawTurtle.materialColors[colorId.slice(-1)].diffuseColor = new BABYLON.Color4.FromHexString(this.value + "FF");
+	});
+}
+
+function deleteLastColor(drawTurtle) {
+	if((drawTurtle.materialColors.length) != 0) {
+		var colorId = "color" + (drawTurtle.materialColors.length - 1);
+		var deletedColor = drawTurtle.materialColors.pop();
+		document.getElementById(colorId).parentNode.removeChild(document.getElementById(colorId));
+	}
+}
