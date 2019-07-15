@@ -264,7 +264,7 @@ function displayParameters() {
 function initialiseColorPanel(drawTurtle) {
 	for (let i in drawTurtle.materialColors) {
 		var colorValue = drawTurtle.materialColors[i].name.slice(0, 7);
-		var colorId = "color" + i;
+		var colorId = "color_" + i;
 		var colorInput = '<input type="color"  id="' + colorId + '" value="' + colorValue + '" title="Color ' + i + '" />';
 		document.getElementById('addColor').insertAdjacentHTML('beforebegin', colorInput);
 		document.getElementById(colorId).addEventListener("change", function() {
@@ -275,7 +275,7 @@ function initialiseColorPanel(drawTurtle) {
 
 function createNewColor(drawTurtle) {
 
-	var colorId = "color" + (drawTurtle.materialColors.length);
+	var colorId = "color_" + (drawTurtle.materialColors.length);
 	var newColor = '<input type="color" id="' + colorId + '" value="#FFFFFF" title="Color '+ drawTurtle.materialColors.length + '" />';
 	document.getElementById('addColor').insertAdjacentHTML('beforebegin', newColor);
 
@@ -287,13 +287,13 @@ function createNewColor(drawTurtle) {
     drawTurtle.materialColors.push(mat);
 
     document.getElementById(colorId).addEventListener("change", function() {
-		drawTurtle.materialColors[colorId.slice(-1)].diffuseColor = new BABYLON.Color4.FromHexString(this.value + "FF");
+		drawTurtle.materialColors[colorId.split('_')[1]].diffuseColor = new BABYLON.Color4.FromHexString(this.value + "FF");
 	});
 }
 
 function deleteLastColor(drawTurtle) {
 	if((drawTurtle.materialColors.length) != 0) {
-		var colorId = "color" + (drawTurtle.materialColors.length - 1);
+		var colorId = "color_" + (drawTurtle.materialColors.length - 1);
 		var deletedColor = drawTurtle.materialColors.pop();
 		document.getElementById(colorId).parentNode.removeChild(document.getElementById(colorId));
 	}
