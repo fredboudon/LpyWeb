@@ -31,9 +31,13 @@ class drawTurtle {
 
         var CoT = this.LocalAxes(42, 0);
 
-        //var options = new BABYLON.SceneOptimizerOptions.LowDegradationAllowed();
-        //options.addOptimization(new BABYLON.HardwareScalingOptimization(0, 1));
-        //this.optimizer = new BABYLON.SceneOptimizer(this.scene, options);
+        var options = new BABYLON.SceneOptimizerOptions();
+        options.addOptimization(new BABYLON.LensFlaresOptimization(0));
+        options.addOptimization(new BABYLON.ShadowsOptimization(0));
+        options.addOptimization(new BABYLON.PostProcessesOptimization(1));
+        options.addOptimization(new BABYLON.ParticlesOptimization(1));
+        options.addOptimization(new BABYLON.TextureOptimization(2, 1024));
+        this.optimizer = new BABYLON.SceneOptimizer(this.scene, options);
 
 		this.InitializeMaterialsColors();
     }
@@ -316,11 +320,25 @@ class drawTurtle {
      * Delete all the meshs in the mesh array : drawTurtle.graphicElems[]
      */
 	DeleteTrees() {
-		for (var i in this.graphicElems) {
-            this.graphicElems[i].dispose();
+		for (let i in this.graphicElems) {
+            this.scene.removeMesh(this.graphicElems[i]);
+            this.graphicElems[i].dispose(true, true);
 		}
-        this.graphicElemsElems = [];
+        for (let i in this.materialColors) {
+            this.materialColors[i].dispose(true, true);
+            this.scene.removeMaterial(this.materialColors[i]);
+        }
+        for (let i in this.materialTextures) {
+            this.materialTextures[i].dispose(true, true);
+            this.scene.removeTexture(this.materialTextures[i]);
+        }
+        this.graphicElems = [];
+        this.CoT = null;
     }
+
+    /**
+     * Reset the position of the camera to it's inital state 
+     */
 
     ResetCamera() {
         this.camera.setPosition(new BABYLON.Vector3(0, 0, 5));

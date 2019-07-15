@@ -1,4 +1,6 @@
+//Functions loaded when the page is open/ready to use
 $(document).ready(function() {
+	//Initialise popovers
 	$('[data-toggle="popover"]').popover();
 	$('.popover-dismiss').popover({
  		trigger: 'focus'
@@ -7,11 +9,14 @@ $(document).ready(function() {
 	$("#stop").attr("disabled", true);
 	$("#stop").attr("title", "There is no animation currently processing");
 
+	//Initialise the turtle and the render
 	var dTurtle = new drawTurtle();
 	var wTurtle = new webTurtle(dTurtle);
     Init(dTurtle, wTurtle);
+
     initialiseColorPanel(dTurtle);
 
+    //Add onclick events for some buttons
     document.getElementById('resetCamera').onclick = function() {
 		dTurtle.ResetCamera();
 	};
@@ -24,6 +29,7 @@ $(document).ready(function() {
 		deleteLastColor(dTurtle);
 	};
 	
+	//Creation of the Ajax Requests for Run, Step and Rewind
 	if(document.getElementById('runCode')) {
 		document.getElementById('runCode').onclick = function(event) {
 			$.ajax({
@@ -33,8 +39,9 @@ $(document).ready(function() {
 				type : "POST",
 				url : '/run',
 				success: function(data) {
-					wTurtle.Reset();
-					wTurtle.drawTurtle.DeleteTrees();
+
+					dTurtle.DeleteTrees();
+					wTurtle.Reset(dTurtle);
 
 					$('#printOutput').val(data.output);
 					/*if(data.output != undefined) {
@@ -77,8 +84,8 @@ $(document).ready(function() {
 				type : "POST",
 				url : '/step',
 				success: function(data) {
-					wTurtle.Reset();
-					wTurtle.drawTurtle.DeleteTrees();
+					dTurtle.DeleteTrees();
+					wTurtle.Reset(dTurtle);
 					if(data.error) {
 						display(dTurtle, wTurtle, data.error);
 					}
@@ -102,8 +109,8 @@ $(document).ready(function() {
 				type : "POST",
 				url : '/rewind',
 				success: function(data) {
-					wTurtle.Reset();
-					wTurtle.drawTurtle.DeleteTrees();
+					dTurtle.DeleteTrees();
+					wTurtle.Reset(dTurtle);
 					if(data.error) {
 						display(dTurtle, wTurtle, data.error);
 					}else {
@@ -116,6 +123,7 @@ $(document).ready(function() {
 	}
 });
 
+//Function that unlocks the action buttons (Run, Step, Animate and Rewind) after the end of the current animation
 function unlockButtons() {
 	$("#runCode").attr("disabled", false);
 	$("#runCode").attr("title", "Run your program and display the render.");
@@ -133,6 +141,7 @@ function unlockButtons() {
 	$("#stop").attr("title", "There is no animation currently processing");
 }
 
+//Clear the code editor and the render
 function clearEditor(editor) {
 	if(confirm("Do you really want to reset the text editor and the 3D render ?")) {
 		editor.getSession().setValue(sessionStorage.getItem('genesisCode'));
@@ -141,10 +150,11 @@ function clearEditor(editor) {
 	}
 }
 
+//Call the hiddenUpload function. It was necessary to create a hidden file type button in order to add style to this one.
 function upload() {
 	document.getElementById('hiddenButton').click();
 }
-
+//Import a file and write it's content in the text editor
 function hiddenUpload(editor) {
 	let fileInput = document.getElementById('hiddenButton');
 	let file = fileInput.files[0];
@@ -165,6 +175,7 @@ function hiddenUpload(editor) {
 	}
 }
 
+//Add the current text in the code editor in a file and download it with the name given in the modal.
 function downloadFile(editor) {
 	document.getElementById("modalSaveButton").setAttribute('data-dismiss', 'modal');
 	let element = document.createElement('a');
@@ -184,6 +195,7 @@ function downloadFile(editor) {
 	}
 }
 
+//Launch the animation. In fact, this function sends multiple Step Ajax requests.
 function animate() {
 
 	$("#stop").attr("disabled", false);
@@ -235,6 +247,7 @@ function animate() {
 	}, speed);
 }
 
+//Stop the current animation (if there is one, else the Stop button is disabled)
 function stop() {
 	$("#stop").click(function(){
     	$(this).data('clicked', true);
@@ -261,6 +274,7 @@ function displayParameters() {
 	}
 }
 
+//Create inputs for the default turtle colors
 function initialiseColorPanel(drawTurtle) {
 	for (let i in drawTurtle.materialColors) {
 		var colorValue = drawTurtle.materialColors[i].name.slice(0, 7);
@@ -273,6 +287,7 @@ function initialiseColorPanel(drawTurtle) {
 	}
 }
 
+//Add a new input when a color is created (via the "+" button)
 function createNewColor(drawTurtle) {
 
 	var colorId = "color_" + (drawTurtle.materialColors.length);
@@ -291,6 +306,7 @@ function createNewColor(drawTurtle) {
 	});
 }
 
+//Delete the last color input (when "-" is pressed)
 function deleteLastColor(drawTurtle) {
 	if((drawTurtle.materialColors.length) != 0) {
 		var colorId = "color_" + (drawTurtle.materialColors.length - 1);

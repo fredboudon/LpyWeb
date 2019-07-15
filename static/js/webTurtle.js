@@ -247,10 +247,10 @@ this.underscore(modules[i].paramList[0]);
     /**
      * Resetting the turtle
      */
-    Reset() {
+    Reset(drawTurtle) {
         this.Stop();
         this.paramStack = [];
-        //this.drawTurtle = drawTurtle;
+        this.drawTurtle = drawTurtle;
         this.currentParams = {};
         this.defaultStep = 1;
         this.angleIncrement = 60;

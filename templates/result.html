@@ -103,7 +103,7 @@ endlsystem
 		        </div>
 		    </div>
 
-		    <div class="modal fade" id="modalExample" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		    <!--<div class="modal fade" id="modalExample" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	 			<div class="modal-dialog" role="document">
 	    			<div class="modal-content">
 	      				<div class="modal-header">
@@ -120,7 +120,7 @@ endlsystem
       					</div>     
 		        	</div>
 		        </div>
-		    </div>
+		    </div>-->
 
 		    <!--<div class="modal fade" id="modalFileURL" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	 			<div class="modal-dialog" role="document">
@@ -149,6 +149,7 @@ endlsystem
 
 {% block script %}
 		<script>
+			//Creation of the code editor
 			var editor = ace.edit("code");
 			var textarea = $('textarea[name="code"]').hide();
 			document.getElementById('code').style.fontSize='16px';
@@ -162,6 +163,7 @@ endlsystem
 				textarea.val(editor.getSession().getValue());
 			});
 
+			//Function that allows to resize the code editor according to the screen size.
 			function resize() {
     			var h = window.innerHeight;
     			console.log(h);
@@ -176,6 +178,7 @@ endlsystem
 			});
 			resize();
 
+			//Add EventListeners for some buttons
 			document.getElementById("importFile").addEventListener("click", () => upload());
 			document.getElementById("hiddenButton").addEventListener("input", () => hiddenUpload(editor));
 			document.getElementById("modalSaveButton").addEventListener("click", () => downloadFile(editor));
