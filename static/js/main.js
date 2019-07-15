@@ -22,7 +22,7 @@ function display(drawTurtle, webTurtle, LString) {
         lstrParser.ParseLString();
         //console.log(lstrParser.result);
         webTurtle.Start(lstrParser.result);
-        drawTurtle.optimizer.start();
+        //drawTurtle.optimizer.start();
         //console.log(drawTurtle.optimizer.currentFrameRate);
     }
 

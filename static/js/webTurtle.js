@@ -21,7 +21,7 @@ class webTurtle {
      * @param {drawTurtle} drawTurtle An instance of a drawTurtle
      */
     constructor(drawTurtle) {
-        this.paramStack = []	;
+        this.paramStack = [];
         this.drawTurtle = drawTurtle;
         this.currentParams = {};
         this.defaultStep = 1;
@@ -248,6 +248,18 @@ this.underscore(modules[i].paramList[0]);
      * Resetting the turtle
      */
     Reset() {
+        this.Stop();
+        this.paramStack = [];
+        //this.drawTurtle = drawTurtle;
+        this.currentParams = {};
+        this.defaultStep = 1;
+        this.angleIncrement = 60;
+        this.widthIncrement = 1;
+        this.scaleMultiplier = 0.5;
+        this.radius = 0.1;
+        this.id = SHAPE_NOID;
+        this.parentId = SHAPE_NOID;
+        this.dynamicmode = true;
         this.currentParams = {
             position: new BABYLON.Vector3(0,0,0),
             heading: new BABYLON.Vector3(0,1,0),
@@ -272,7 +284,6 @@ this.underscore(modules[i].paramList[0]);
 	    // if (!this.currentParams.crossSection) {
         //     setDefaultCrossSection();
         // }
-        this.paramStack = [];
         this.ResetShapeSection(64);
         // this.pathInfos = {};
     }

@@ -31,9 +31,9 @@ class drawTurtle {
 
         var CoT = this.LocalAxes(42, 0);
 
-        var options = new BABYLON.SceneOptimizerOptions.LowDegradationAllowed();
-        options.addOptimization(new BABYLON.HardwareScalingOptimization(0, 1));
-        this.optimizer = new BABYLON.SceneOptimizer(this.scene, options);
+        //var options = new BABYLON.SceneOptimizerOptions.LowDegradationAllowed();
+        //options.addOptimization(new BABYLON.HardwareScalingOptimization(0, 1));
+        //this.optimizer = new BABYLON.SceneOptimizer(this.scene, options);
 
 		this.InitializeMaterialsColors();
     }
@@ -317,10 +317,9 @@ class drawTurtle {
      */
 	DeleteTrees() {
 		for (var i in this.graphicElems) {
-            this.graphicElems[i].dispose()
-			this.scene.removeMesh(this.graphicElems[i]);
+            this.graphicElems[i].dispose();
 		}
-		this.graphicElems = []
+        this.graphicElemsElems = [];
     }
 
     ResetCamera() {

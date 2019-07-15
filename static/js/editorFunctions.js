@@ -23,7 +23,7 @@ $(document).ready(function() {
 	document.getElementById('deleteColor').onclick = function() {
 		deleteLastColor(dTurtle);
 	};
-
+	
 	if(document.getElementById('runCode')) {
 		document.getElementById('runCode').onclick = function(event) {
 			$.ajax({
@@ -33,8 +33,8 @@ $(document).ready(function() {
 				type : "POST",
 				url : '/run',
 				success: function(data) {
-					dTurtle.DeleteTrees();
 					wTurtle.Reset();
+					wTurtle.drawTurtle.DeleteTrees();
 
 					$('#printOutput').val(data.output);
 					/*if(data.output != undefined) {
@@ -77,8 +77,8 @@ $(document).ready(function() {
 				type : "POST",
 				url : '/step',
 				success: function(data) {
-					dTurtle.DeleteTrees();
 					wTurtle.Reset();
+					wTurtle.drawTurtle.DeleteTrees();
 					if(data.error) {
 						display(dTurtle, wTurtle, data.error);
 					}
@@ -102,8 +102,8 @@ $(document).ready(function() {
 				type : "POST",
 				url : '/rewind',
 				success: function(data) {
-					dTurtle.DeleteTrees();
 					wTurtle.Reset();
+					wTurtle.drawTurtle.DeleteTrees();
 					if(data.error) {
 						display(dTurtle, wTurtle, data.error);
 					}else {
