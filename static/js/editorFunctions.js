@@ -398,4 +398,5 @@ function addNewTab(editor, sessions, code, filename) {
 	sessions.push(sess);
 	editor.setSession(sess);
 	$('textarea[name="code"]').val(editor.getSession().getValue());
+	$('#runCode').click();
 }
