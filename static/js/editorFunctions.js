@@ -142,11 +142,17 @@ function unlockButtons() {
 }
 
 //Clear the code editor and the render
-function clearEditor(editor) {
-	if(confirm("Do you really want to reset the text editor and the 3D render ?")) {
+function clearEditor(editor, mode) {
+	if(mode == "addTab") {
 		editor.getSession().setValue(sessionStorage.getItem('genesisCode'));
 		$('#runCode').click();
 		unlockButtons();
+	}else {
+		if(confirm("Do you really want to reset the text editor and the 3D render ?")) {
+			editor.getSession().setValue(sessionStorage.getItem('genesisCode'));
+			$('#runCode').click();
+			unlockButtons();
+		}
 	}
 }
 
@@ -170,10 +176,7 @@ function hiddenUpload(editor, sessions) {
 		let reader = new FileReader();
 		reader.onloadend = function() {
 			addNewTab(editor, sessions, reader.result, file.name);
-
-			//$('#runCode').click();
 		};
-		clearEditor
 		reader.readAsText(file, 'UTF-8');
 		$('#hiddenButton').val('');
 	}
@@ -330,6 +333,16 @@ function removeActive() {
 Create an new tab with a new editor session.*/
 function addNewTab(editor, sessions, code, filename) {
 
+	//Create a new session and save it in the array
+	EditSession = ace.require("ace/edit_session").EditSession;
+	var sess = new EditSession(sessionStorage.getItem('genesisCode'), "ace/mode/python");
+	sess.on('change', function(){
+		$('textarea[name="code"]').val(sess.getValue());
+	});
+	editor.setSession(sess);
+	sess.setValue(code);
+	sessions.push(sess);
+
 	var addTab = document.getElementById("addTab");
 
 	//Create a new tab
@@ -384,22 +397,14 @@ function addNewTab(editor, sessions, code, filename) {
 
 	if(filename === undefined){
 		newTabText.innerHTML = "New Tab ";
+		clearEditor(editor, "addTab");
 	}else {
 		newTabText.innerHTML = filename;
+		$('#runCode').click();
 	}
 	removeActive();
 	newTab.parentNode.setAttribute('class', 'active');
 
 	//Add the new tab in the tab list.
 	addTab.parentNode.insertBefore(newLi,addTab);
-
-	//Create a new session and save it in the array
-	EditSession = ace.require("ace/edit_session").EditSession;
-	var sess = new EditSession(sessionStorage.getItem('genesisCode'), "ace/mode/python");
-	editor.setSession(sess);
-	$('textarea[name="code"]').val(editor.getSession().getValue());
-	$('#runCode').click();
-	sess.setValue(code);
-	$('textarea[name="code"]').val(editor.getSession().getValue());
-	sessions.push(sess);
 }
