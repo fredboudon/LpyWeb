@@ -46,6 +46,10 @@
 			</div>
 			<div class="row" id="row-main">
 				<div class="col-5" id="colTextEditor" style="position: relative;">
+					<ul class="nav nav-tabs" id="tabList" style="background-color: #1D2021;">
+						<li class="active" role="presentation" id="tab-0"><a id="tab-main" href="#" style="color:#8ec07c;">Main Tab</a></li>
+						<li id="addTab" role="presentation"><a href="#" style="color:#8ec07c;"><i class="fa fa-plus-square" aria-hidden="true"></i></a></li>
+					</ul>
 					<textarea placeholder="Axiom and rules" type="text" name="code" wrap=off>Axiom: 
 
 derivation length: 1
@@ -56,9 +60,9 @@ interpretation:
 endlsystem
 	</textarea>
 					<div id="code"></div>
-					<input type="hidden" name="step" id="step" readonly>
-					<input type="hidden" name="currentStep" id="currentStep" readonly>
 				</div>
+				<input type="hidden" name="step" id="step" readonly>
+				<input type="hidden" name="currentStep" id="currentStep" readonly>
 				<div class="col-7" id="colCanvas">
 					<canvas width="600" height="800" id="renderCanvas"></canvas>
 				</div>
@@ -153,6 +157,7 @@ endlsystem
 			//Creation of the code editor
 			var editor = ace.edit("code");
 			var textarea = $('textarea[name="code"]').hide();
+			var sessions = [];
 			document.getElementById('code').style.fontSize='16px';
 			editor.setTheme("ace/theme/gruvbox");
 			editor.session.setMode("ace/mode/python");
@@ -160,9 +165,21 @@ endlsystem
 			if(!sessionStorage.getItem('genesisCode')) {
 				sessionStorage.setItem('genesisCode', editor.getSession().getValue());
 			}
+			sessions.push(editor.getSession());
 			editor.getSession().on('change', function(){
 				textarea.val(editor.getSession().getValue());
 			});
+
+			//Do the same as removeActive function but for the main tab.
+			document.getElementById("tab-main").addEventListener('click', function() {
+				editor.setSession(sessions[0]);
+				$('textarea[name="code"]').val(editor.getSession().getValue());
+				$("#tabList").children().each(function() {
+					this.removeAttribute('class', 'active');
+				});
+				this.parentNode.setAttribute('class', 'active');
+				$('#runCode').click();
+			})
 
 			//Function that allows to resize the code editor according to the screen size.
 			function resize() {
@@ -181,13 +198,14 @@ endlsystem
 
 			//Add EventListeners for some buttons
 			document.getElementById("importFile").addEventListener("click", () => upload());
-			document.getElementById("hiddenButton").addEventListener("input", () => hiddenUpload(editor));
+			document.getElementById("hiddenButton").addEventListener("input", () => hiddenUpload(editor, sessions));
 			document.getElementById("modalSaveButton").addEventListener("click", () => downloadFile(editor));
 			//document.getElementById("modalLoadExample").addEventListener("click", () => loadExample(editor));
 			document.getElementById("clearEditor").addEventListener('click', () => clearEditor(editor));
 			document.getElementById("animate").addEventListener('click', () => animate());
 			document.getElementById("stop").addEventListener('click', () => stop());
 			document.getElementById("parameters").addEventListener('click', () => displayParameters());
+			document.getElementById("addTab").addEventListener("click", () => addNewTab(editor, sessions, sessionStorage.getItem('genesisCode')));
 			//document.getElementById("modalLoadButton").addEventListener("click", () => loadFromURL(editor));
 			
 		</script>

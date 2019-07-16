@@ -145,33 +145,36 @@ function unlockButtons() {
 function clearEditor(editor) {
 	if(confirm("Do you really want to reset the text editor and the 3D render ?")) {
 		editor.getSession().setValue(sessionStorage.getItem('genesisCode'));
-		document.getElementById('runCode').click();
+		$('#runCode').click();
 		unlockButtons();
 	}
 }
 
-//Call the hiddenUpload function. It was necessary to create a hidden file type button in order to add style to this one.
+/*Styles can't be given to a type=file button. 
+In order to do so, I hid this button and I created a normal one which press the file button when pressed itself.*/
 function upload() {
 	document.getElementById('hiddenButton').click();
 }
-//Import a file and write it's content in the text editor
-function hiddenUpload(editor) {
+
+/*Takes the editor and the array of sessions in parameters.
+upload a file in a new tab and display it's content in the editor.*/
+function hiddenUpload(editor, sessions) {
 	let fileInput = document.getElementById('hiddenButton');
 	let file = fileInput.files[0];
-	console.log(file);
 	let uploadFiletype = file.name.split('.')[1];
 			
 	if (!(uploadFiletype == 'lpy')){
 		alert("The imported file isn't a .lpy file. Please choose another one.");
 	}
 	else{
-		fileInput.addEventListener('change', function() {
-			let reader = new FileReader();
-			reader.addEventListener('load', function() {
-				editor.getSession().setValue(reader.result);
-			});
-			reader.readAsText(file, 'UTF-8');
-		});
+		let reader = new FileReader();
+		reader.onloadend = function() {
+			addNewTab(editor, sessions, reader.result, file.name);
+
+			$('#runCode').click();
+		};
+		reader.readAsText(file, 'UTF-8');
+		$('#hiddenButton').val('');
 	}
 }
 
@@ -313,4 +316,86 @@ function deleteLastColor(drawTurtle) {
 		var deletedColor = drawTurtle.materialColors.pop();
 		document.getElementById(colorId).parentNode.removeChild(document.getElementById(colorId));
 	}
+}
+
+/*Removes the active class of all tabs*/
+function removeActive() {
+	$("#tabList").children().each(function() {
+		this.removeAttribute('class', 'active');
+	});
+}
+
+/*Takes the editor, the array of sessions, the base code (with Axiom: ...) to initialise the new editor session and a filename (optional) in case of upload.
+Create an new tab with a new editor session.*/
+function addNewTab(editor, sessions, code, filename) {
+
+	var addTab = document.getElementById("addTab");
+
+	//Create a new tab
+	var newLi = document.createElement("LI");
+	newLi.setAttribute('role', 'presentation');
+	var index = $("#tabList").children().length - 1;
+	newLi.id = "tab-" + index;
+
+	//Create the new tab link
+	var newTab = document.createElement("A")
+	newTab.href = '#';
+	newTab.style.color = "#8ec07c";
+	newTab.style.align = "right";
+	newTab.style.clear = "both";
+	newTab.addEventListener('click', function() {
+		removeActive();
+		editor.setSession(sessions[this.parentNode.id.split('-')[1]]);
+		$('textarea[name="code"]').val(editor.getSession().getValue());
+		this.parentNode.setAttribute('class', 'active');
+		$('#runCode').click();
+	})
+	//Create the tab close button
+	var closeTab = document.createElement("A");
+	closeTab.className = 'fa fa-times';
+	closeTab.href = '#';
+	closeTab.style.float = "left";
+	closeTab.style.margin = "5px";
+	closeTab.style.color = "#B22222";
+	closeTab.addEventListener('click', function() {
+		var liToRemove = this.parentNode;
+		var liId = liToRemove.id;
+		liToRemove.removeAttribute('class', 'active');
+		//All tabs after the deleted one must decrease their id by one
+		editor.setSession(sessions[liId.split('-')[1]-1]);
+		var idPreviousLi = "tab-" + (liId.split('-')[1]-1).toString();
+		document.getElementById(idPreviousLi).setAttribute('class', 'active');
+		document.getElementById(idPreviousLi).firstChild.click();
+		//Delete the tab and it's session.
+		sessions.splice(liId.split('-')[1], 1);
+		$(liToRemove).nextUntil(addTab).each(function() {
+			this.id = "tab-" + (this.id.split('-')[1] - 1);
+		});
+		liToRemove.remove();
+	});
+	//Append all elements at their right place.
+	newLi.appendChild(closeTab);
+
+	var newTabText = document.createElement('P');
+	newTabText.style.float = "left";
+	newTab.appendChild(newTabText);
+	newLi.insertBefore(newTab, closeTab);
+
+	if(filename === undefined){
+		newTabText.innerHTML = "New Tab ";
+	}else {
+		newTabText.innerHTML = filename;
+	}
+	removeActive();
+	newTab.parentNode.setAttribute('class', 'active');
+
+	//Add the new tab in the tab list.
+	addTab.parentNode.insertBefore(newLi,addTab);
+
+	//Create a new session and save it in the array
+	EditSession = ace.require("ace/edit_session").EditSession;
+	var sess = new EditSession(code, "ace/mode/python");
+	sessions.push(sess);
+	editor.setSession(sess);
+	$('textarea[name="code"]').val(editor.getSession().getValue());
 }
