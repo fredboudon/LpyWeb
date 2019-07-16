@@ -171,8 +171,9 @@ function hiddenUpload(editor, sessions) {
 		reader.onloadend = function() {
 			addNewTab(editor, sessions, reader.result, file.name);
 
-			$('#runCode').click();
+			//$('#runCode').click();
 		};
+		clearEditor
 		reader.readAsText(file, 'UTF-8');
 		$('#hiddenButton').val('');
 	}
@@ -394,9 +395,11 @@ function addNewTab(editor, sessions, code, filename) {
 
 	//Create a new session and save it in the array
 	EditSession = ace.require("ace/edit_session").EditSession;
-	var sess = new EditSession(code, "ace/mode/python");
-	sessions.push(sess);
+	var sess = new EditSession(sessionStorage.getItem('genesisCode'), "ace/mode/python");
 	editor.setSession(sess);
 	$('textarea[name="code"]').val(editor.getSession().getValue());
 	$('#runCode').click();
+	sess.setValue(code);
+	$('textarea[name="code"]').val(editor.getSession().getValue());
+	sessions.push(sess);
 }
