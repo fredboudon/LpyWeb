@@ -64,7 +64,12 @@ endlsystem
 				<input type="hidden" name="step" id="step" readonly>
 				<input type="hidden" name="currentStep" id="currentStep" readonly>
 				<div class="col-7" id="colCanvas">
+					<ul class="nav nav-tabs" id="outputTabs" style="background-color: #CCCCCC;">
+						<li class="active" role="presentation"><a id="renderTab" href="#" style="color:#0000FF;">3D Render</a></li>
+						<li role="presentation"><a id="outputTab" href="#" style="color:#0000FF;">Console Output</a></li>
+					</ul>
 					<canvas width="600" height="800" id="renderCanvas"></canvas>
+					<textarea type="text" class="bg-dark text-light" name="printOutput" id="printOutput" style="display: none;" readonly></textarea>
 				</div>
 				<div class="col-2 collapse paramHidden" id="paramFields">
 					<div class="row">
@@ -80,11 +85,6 @@ endlsystem
 							<button type="button" class="btn btn-light text-success" title="Delete the last color." id="deleteColor"><i class="fas fa-minus"></i></button>
 						</div>
 					</div>
-				</div>
-			</div>
-			<div class="row collapse" id="rowPrint">
-				<div class="col-5">
-					<textarea type="text" class="bg-dark text-light" name="printOutput" id="printOutput" cols="79" rows="5" readonly></textarea>
 				</div>
 			</div>
 
@@ -148,10 +148,6 @@ endlsystem
 	</form>
 {% endblock %}
 
-{% block footer %}
-	<button type="button" class="btn btn-light text-success" data-toggle="collapse" data-target="#rowPrint" role="button" aria-expanded="false" aria-controls="collapsePrintField"><i class="fas fa-angle-double-down"></i></button>
-{% endblock %}
-
 {% block script %}
 		<script>
 			//Creation of the code editor
@@ -206,6 +202,8 @@ endlsystem
 			document.getElementById("stop").addEventListener('click', () => stop());
 			document.getElementById("parameters").addEventListener('click', () => displayParameters());
 			document.getElementById("addTab").addEventListener("click", () => addNewTab(editor, sessions, sessionStorage.getItem('genesisCode')));
+			document.getElementById("renderTab").addEventListener("click", () => activateRenderTab());
+			document.getElementById("outputTab").addEventListener("click", () => activateOutputTab());
 			//document.getElementById("modalLoadButton").addEventListener("click", () => loadFromURL(editor));
 			
 		</script>

@@ -411,3 +411,29 @@ function addNewTab(editor, sessions, code, filename) {
 	//Add the new tab in the tab list.
 	addTab.parentNode.insertBefore(newLi,addTab);
 }
+
+function activateRenderTab() {
+	var renderTab = document.getElementById("renderTab").parentNode;
+	var render = document.getElementById("renderCanvas");
+	var outputTab = document.getElementById("outputTab").parentNode;
+	var output = document.getElementById("printOutput");
+	if (!(renderTab.classList.contains("active"))){
+		output.style.display = "none";
+		outputTab.removeAttribute('class', 'active');
+		renderTab.setAttribute('class', 'active');
+		render.style.display = "";
+	}
+}
+
+function activateOutputTab() {
+	var outputTab = document.getElementById("outputTab").parentNode;
+	var output = document.getElementById("printOutput");
+	var renderTab = document.getElementById("renderTab").parentNode;
+	var render = document.getElementById("renderCanvas");
+	if (!(outputTab.classList.contains("active"))){
+		render.style.display = "none";
+		renderTab.removeAttribute('class', 'active');
+		outputTab.setAttribute('class', 'active');
+		output.style.display = "";
+	}
+}
