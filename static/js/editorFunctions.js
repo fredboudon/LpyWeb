@@ -374,14 +374,17 @@ function addNewTab(editor, sessions, code, filename) {
 	closeTab.addEventListener('click', function() {
 		var liToRemove = this.parentNode;
 		var liId = liToRemove.id;
-		liToRemove.removeAttribute('class', 'active');
-		//All tabs after the deleted one must decrease their id by one
-		editor.setSession(sessions[liId.split('-')[1]-1]);
-		var idPreviousLi = "tab-" + (liId.split('-')[1]-1).toString();
-		document.getElementById(idPreviousLi).setAttribute('class', 'active');
-		document.getElementById(idPreviousLi).firstChild.click();
+		//If the deleted tab was the current one, the active tab becomes the previous one.
+		if (liToRemove.classList.contains("active")) {
+			liToRemove.removeAttribute('class', 'active');
+			editor.setSession(sessions[liId.split('-')[1]-1]);
+			var idPreviousLi = "tab-" + (liId.split('-')[1]-1).toString();
+			document.getElementById(idPreviousLi).setAttribute('class', 'active');
+			document.getElementById(idPreviousLi).firstChild.click();
+		}
 		//Delete the tab and it's session.
 		sessions.splice(liId.split('-')[1], 1);
+		//All tabs after the deleted one must decrease their id by one
 		$(liToRemove).nextUntil(addTab).each(function() {
 			this.id = "tab-" + (this.id.split('-')[1] - 1);
 		});
