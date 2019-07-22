@@ -399,7 +399,7 @@ function addNewTab(editor, sessions, code, filename) {
 	newLi.insertBefore(newTab, closeTab);
 
 	if(filename === undefined){
-		newTabText.innerHTML = "New Tab ";
+		newTabText.innerHTML = "New Tab (" + newTabText.parentNode.parentNode.id.split("-")[1] + ")";
 		clearEditor(editor, "addTab");
 	}else {
 		newTabText.innerHTML = filename;
@@ -409,7 +409,7 @@ function addNewTab(editor, sessions, code, filename) {
 	newTab.parentNode.setAttribute('class', 'active');
 
 	//Add the new tab in the tab list.
-	addTab.parentNode.insertBefore(newLi,addTab);
+	addTab.parentNode.insertBefore(newLi, addTab);
 }
 
 function activateRenderTab() {

@@ -180,9 +180,11 @@ endlsystem
 			editor.setTheme("ace/theme/gruvbox");
 			editor.session.setMode("ace/mode/python");
 			editor.getSession().setValue(textarea.val());
+
 			if(!sessionStorage.getItem('genesisCode')) {
 				sessionStorage.setItem('genesisCode', editor.getSession().getValue());
 			}
+			
 			sessions.push(editor.getSession());
 			editor.getSession().on('change', function(){
 				textarea.val(editor.getSession().getValue());
