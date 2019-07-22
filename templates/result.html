@@ -3,39 +3,231 @@
 {% block title %} L-Py Editor {% endblock %}
 	
 {% block body %}
-<body onload="Init();">		
-	<form action={{ interpreter }} method="post">
+<body class="bg-light">
+	<form>
 {% endblock %}
 
 {% block editor %}{% endblock %}
-<!--{% block sidebar %}<button class="btn btn-dark toggle-sidebar" type="button"><i class="fas fa-sliders-h"></i></button>{% endblock %}-->
 
 {% block content %}
-	<div class="row" id="row-main">
-		<div class="col-md-1" id="sidebar">
-			<div id="sidebarTitle">Actions</div>
-			<input type="file" id="hiddenButton"/>
-			<button type="button" class="btn btn-primary btn-block" id="import" alt="Import a .lpy file." title="Import a .lpy file." 
-			onclick="upload();"><i class="fas fa-file-upload"></i> Import</button>
-			<button type="button" class="btn btn-danger btn-block" id="download" alt="Save your program in a .lpy file and download it." 
-			title="Save your program in a .lpy file and download it."><i class="fas fa-save"></i> Save</button>
-			<button type="submit" class="btn btn-success btn-block" id="submitCode" alt="Run your program and display the render." 
-			title="Run your program and display the render."><i class="fas fa-play"></i> Simulate</button>
+		<div class="container-fluid">
+			<div class="row bg-light">
+				<div id="fileButtons">
+					<button type="button" class="btn btn-light text-success" id="clearEditor" title="Reset the editor text."><i class="fas fa-eraser"></i> New File</button>
+					<input type="file" id="hiddenButton" accept=".lpy"/>
+					<button type="button" class="btn btn-light text-success" id="importFile" title="Import a .lpy file from your local storage.">
+						<i class="fas fa-file-upload"></i> Load from file</button>
+					<button type="button" class="btn btn-light text-success" id="importExample" title="Import a .lpy example file from the database." data-toggle="modal" data-target="#modalExample" style="display: none;">
+					<i class="fas fa-file-upload"></i> Load Example</button>
+					<!--<button type="button" class="btn btn-light text-success" id="importURL" alt="Import a .lpy file from an URL." title="Import a .lpy file from an URL." data-toggle="modal" data-target="#modalFileURL">
+						<i class="fas fa-file-upload"></i> Load from URL</button>-->
+					<button type="button" class="btn btn-light text-success" id="downloadButton" alt="Save your program in a .lpy file and download it."
+					title="Save your program in a .lpy file and download it." data-toggle="modal" data-target="#modalFilename"><i class="fas fa-save"></i> Save</button>
+				</div>
+				<div id="submitButtons">
+					<button type="submit" class="btn btn-light text-success" id="runCode"
+					title="Run your program and display the render."><i class="fas fa-play"></i> Run</button>
+					<button type="submit" class="btn btn-light text-success" id="rewind"
+					title="Run only the Axiom of the LSystem."><i class="fas fa-history"></i> Rewind</button>
+					<button type="submit" class="btn btn-light text-success" id="stepCode"
+					title="Run your program step by step."><i class="fas fa-step-forward"></i> Step</button>
+					<button type="button" class="btn btn-light text-success" id="animate" title="Play the growth animation."><i class="fas fa-film"></i> Animate</button>
+					<button type="button" class="btn btn-light text-success" id="stop" title="Stop the current animation."><i class="fas fa-hand-paper"></i> Stop</button>
+				</div>
+				<div>
+					<button type="button" class="btn btn-light text-success" id="parameters" title="Toggle fields where you can set some advanced parameters." data-toggle="collapse" data-target="#paramFields"
+						role="button" aria-expanded="false" aria-controls="collapseParameters"><i class="fas fa-cog"></i> Parameters</button>
+					<button type="button" class="btn btn-light text-success" id="resetCamera" title="Reset the camera to the initial position."><i class="fas fa-camera"></i> Reset Camera</button>
+				</div>
+				<div id="docButton">
+					<a type="button" class="btn btn-light text-success" alt="Read some documentation" title="Read some documentation"
+					href="https://lpy-anthony.readthedocs.io/en/latest/user/turtleBasic.html" target="_blank"><i class="fas fa-book"></i> Documentation</a>
+				</div>
+			</div>
+			<div class="row" id="row-main">
+				<div class="col-5" id="colTextEditor" style="position: relative;">
+					<ul class="nav nav-tabs" id="tabList" style="background-color: #1D2021;">
+						<li class="active" role="presentation" id="tab-0"><a id="tab-main" href="#" style="color:#8ec07c;">Main Tab</a></li>
+						<li id="addTab" role="presentation"><a href="#" style="color:#8ec07c;"><i class="fa fa-plus-square" aria-hidden="true"></i></a></li>
+					</ul>
+					<textarea placeholder="Axiom and rules" type="text" name="code" wrap=off>Axiom: 
+
+derivation length: 1
+production:
+
+interpretation:
+
+endlsystem
+	</textarea>
+					<div id="code"></div>
+				</div>
+				<input type="hidden" name="step" id="step" readonly>
+				<input type="hidden" name="currentStep" id="currentStep" readonly>
+				<div class="col-7" id="colCanvas">
+					<ul class="nav nav-tabs" id="outputTabs" style="background-color: #CCCCCC;">
+						<li class="active" role="presentation"><a id="renderTab" href="#" style="color:#0000FF;">3D Render</a></li>
+						<li role="presentation"><a id="outputTab" href="#" style="color:#0000FF;">Console Output</a></li>
+					</ul>
+					<canvas width="600" height="800" id="renderCanvas"></canvas>
+					<textarea type="text" class="bg-dark text-light" name="printOutput" id="printOutput" style="display: none;" readonly></textarea>
+				</div>
+				<div class="col-2 collapse paramHidden" id="paramFields">
+					<div class="row">
+						<h3 class="text-success">Parameters</h3>
+						<div><label for="animationSpeed" class="text-success">Animation Speed (ms) :</label>
+						<input type="text" class="text-success" name="animationSpeed" id="animationSpeed" minlength="2" size="5" class="flex-column" value="500" data-toggle="popover" data-placement="top" data-trigger="focus" title="About animation speed : "data-content="Animation speed must be set above 50ms for performance reasons. (If the value is too low, some instructions may be skipped and the shape will not be drawn as expected. If the input value is less than 50ms, it will be set to 50ms automatically.)" required/></div>
+					</div>
+					<div class="row" id="lpyColors">
+						<h3 class="text-success">Colors</h3>
+						<p class="text-success">There are L-Py default colors. You can add (resp. delete) colors with the "+" (resp. "-") button. The color selected by default is the second one (index 1). To change color, you need to increment or decrement the index using ";" or "," primitives.</p>
+						<div>
+							<button type="button" class="btn btn-light text-success" title="Add a new color." id="addColor"><i class="fas fa-plus"></i></button>
+							<button type="button" class="btn btn-light text-success" title="Delete the last color." id="deleteColor"><i class="fas fa-minus"></i></button>
+						</div>
+					</div>
+					<h3 class="text-success"> Variables</h3>
+					<div>
+						<table class="bg-white text-success" id="variableTable">
+							<tr>
+								<td>Parameter</td>
+								<td>Value</td>
+								<td>Action</td>
+							</tr>
+						</table>
+						<center><button type="button" class="btn btn-white text-success" id="newVariable" data-toggle="collapse" data-target="#newVariableForm" role="button" aria-expanded="false" 
+							aria-controls="collapseVariableInfos" >New variable <i class="fas fa-plus"></i></button></center>
+						<div class="collapse" id="newVariableForm">
+							<form>
+								<label for="variableName" class="text-success">Name:</label>
+								<input type="text" class="text-success" name="variableName" id="variableName" minlength="1" maxlength="100" required /><br />
+								<label for="variableValue" class="text-success">Value:</label>
+								<input type="number" class="text-success" name="variableValue" id="variableValue" minlength="1" maxlength="10" required />
+								<center><p class="text-danger" id="missingWarning" style="display: none;">A field is empty or not filled with a right value. Please retry.</p></center>
+								<center><button type="reset" class="btn btn-white text-success" id="addVariable">Enter <i class="fas fa-sign-in-alt"></i></button></center>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Filename Modal -->
+
+			<div class="modal fade" id="modalFilename" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	 			<div class="modal-dialog" role="document">
+	    			<div class="modal-content">
+	      				<div class="modal-header">
+	      					<h3 class="modal-title">Save as</h3>
+	        				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	      				</div>
+	      				<div class="modal-body">
+	        				<b><center><label for="filename">Enter a name for the file (up to 100 caracters) : </label></b>
+		        			<input class="flex-column" type="text" name="filename" id="filename" minlength="1" maxlength="100" size="40" value="file.lpy" required></center>
+		        		</div>
+		        		<div class="modal-footer">
+        					<button type="button" class="btn btn-primary" id="modalSaveButton">Save</button>
+      					</div>     
+		        	</div>
+		        </div>
+		    </div>
+
+		    <!--<div class="modal fade" id="modalExample" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	 			<div class="modal-dialog" role="document">
+	    			<div class="modal-content">
+	      				<div class="modal-header">
+	      					<h3 class="modal-title"> Load an example</h3>
+	        				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	      				</div>
+	      				<div class="modal-body">
+	        				<b><center><label for="exampleFile">Choose the example file you want to load in the editor : </label></b><br />
+		        			<select class="flex-column" type="url" name="exampleFile" id="exampleFile" required>
+		        			</select></center>
+		        		</div>
+		        		<div class="modal-footer">
+        					<button type="button" class="btn btn-primary" id="modalLoadExample">Load</button>
+      					</div>     
+		        	</div>
+		        </div>
+		    </div>-->
+
+		    <!--<div class="modal fade" id="modalFileURL" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	 			<div class="modal-dialog" role="document">
+	    			<div class="modal-content">
+	      				<div class="modal-header">
+	      					<h3 class="modal-title"> Load a file from the Web</h3>
+	        				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	      				</div>
+	      				<div class="modal-body">
+	        				<b><center><label for="fileURL">Enter the URL of the file you want to load in the editor : </label></b>
+		        			<input class="flex-column" type="url" name="fileURL" id="fileURL" placeholder="https://example.com" pattern="https://.*" size="48" required></center>
+		        		</div>
+		        		<div class="modal-footer">
+        					<button type="button" class="btn btn-primary" id="modalLoadButton">Load</button>
+      					</div>     
+		        	</div>
+		        </div>
+		    </div>-->
 		</div>
-		<div class="col-md-5">         
-			<!--<label for="name">Enter axiom and rules :</label>-->
-			<textarea placeholder="Axiom and rules" type="text" id="axiom_rules" name="code" rows=40 cols=82 wrap=off>{{code}}</textarea>
-		</div>
-		<canvas class="col-md-6" width="auto" height="auto" id="renderCanvas">
-			<p id=htmlLString>{{ name }}</p>
-		</canvas>
-	</div>
+	</form>
 {% endblock %}
 
 {% block script %}
-	<script>
-		function upload() {
-			document.getElementById('hiddenButton').click();
-		}
-	</script>
+		<script>
+			//Creation of the code editor
+			var editor = ace.edit("code");
+			var textarea = $('textarea[name="code"]').hide();
+			var sessions = [];
+			document.getElementById('code').style.fontSize='16px';
+			editor.setTheme("ace/theme/gruvbox");
+			editor.session.setMode("ace/mode/python");
+			editor.getSession().setValue(textarea.val());
+			if(!sessionStorage.getItem('genesisCode')) {
+				sessionStorage.setItem('genesisCode', editor.getSession().getValue());
+			}
+			sessions.push(editor.getSession());
+			editor.getSession().on('change', function(){
+				textarea.val(editor.getSession().getValue());
+			});
+
+			//Do the same as removeActive function but for the main tab.
+			document.getElementById("tab-main").addEventListener('click', function() {
+				editor.setSession(sessions[0]);
+				$('textarea[name="code"]').val(editor.getSession().getValue());
+				$("#tabList").children().each(function() {
+					this.removeAttribute('class', 'active');
+				});
+				this.parentNode.setAttribute('class', 'active');
+				$('#runCode').click();
+			})
+
+			//Function that allows to resize the code editor according to the screen size.
+			function resize() {
+    			var h = window.innerHeight;
+    			console.log(h);
+		    	if (h > 1050) {
+		    		$('#code').css('height', (h - 109).toString() + 'px');
+		    		$('#renderCanvas').css('height', (h - 109).toString() + 'px');
+		    	}
+			};
+
+			$(window).on('resize', function () {
+		    	resize();
+			});
+			resize();
+
+			//Add EventListeners for some buttons
+			document.getElementById("importFile").addEventListener("click", () => upload());
+			document.getElementById("hiddenButton").addEventListener("input", () => hiddenUpload(editor, sessions));
+			document.getElementById("modalSaveButton").addEventListener("click", () => downloadFile(editor));
+			//document.getElementById("modalLoadExample").addEventListener("click", () => loadExample(editor));
+			document.getElementById("clearEditor").addEventListener('click', () => clearEditor(editor));
+			document.getElementById("animate").addEventListener('click', () => animate());
+			document.getElementById("stop").addEventListener('click', () => stop());
+			document.getElementById("parameters").addEventListener('click', () => displayParameters());
+			document.getElementById("addTab").addEventListener("click", () => addNewTab(editor, sessions, sessionStorage.getItem('genesisCode')));
+			document.getElementById("renderTab").addEventListener("click", () => activateRenderTab());
+			document.getElementById("outputTab").addEventListener("click", () => activateOutputTab());
+			document.getElementById("addVariable").addEventListener("click", () => addVariable());
+			//document.getElementById("modalLoadButton").addEventListener("click", () => loadFromURL(editor));
+			
+		</script>
 {% endblock %}

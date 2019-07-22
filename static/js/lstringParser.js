@@ -113,9 +113,12 @@ class LStringParser {
 		size = searchSymbol(lstr, i, size, "OLineRel");
 		size = searchSymbol(lstr, i, size, "@O");		size = searchSymbol(lstr, i, size, "Sphere");
 		size = searchSymbol(lstr, i, size, "@o");		size = searchSymbol(lstr, i, size, "Circle");
+		size = searchSymbol(lstr, i, size, "@B");		size = searchSymbol(lstr, i, size, "Box");
+		size = searchSymbol(lstr, i, size, "@b");		size = searchSymbol(lstr, i, size, "Quad");
 		size = searchSymbol(lstr, i, size, "@L");		size = searchSymbol(lstr, i, size, "Label");
 		size = searchSymbol(lstr, i, size, "Surface");
 		size = searchSymbol(lstr, i, size, "~");
+		size = searchSymbol(lstr, i, size, "~l");
 		size = searchSymbol(lstr, i, size, "@g");		size = searchSymbol(lstr, i, size, "PglShape");
 		size = searchSymbol(lstr, i, size, "Frame");
 		size = searchSymbol(lstr, i, size, "SetContour");
@@ -132,13 +135,14 @@ class LStringParser {
 		size = searchSymbol(lstr, i, size, ";");		size = searchSymbol(lstr, i, size, "IncColor");
 		size = searchSymbol(lstr, i, size, ",");		size = searchSymbol(lstr, i, size, "DecColor");
 		size = searchSymbol(lstr, i, size, "SetColor");
+		size = searchSymbol(lstr, i, size, "InterpolateColors");
 
 		size = searchSymbol(lstr, i, size, "@Ts");		size = searchSymbol(lstr, i, size, "Elasticity");
 		size = searchSymbol(lstr, i, size, "@Tp");		size = searchSymbol(lstr, i, size, "Tropism");
 		return (size);
     }
 }
-function	searchSymbol(lstr, i, tmp, symbol) {//true if finded
+function searchSymbol(lstr, i, tmp, symbol) {//true if finded
 	for (j = 0; j < symbol.length; j++) {
 		if (lstr[i+j] != symbol[j])
 			return (tmp);

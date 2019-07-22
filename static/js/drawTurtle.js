@@ -18,19 +18,27 @@ class drawTurtle {
         this.scene = new BABYLON.Scene(this.engine);
 		this.scene.clearColor = new BABYLON.Color3(0.8, 0.8, 0.8);
 
-		this.camera = new BABYLON.ArcRotateCamera("Camera", 0, 0, 15, new BABYLON.Vector3(0, 0, 0), this.scene);
-		this.camera.setPosition(new BABYLON.Vector3(0, 0, 15));
+		this.camera = new BABYLON.ArcRotateCamera("Camera", 0, 0, 5, new BABYLON.Vector3(0, 0, 0), this.scene);
+		this.camera.setPosition(new BABYLON.Vector3(0, 0, 5));
 		this.camera.attachControl(this.canvas, true);
 
-        this.light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 5, -3), this.scene);
+        this.light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, -5, 3), this.scene);
         this.light.intensity = 1;
 
         this.graphicElems = [];
 		this.materialColors = [];
         this.materialTextures = [];
 
-        var CoT = this.LocalAxes(2, 0);
-		
+        var CoT = this.LocalAxes(42, 0);
+
+        var options = new BABYLON.SceneOptimizerOptions();
+        options.addOptimization(new BABYLON.LensFlaresOptimization(0));
+        options.addOptimization(new BABYLON.ShadowsOptimization(0));
+        options.addOptimization(new BABYLON.PostProcessesOptimization(1));
+        options.addOptimization(new BABYLON.ParticlesOptimization(1));
+        options.addOptimization(new BABYLON.TextureOptimization(2, 1024));
+        this.optimizer = new BABYLON.SceneOptimizer(this.scene, options);
+
 		this.InitializeMaterialsColors();
     }
 
@@ -59,9 +67,9 @@ class drawTurtle {
      */
     InitializeMaterialsColors() {
         this.materialColors = [];
-        var hexColors = ["#FFFFFFFF", "#FFB71CFF", "#53FF00FF", "#FF0000FF", "#FFFF00FF", "#0000FFFF", "#FF00FFFF"];
+        var hexColors = ["#FFFFFFFF", "#FFB71CFF", "#53FF00FF", "#FF0000FF", "#FFFF00FF", "#0000FFFF", "#FF00FFFF"]; //Alpha value has been deleted because <input type="color"/> use "RRGGBB" format
         for (var i in hexColors) {
-            this.AddMaterialColor(hexColors[i] + "Color", hexColors[i], "#00000000", "#00000000", "#00000000");
+            this.AddMaterialColor(hexColors[i], hexColors[i], "#00000000", "#00000000", "#00000000");
         }
     }
 	
@@ -91,21 +99,21 @@ class drawTurtle {
      */
     LocalAxes(size, shade) {
         var pilot_local_axisX = BABYLON.Mesh.CreateLines("pilot_local_axisX", [
-            new BABYLON.Vector3.Zero(), new BABYLON.Vector3(size, 0, 0), new BABYLON.Vector3(size * 0.95, 0.05 * size, 0),
-            new BABYLON.Vector3(size, 0, 0), new BABYLON.Vector3(size * 0.95, -0.05 * size, 0)
+            new BABYLON.Vector3.Zero(), new BABYLON.Vector3(0, 0, size)
         ], this.scene);
+        //new BABYLON.Vector3(size * 0.95, 0.05 * size, 0), new BABYLON.Vector3(0, size, 0), new BABYLON.Vector3(size * 0.95, -0.05 * size, 0)
         pilot_local_axisX.color = new BABYLON.Color3(1, shade, shade);
 
         var pilot_local_axisY = BABYLON.Mesh.CreateLines("pilot_local_axisY", [
-            new BABYLON.Vector3.Zero(), new BABYLON.Vector3(0, size, 0), new BABYLON.Vector3(-0.05 * size, size * 0.95, 0),
-            new BABYLON.Vector3(0, size, 0), new BABYLON.Vector3(0.05 * size, size * 0.95, 0)
+            new BABYLON.Vector3.Zero(), new BABYLON.Vector3(-size, 0, 0)
         ], this.scene);
+        //new BABYLON.Vector3(-0.05 * size, size * 0.95, 0), new BABYLON.Vector3(size, 0, 0), new BABYLON.Vector3(0.05 * size, size * 0.95, 0)
         pilot_local_axisY.color = new BABYLON.Color3(shade, 1, shade);
 
         var pilot_local_axisZ = BABYLON.Mesh.CreateLines("pilot_local_axisZ", [
-            new BABYLON.Vector3.Zero(), new BABYLON.Vector3(0, 0, size), new BABYLON.Vector3(0, -0.05 * size, size * 0.95),
-            new BABYLON.Vector3(0, 0, size), new BABYLON.Vector3(0, 0.05 * size, size * 0.95)
+            new BABYLON.Vector3.Zero(), new BABYLON.Vector3(0, size, 0)
         ], this.scene);
+        //new BABYLON.Vector3(0, -0.05 * size, size * 0.95), new BABYLON.Vector3(0, 0, size), new BABYLON.Vector3(0, 0.05 * size, size * 0.95)
         pilot_local_axisZ.color = new BABYLON.Color3(shade, shade, 1);
 
         var local_origin = BABYLON.MeshBuilder.CreateBox("local_origin", { size: 1 }, this.scene);
@@ -166,6 +174,29 @@ class drawTurtle {
     }
 
     /**
+     * Create a plane mesh with the turtle parameters given
+     *
+     * @param {String} id The plane identifier
+     * @param {Object} settings The plane settings
+     * @param {Object} currentParams Current turtle parameters
+     * @param {BABYLON.StandardMaterial} material The material to be applied on the plane
+     */
+    CreatePlane(id, settings, currentParams, material) {
+        this.graphicElems.push(BABYLON.MeshBuilder.CreatePlane(id, settings, this.scene));
+        var plane = this.graphicElems[this.graphicElems.length - 1];
+        plane.material = material;
+
+        var rotationMatrix = BABYLON.Vector3.RotationFromAxis(currentParams.up, currentParams.heading, currentParams.left);
+        var planeHeight = plane.getBoundingInfo().boundingBox.vectorsWorld[1].y + -(plane.getBoundingInfo().boundingBox.vectorsWorld[0].y);
+        plane.translate(BABYLON.Axis.Y, planeHeight / 2, BABYLON.Space.LOCAL);
+
+        var CoT = new BABYLON.TransformNode("root");
+        CoT.position = currentParams.position;
+        CoT.rotation = rotationMatrix;
+        plane.parent = CoT;
+    }
+
+    /**
      * Create a sphere with the turtle parameters given
      *
      * @param {String} id The sphere identifier
@@ -185,6 +216,28 @@ class drawTurtle {
         CoT.position = currentParams.position;
         CoT.rotation = rotationMatrix;
         sphere.parent = CoT;
+    }
+
+    /**
+     * Create a disc with the turtle parameters given
+     *
+     * @param {String} id The disc identifier
+     * @param {Object} settings The disc settings
+     * @param {Object} currentParams Current turtle parameters
+     * @param {BABYLON.StandardMaterial} material The material to be applied on the disc
+     */
+    CreateDisc(id, settings, currentParams, material) {
+        this.graphicElems.push(BABYLON.MeshBuilder.CreateDisc(id, settings, this.scene));
+
+        var disc = this.graphicElems[this.graphicElems.length - 1];
+        disc.material = material;
+
+        var rotationMatrix = BABYLON.Vector3.RotationFromAxis(currentParams.up, currentParams.heading, currentParams.left);
+
+        var CoT = new BABYLON.TransformNode("root");
+        CoT.position = currentParams.position;
+        CoT.rotation = rotationMatrix;
+        disc.parent = CoT;
     }
 
     /**
@@ -267,9 +320,29 @@ class drawTurtle {
      * Delete all the meshs in the mesh array : drawTurtle.graphicElems[]
      */
 	DeleteTrees() {
-		for (var i in this.graphicElems) {
-			this.scene.removeMesh(this.graphicElems[i]);
+		for (let i in this.graphicElems) {
+            this.scene.removeMesh(this.graphicElems[i]);
+            this.graphicElems[i].dispose(true, true);
 		}
-		this.graphicElems = []
-	}
+        for (let i in this.materialColors) {
+            this.materialColors[i].dispose(true, true);
+            this.scene.removeMaterial(this.materialColors[i]);
+        }
+        for (let i in this.materialTextures) {
+            this.materialTextures[i].dispose(true, true);
+            this.scene.removeTexture(this.materialTextures[i]);
+        }
+        this.graphicElems = [];
+        this.CoT = null;
+    }
+
+    /**
+     * Reset the position of the camera to it's inital state 
+     */
+
+    ResetCamera() {
+        this.camera.setPosition(new BABYLON.Vector3(0, 0, 5));
+        this.camera.target = new BABYLON.Vector3(0,0,0);
+        this.camera.attachControl(this.canvas, true);
+    }
 }
