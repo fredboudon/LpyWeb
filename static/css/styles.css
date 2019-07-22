@@ -89,7 +89,7 @@ li {
 }
 
 .active {
-	background-color: #FFFAF0;
+	background-color: #FFFFFF;
 }
 
 #tabList li:not(:last-child) {	
@@ -100,4 +100,19 @@ li {
 #printOutput {
 	width: 100%;
 	height: 95%;
+}
+
+#lpyColors {
+	margin-bottom: 5px;
+}
+
+#variableTable {
+	width: 100%;
+	height: auto;
+	margin-bottom: 10px;
+}
+
+td {
+	border: 1px solid green;
+	text-align: center;
 }

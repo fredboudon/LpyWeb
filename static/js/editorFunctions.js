@@ -437,3 +437,35 @@ function activateOutputTab() {
 		output.style.display = "";
 	}
 }
+
+function addVariable() {
+	if ( ($('#variableName').val().length === 0) || ($('#variableValue').val().length === 0) ) {
+		document.getElementById('addVariable').removeAttribute('type', 'reset')
+		document.getElementById('missingWarning').style.display = "";
+	}else {
+		document.getElementById('addVariable').setAttribute('type', 'reset')
+		document.getElementById('missingWarning').style.display = "none";
+		var newRow = document.createElement("TR");
+		var varName = document.createElement("TD");
+		var nameText = $('#variableName').val();
+		varName.insertAdjacentHTML('afterbegin', nameText);
+		var varValue = document.createElement("TD");
+		var valueNumber = $('#variableValue').val();
+		varValue.insertAdjacentHTML('afterbegin', valueNumber);
+
+		var actionCell = document.createElement("TD");
+		var deleteVar = document.createElement("A");
+		deleteVar.className = 'fa fa-times';
+		deleteVar.href = '#';
+		deleteVar.style.color = "#B22222";
+		deleteVar.addEventListener('click', function() {
+			this.parentNode.parentNode.remove();
+		});
+		actionCell.appendChild(deleteVar);
+		newRow.appendChild(actionCell);
+
+		newRow.insertBefore(varValue, actionCell);
+		newRow.insertBefore(varName, varValue);
+		document.getElementById("variableTable").appendChild(newRow);
+	} 	
+}
