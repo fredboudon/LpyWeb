@@ -85,6 +85,10 @@ main {
 	margin-right: -20%;
 }
 
+#paramFields {
+	font-size: 0.875em;
+}
+
 li {
 	padding-left: 10px;
 	padding-right: 10px;
@@ -119,6 +123,18 @@ li {
 	width: 100%;
 	height: auto;
 	margin-bottom: 10px;
+}
+
+#newVariableForm {
+	margin-top: 10px;
+}
+
+#variableName {
+	width: 100%;
+}
+
+#variableValue {
+	width: 100%;
 }
 
 td {

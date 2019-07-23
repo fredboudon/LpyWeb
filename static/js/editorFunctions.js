@@ -443,7 +443,8 @@ function activateOutputTab() {
 }
 
 function addVariable() {
-	if ( ($('#variableName').val().length === 0) || ($('#variableValue').val().length === 0) ) {
+	var regex = /^[a-zA-Z]+[a-zA-Z0-9_-]*/;
+	if ( !(regex.test(($('#variableName').val()))) || ($('#variableValue').val().length === 0) ) {
 		document.getElementById('addVariable').removeAttribute('type', 'reset')
 		document.getElementById('missingWarning').style.display = "";
 	}else {

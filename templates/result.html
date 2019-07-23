@@ -99,9 +99,9 @@ endlsystem
 							aria-controls="collapseVariableInfos" >New variable <i class="fas fa-plus"></i></button></center>
 						<div class="collapse" id="newVariableForm">
 							<form>
-								<label for="variableName" class="text-success">Name:</label>
-								<input type="text" class="text-success" name="variableName" id="variableName" minlength="1" maxlength="100" required /><br />
-								<label for="variableValue" class="text-success">Value:</label>
+								<label for="variableName" class="text-success" style="font-size: 1.125em;">Name :</label>
+								<input type="text" class="text-success" name="variableName" id="variableName" minlength="1" maxlength="100" pattern="^[a-zA-Z][a-zA-Z0-9_-]*" required /><br />
+								<label for="variableValue" class="text-success" style="margin-top: 5px; font-size: 1.125em;">Value :</label>
 								<input type="number" class="text-success" name="variableValue" id="variableValue" minlength="1" maxlength="10" required />
 								<center><p class="text-danger" id="missingWarning" style="display: none;">A field is empty or not filled with a right value. Please retry.</p></center>
 								<center><button type="reset" class="btn btn-white text-success" id="addVariable">Enter <i class="fas fa-sign-in-alt"></i></button></center>
