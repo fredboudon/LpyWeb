@@ -58,7 +58,7 @@ production:
 interpretation:
 
 endlsystem
-	</textarea>
+</textarea>
 					<div id="code"></div>
 				</div>
 				<input type="hidden" name="step" id="step" readonly>
@@ -67,6 +67,7 @@ endlsystem
 					<ul class="nav nav-tabs" id="outputTabs" style="background-color: #CCCCCC;">
 						<li class="active" role="presentation"><a id="renderTab" href="#" style="color:#0000FF;">3D Render</a></li>
 						<li role="presentation"><a id="outputTab" href="#" style="color:#0000FF;">Console Output</a></li>
+						<li><a href="#" style="color:#F22F2F; display: none" id="clearConsole">Clear Console</a></li>
 					</ul>
 					<canvas width="600" height="800" id="renderCanvas"></canvas>
 					<textarea type="text" class="bg-dark text-light" name="printOutput" id="printOutput" style="display: none;" readonly></textarea>
@@ -98,9 +99,9 @@ endlsystem
 							aria-controls="collapseVariableInfos" >New variable <i class="fas fa-plus"></i></button></center>
 						<div class="collapse" id="newVariableForm">
 							<form>
-								<label for="variableName" class="text-success">Name:</label>
-								<input type="text" class="text-success" name="variableName" id="variableName" minlength="1" maxlength="100" required /><br />
-								<label for="variableValue" class="text-success">Value:</label>
+								<label for="variableName" class="text-success" style="font-size: 1.125em;">Name :</label>
+								<input type="text" class="text-success" name="variableName" id="variableName" minlength="1" maxlength="100" pattern="^[a-zA-Z][a-zA-Z0-9_-]*" required /><br />
+								<label for="variableValue" class="text-success" style="margin-top: 5px; font-size: 1.125em;">Value :</label>
 								<input type="number" class="text-success" name="variableValue" id="variableValue" minlength="1" maxlength="10" required />
 								<center><p class="text-danger" id="missingWarning" style="display: none;">A field is empty or not filled with a right value. Please retry.</p></center>
 								<center><button type="reset" class="btn btn-white text-success" id="addVariable">Enter <i class="fas fa-sign-in-alt"></i></button></center>
@@ -180,9 +181,11 @@ endlsystem
 			editor.setTheme("ace/theme/gruvbox");
 			editor.session.setMode("ace/mode/python");
 			editor.getSession().setValue(textarea.val());
+
 			if(!sessionStorage.getItem('genesisCode')) {
 				sessionStorage.setItem('genesisCode', editor.getSession().getValue());
 			}
+			
 			sessions.push(editor.getSession());
 			editor.getSession().on('change', function(){
 				textarea.val(editor.getSession().getValue());
@@ -227,6 +230,9 @@ endlsystem
 			document.getElementById("renderTab").addEventListener("click", () => activateRenderTab());
 			document.getElementById("outputTab").addEventListener("click", () => activateOutputTab());
 			document.getElementById("addVariable").addEventListener("click", () => addVariable());
+			document.getElementById("clearConsole").addEventListener("click", function() {
+				$("#printOutput").val(""); 
+			});
 			//document.getElementById("modalLoadButton").addEventListener("click", () => loadFromURL(editor));
 			
 		</script>

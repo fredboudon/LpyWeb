@@ -362,7 +362,7 @@ function addNewTab(editor, sessions, code, filename) {
 		editor.setSession(sessions[this.parentNode.id.split('-')[1]]);
 		$('textarea[name="code"]').val(editor.getSession().getValue());
 		this.parentNode.setAttribute('class', 'active');
-		$('#runCode').click();
+		$('#rewind').click();
 	})
 	//Create the tab close button
 	var closeTab = document.createElement("A");
@@ -399,17 +399,17 @@ function addNewTab(editor, sessions, code, filename) {
 	newLi.insertBefore(newTab, closeTab);
 
 	if(filename === undefined){
-		newTabText.innerHTML = "New Tab ";
+		newTabText.innerHTML = "New Tab (" + newTabText.parentNode.parentNode.id.split("-")[1] + ")";
 		clearEditor(editor, "addTab");
 	}else {
 		newTabText.innerHTML = filename;
-		$('#runCode').click();
+		$('#rewind').click();
 	}
 	removeActive();
 	newTab.parentNode.setAttribute('class', 'active');
 
 	//Add the new tab in the tab list.
-	addTab.parentNode.insertBefore(newLi,addTab);
+	addTab.parentNode.insertBefore(newLi, addTab);
 }
 
 function activateRenderTab() {
@@ -417,7 +417,9 @@ function activateRenderTab() {
 	var render = document.getElementById("renderCanvas");
 	var outputTab = document.getElementById("outputTab").parentNode;
 	var output = document.getElementById("printOutput");
+	var clear = document.getElementById("clearConsole");
 	if (!(renderTab.classList.contains("active"))){
+		clear.style.display = "none";
 		output.style.display = "none";
 		outputTab.removeAttribute('class', 'active');
 		renderTab.setAttribute('class', 'active');
@@ -430,16 +432,19 @@ function activateOutputTab() {
 	var output = document.getElementById("printOutput");
 	var renderTab = document.getElementById("renderTab").parentNode;
 	var render = document.getElementById("renderCanvas");
+	var clear = document.getElementById("clearConsole");
 	if (!(outputTab.classList.contains("active"))){
 		render.style.display = "none";
 		renderTab.removeAttribute('class', 'active');
 		outputTab.setAttribute('class', 'active');
 		output.style.display = "";
+		clear.style.display = "";
 	}
 }
 
 function addVariable() {
-	if ( ($('#variableName').val().length === 0) || ($('#variableValue').val().length === 0) ) {
+	var regex = /^[a-zA-Z]+[a-zA-Z0-9_-]*/;
+	if ( !(regex.test(($('#variableName').val()))) || ($('#variableValue').val().length === 0) ) {
 		document.getElementById('addVariable').removeAttribute('type', 'reset')
 		document.getElementById('missingWarning').style.display = "";
 	}else {

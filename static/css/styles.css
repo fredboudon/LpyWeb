@@ -5,6 +5,7 @@ html {
 
 body {
 	background-color: #e9fce9;  /*in RGB : 233,252,233 */
+	font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif;
 }
 
 .img-responsive {
@@ -84,17 +85,29 @@ main {
 	margin-right: -20%;
 }
 
+#paramFields {
+	font-size: 0.875em;
+}
+
 li {
-	margin-left: 5px;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 5px;
+	font-size: 0.875em;
 }
 
 .active {
+	border-top: 2px solid #238239;
+	border-right: 1px solid black;
 	background-color: #FFFFFF;
 }
 
-#tabList li:not(:last-child) {	
-    border-right: 1px solid black;
+#tabList {	
     border-bottom: 1px solid black;
+}
+
+#outputTabs {
+    border-bottom: 1px solid #CCCCCC;
 }
 
 #printOutput {
@@ -112,7 +125,23 @@ li {
 	margin-bottom: 10px;
 }
 
+#newVariableForm {
+	margin-top: 10px;
+}
+
+#variableName {
+	width: 100%;
+}
+
+#variableValue {
+	width: 100%;
+}
+
 td {
 	border: 1px solid green;
 	text-align: center;
+}
+
+#clearConsole {
+	margin-left: 675px;
 }
