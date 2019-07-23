@@ -47,7 +47,7 @@
 			<div class="row" id="row-main">
 				<div class="col-5" id="colTextEditor" style="position: relative;">
 					<ul class="nav nav-tabs" id="tabList" style="background-color: #1D2021;">
-						<li class="active" role="presentation" id="tab-0"><a id="tab-main" href="#" style="color:#8ec07c;">Main Tab</a></li>
+						<li class="active" role="presentation" id="tab-0"><a id="tab-main" href="#" style="color:#8ec07c;">New Tab</a></li>
 						<li id="addTab" role="presentation"><a href="#" style="color:#8ec07c;"><i class="fa fa-plus-square" aria-hidden="true"></i></a></li>
 					</ul>
 					<textarea placeholder="Axiom and rules" type="text" name="code" wrap=off>Axiom: 
@@ -65,7 +65,7 @@ endlsystem
 				<input type="hidden" name="currentStep" id="currentStep" readonly>
 				<div class="col-7" id="colCanvas">
 					<ul class="nav nav-tabs" id="outputTabs" style="background-color: #CCCCCC;">
-						<li class="active" role="presentation"><a id="renderTab" href="#" style="color:#0000FF;">3D Render</a></li>
+						<li class="active" role="presentation"><a id="renderTab" href="#" style="color:#0000FF;">3D Renderer</a></li>
 						<li role="presentation"><a id="outputTab" href="#" style="color:#0000FF;">Console Output</a></li>
 						<li><a href="#" style="color:#F22F2F; display: none" id="clearConsole">Clear Console</a></li>
 					</ul>
@@ -84,6 +84,10 @@ endlsystem
 						<div>
 							<button type="button" class="btn btn-light text-success" title="Add a new color." id="addColor"><i class="fas fa-plus"></i></button>
 							<button type="button" class="btn btn-light text-success" title="Delete the last color." id="deleteColor"><i class="fas fa-minus"></i></button>
+						</div>
+						<div>
+							<label for="rendererBackground" class="text-success" style="font-size: 1.125em;">Renderer background color :</label>
+							<input type="color" name="colorBackground" id="colorBackground" value="#CCCCCC" />
 						</div>
 					</div>
 					<h3 class="text-success"> Variables</h3>

@@ -28,6 +28,10 @@ $(document).ready(function() {
 	document.getElementById('deleteColor').onclick = function() {
 		deleteLastColor(dTurtle);
 	};
+
+	document.getElementById("colorBackground").onchange = function() {
+		changeBackgroundColor(dTurtle);
+	}
 	
 	//Creation of the Ajax Requests for Run, Step and Rewind
 	if(document.getElementById('runCode')) {
@@ -320,6 +324,12 @@ function deleteLastColor(drawTurtle) {
 		var deletedColor = drawTurtle.materialColors.pop();
 		document.getElementById(colorId).parentNode.removeChild(document.getElementById(colorId));
 	}
+}
+
+//Change the renderer background color according to the color selected
+function changeBackgroundColor(drawTurtle) {
+	var colorValue = document.getElementById("colorBackground").value;
+	drawTurtle.scene.clearColor = new BABYLON.Color3.FromHexString(colorValue);
 }
 
 /*Removes the active class of all tabs*/
