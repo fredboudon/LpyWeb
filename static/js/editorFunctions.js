@@ -403,7 +403,7 @@ function addNewTab(editor, sessions, code, filename) {
 		clearEditor(editor, "addTab");
 	}else {
 		newTabText.innerHTML = filename;
-		$('#runCode').click();
+		$('#rewind').click();
 	}
 	removeActive();
 	newTab.parentNode.setAttribute('class', 'active');
@@ -417,7 +417,9 @@ function activateRenderTab() {
 	var render = document.getElementById("renderCanvas");
 	var outputTab = document.getElementById("outputTab").parentNode;
 	var output = document.getElementById("printOutput");
+	var clear = document.getElementById("clearConsole");
 	if (!(renderTab.classList.contains("active"))){
+		clear.style.display = "none";
 		output.style.display = "none";
 		outputTab.removeAttribute('class', 'active');
 		renderTab.setAttribute('class', 'active');
@@ -430,11 +432,13 @@ function activateOutputTab() {
 	var output = document.getElementById("printOutput");
 	var renderTab = document.getElementById("renderTab").parentNode;
 	var render = document.getElementById("renderCanvas");
+	var clear = document.getElementById("clearConsole");
 	if (!(outputTab.classList.contains("active"))){
 		render.style.display = "none";
 		renderTab.removeAttribute('class', 'active');
 		outputTab.setAttribute('class', 'active');
 		output.style.display = "";
+		clear.style.display = "";
 	}
 }
 

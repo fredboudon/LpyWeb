@@ -67,6 +67,7 @@ endlsystem
 					<ul class="nav nav-tabs" id="outputTabs" style="background-color: #CCCCCC;">
 						<li class="active" role="presentation"><a id="renderTab" href="#" style="color:#0000FF;">3D Render</a></li>
 						<li role="presentation"><a id="outputTab" href="#" style="color:#0000FF;">Console Output</a></li>
+						<li><a href="#" style="color:#F22F2F; display: none" id="clearConsole">Clear Console</a></li>
 					</ul>
 					<canvas width="600" height="800" id="renderCanvas"></canvas>
 					<textarea type="text" class="bg-dark text-light" name="printOutput" id="printOutput" style="display: none;" readonly></textarea>
@@ -229,6 +230,9 @@ endlsystem
 			document.getElementById("renderTab").addEventListener("click", () => activateRenderTab());
 			document.getElementById("outputTab").addEventListener("click", () => activateOutputTab());
 			document.getElementById("addVariable").addEventListener("click", () => addVariable());
+			document.getElementById("clearConsole").addEventListener("click", function() {
+				$("#printOutput").val(""); 
+			});
 			//document.getElementById("modalLoadButton").addEventListener("click", () => loadFromURL(editor));
 			
 		</script>
