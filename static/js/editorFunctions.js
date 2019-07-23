@@ -362,7 +362,7 @@ function addNewTab(editor, sessions, code, filename) {
 		editor.setSession(sessions[this.parentNode.id.split('-')[1]]);
 		$('textarea[name="code"]').val(editor.getSession().getValue());
 		this.parentNode.setAttribute('class', 'active');
-		$('#runCode').click();
+		$('#rewind').click();
 	})
 	//Create the tab close button
 	var closeTab = document.createElement("A");
