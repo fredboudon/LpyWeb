@@ -35,9 +35,9 @@
 					<button type="button" class="btn btn-light text-success" id="stop" title="Stop the current animation."><i class="fas fa-hand-paper"></i> Stop</button>
 				</div>
 				<div>
-					<button type="button" class="btn btn-light text-success" id="parameters" title="Toggle fields where you can set some advanced parameters." data-toggle="collapse" data-target="#paramFields"
-						role="button" aria-expanded="false" aria-controls="collapseParameters"><i class="fas fa-cog"></i> Parameters</button>
+					<button type="button" class="btn btn-light text-success" id="parameters" title="Toggle fields where you can set some advanced parameters." data-toggle="collapse" data-target="#paramFields" role="button" aria-expanded="false" aria-controls="collapseParameters"><i class="fas fa-cog"></i> Parameters</button>
 					<button type="button" class="btn btn-light text-success" id="resetCamera" title="Reset the camera to the initial position."><i class="fas fa-camera"></i> Reset Camera</button>
+					<button type="button" class="btn btn-light text-success" id="clearConsole" title="Clear the output console."><i class="fas fa-broom"></i> Clear Console</button>
 				</div>
 				<div id="docButton">
 					<a type="button" class="btn btn-light text-success" alt="Read some documentation" title="Read some documentation"
@@ -235,9 +235,9 @@ endlsystem
 			//document.getElementById("renderTab").addEventListener("click", () => activateRenderTab());
 			//document.getElementById("outputTab").addEventListener("click", () => activateOutputTab());
 			document.getElementById("addVariable").addEventListener("click", () => addVariable());
-			/*document.getElementById("clearConsole").addEventListener("click", function() {
+			document.getElementById("clearConsole").addEventListener("click", function() {
 				$("#printOutput").val(""); 
-			});*/
+			});
 			//document.getElementById("modalLoadButton").addEventListener("click", () => loadFromURL(editor));
 			
 		</script>

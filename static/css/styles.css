@@ -143,6 +143,8 @@ td {
 	text-align: center;
 }
 
-#clearConsole {
-	margin-left: 675px;
+td input {
+	position: relative;
+	width: 100%;
+	height: auto;
 }

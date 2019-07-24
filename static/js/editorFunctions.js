@@ -461,12 +461,56 @@ function addVariable() {
 		document.getElementById('addVariable').setAttribute('type', 'reset')
 		document.getElementById('missingWarning').style.display = "none";
 		var newRow = document.createElement("TR");
-		var varName = document.createElement("TD");
+		var nameCell = document.createElement("TD");
+		var nameSpan = document.createElement("SPAN");
 		var nameText = $('#variableName').val();
-		varName.insertAdjacentHTML('afterbegin', nameText);
-		var varValue = document.createElement("TD");
+		nameSpan.insertAdjacentHTML('afterbegin', nameText);
+		var nameInput = document.createElement("INPUT");
+		nameInput.type = "hidden";
+		nameInput.setAttribute('value', nameText);
+		nameInput.setAttribute('pattern',"^[a-zA-Z][a-zA-Z0-9_-]*");
+		nameCell.appendChild(nameInput);
+		nameCell.appendChild(nameSpan);
+
+		$(nameCell).dblclick(function() {
+			$(this).children("span").remove();
+			this.firstChild.type = "text";
+			$(this).children("input").focus();
+		});
+
+		$(nameCell).focusout(function() {
+			let paramName = this.firstChild.value;
+			if(regex.test(paramName)) {
+				this.firstChild.type = "hidden";
+				let newSpan = document.createElement("SPAN");
+				newSpan.insertAdjacentHTML('afterbegin', paramName);
+				this.appendChild(newSpan);
+			}
+		});
+
+		var valueCell = document.createElement("TD");
+		var valueSpan = document.createElement("SPAN");
 		var valueNumber = $('#variableValue').val();
-		varValue.insertAdjacentHTML('afterbegin', valueNumber);
+		valueSpan.insertAdjacentHTML('afterbegin', valueNumber);
+		var valueInput = document.createElement("INPUT");
+		valueInput.type = "hidden";
+		valueInput.setAttribute('value', valueNumber);
+		valueCell.appendChild(valueInput);
+		valueCell.appendChild(valueSpan);
+
+		$(valueCell).dblclick(function() {
+			$(this).children("span").remove();
+			this.firstChild.type = "number";
+			$(this).children("input").focus();
+		});
+
+		$(valueCell).focusout(function() {
+			this.firstChild.type = "hidden";
+			let paramValue = this.firstChild.value;
+			let newSpan = document.createElement("SPAN");
+			newSpan.insertAdjacentHTML('afterbegin', paramValue);
+			this.appendChild(newSpan);
+		});
 
 		var actionCell = document.createElement("TD");
 		var deleteVar = document.createElement("A");
@@ -479,8 +523,8 @@ function addVariable() {
 		actionCell.appendChild(deleteVar);
 		newRow.appendChild(actionCell);
 
-		newRow.insertBefore(varValue, actionCell);
-		newRow.insertBefore(varName, varValue);
+		newRow.insertBefore(valueCell, actionCell);
+		newRow.insertBefore(nameCell, valueCell);
 		document.getElementById("variableTable").appendChild(newRow);
 	} 	
 }
