@@ -469,6 +469,7 @@ function addVariable() {
 		nameInput.type = "hidden";
 		nameInput.setAttribute('value', nameText);
 		nameInput.setAttribute('pattern',"^[a-zA-Z][a-zA-Z0-9_-]*");
+		nameInput.setAttribute('required', 'true');
 		nameCell.appendChild(nameInput);
 		nameCell.appendChild(nameSpan);
 
@@ -481,10 +482,13 @@ function addVariable() {
 		$(nameCell).focusout(function() {
 			let paramName = this.firstChild.value;
 			if(regex.test(paramName)) {
+				document.getElementById('wrongParamName').style.display = "none";
 				this.firstChild.type = "hidden";
 				let newSpan = document.createElement("SPAN");
 				newSpan.insertAdjacentHTML('afterbegin', paramName);
 				this.appendChild(newSpan);
+			}else {
+				document.getElementById('wrongParamName').style.display= "";
 			}
 		});
 
@@ -495,6 +499,7 @@ function addVariable() {
 		var valueInput = document.createElement("INPUT");
 		valueInput.type = "hidden";
 		valueInput.setAttribute('value', valueNumber);
+		valueInput.setAttribute('required', 'true');
 		valueCell.appendChild(valueInput);
 		valueCell.appendChild(valueSpan);
 
