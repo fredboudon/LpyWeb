@@ -64,13 +64,13 @@ endlsystem
 				<input type="hidden" name="step" id="step" readonly>
 				<input type="hidden" name="currentStep" id="currentStep" readonly>
 				<div class="col-7" id="colCanvas">
-					<ul class="nav nav-tabs" id="outputTabs" style="background-color: #CCCCCC;">
+					<!--<ul class="nav nav-tabs" id="outputTabs" style="background-color: #CCCCCC;">
 						<li class="active" role="presentation"><a id="renderTab" href="#" style="color:#0000FF;">3D Renderer</a></li>
 						<li role="presentation"><a id="outputTab" href="#" style="color:#0000FF;">Console Output</a></li>
 						<li><a href="#" style="color:#F22F2F; display: none" id="clearConsole">Clear Console</a></li>
-					</ul>
+					</ul>-->
 					<canvas width="600" height="800" id="renderCanvas"></canvas>
-					<textarea type="text" class="bg-dark text-light" name="printOutput" id="printOutput" style="display: none;" readonly></textarea>
+					<textarea type="text" class="bg-dark text-light" name="printOutput" id="printOutput" readonly></textarea>
 				</div>
 				<div class="col-2 collapse paramHidden" id="paramFields">
 					<div class="row">
@@ -210,10 +210,11 @@ endlsystem
 			function resize() {
     			var h = window.innerHeight;
     			console.log(h);
-		    	if (h > 1050) {
-		    		$('#code').css('height', (h - 109).toString() + 'px');
-		    		$('#renderCanvas').css('height', (h - 109).toString() + 'px');
-		    	}
+		    	//if (h > 1070) {
+		    		$('#code').css('height', (h - (h * 0.14)).toString() + 'px');
+		    		$('#renderCanvas').css('height', (h - (h * 0.3)).toString() + 'px');
+		    		$('#printOutput').css('height', (h - (h * 0.8)).toString() + 'px');
+		    	//}
 			};
 
 			$(window).on('resize', function () {
@@ -231,12 +232,12 @@ endlsystem
 			document.getElementById("stop").addEventListener('click', () => stop());
 			document.getElementById("parameters").addEventListener('click', () => displayParameters());
 			document.getElementById("addTab").addEventListener("click", () => addNewTab(editor, sessions, sessionStorage.getItem('genesisCode')));
-			document.getElementById("renderTab").addEventListener("click", () => activateRenderTab());
-			document.getElementById("outputTab").addEventListener("click", () => activateOutputTab());
+			//document.getElementById("renderTab").addEventListener("click", () => activateRenderTab());
+			//document.getElementById("outputTab").addEventListener("click", () => activateOutputTab());
 			document.getElementById("addVariable").addEventListener("click", () => addVariable());
-			document.getElementById("clearConsole").addEventListener("click", function() {
+			/*document.getElementById("clearConsole").addEventListener("click", function() {
 				$("#printOutput").val(""); 
-			});
+			});*/
 			//document.getElementById("modalLoadButton").addEventListener("click", () => loadFromURL(editor));
 			
 		</script>
