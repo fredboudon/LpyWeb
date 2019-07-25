@@ -47,7 +47,8 @@
 			<div class="row" id="row-main">
 				<div class="col-5" id="colTextEditor" style="position: relative;">
 					<ul class="nav nav-tabs" id="tabList" style="background-color: #1D2021;">
-						<li class="active" role="presentation" id="tab-0"><a id="tab-main" href="#" style="color:#8ec07c;">New Tab</a></li>
+						<li class="active" role="presentation" id="tab-0"><a id="tab-main" href="#" style="color:#8ec07c;"><span>New Tab</span></a><a href="#" id="removeFirstTab" class="fa fa-times" 
+							style="float: right; margin: 5px; color: #B22222; display: none;"></a></li>
 						<li id="addTab" role="presentation"><a href="#" style="color:#8ec07c;"><i class="fa fa-plus-square" aria-hidden="true"></i></a></li>
 					</ul>
 					<textarea placeholder="Axiom and rules" type="text" name="code" wrap=off>Axiom: 
@@ -127,7 +128,7 @@ endlsystem
 	      				</div>
 	      				<div class="modal-body">
 	        				<b><center><label for="filename">Enter a name for the file (up to 100 caracters) : </label></b>
-		        			<input class="flex-column" type="text" name="filename" id="filename" minlength="1" maxlength="100" size="40" value="file.lpy" required></center>
+		        			<input class="flex-column" type="text" name="filename" id="filename" minlength="1" maxlength="100" value="file.lpy" required></center>
 		        		</div>
 		        		<div class="modal-footer">
         					<button type="button" class="btn btn-primary" id="modalSaveButton">Save</button>
@@ -212,7 +213,7 @@ endlsystem
     			var h = window.innerHeight;
     			console.log(h);
 		    	//if (h > 1070) {
-		    		$('#code').css('height', (h - (h * 0.14)).toString() + 'px');
+		    		$('#code').css('height', (h - (h * 0.128)).toString() + 'px');
 		    		$('#renderCanvas').css('height', (h - (h * 0.3)).toString() + 'px');
 		    		$('#printOutput').css('height', (h - (h * 0.8)).toString() + 'px');
 		    	//}
@@ -239,6 +240,22 @@ endlsystem
 			document.getElementById("clearConsole").addEventListener("click", function() {
 				$("#printOutput").val(""); 
 			});
+			document.getElementById("removeFirstTab").addEventListener("click", function() {
+				editor.setSession(sessions[1]);
+				$('textarea[name="code"]').val(editor.getSession().getValue());
+				document.getElementById("tab-1").setAttribute('class', 'active');
+				document.getElementById("tab-1").firstChild.click();
+				$(this.parentNode).nextUntil(document.getElementById("addTab")).each(function() {
+					this.id = "tab-" + (this.id.split('-')[1] - 1);
+				});
+				this.parentNode.remove();
+				sessions.shift();
+				var liNumber = $("#tabList > li").length - 1;
+				if(liNumber == 1) {
+					var deleteButton = $("#tab-0").children('a').eq(1)[0];
+					deleteButton.style.display = "none";
+				}
+			})
 			//document.getElementById("modalLoadButton").addEventListener("click", () => loadFromURL(editor));
 			
 		</script>

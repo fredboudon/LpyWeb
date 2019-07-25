@@ -16,6 +16,8 @@ $(document).ready(function() {
 
     initialiseColorPanel(dTurtle);
 
+    $('#printOutput').val("Console Output \nAll the outputs of 'print' written in the code editor will appear here.");
+
     //Add onclick events for some buttons
     document.getElementById('resetCamera').onclick = function() {
 		dTurtle.ResetCamera();
@@ -203,6 +205,8 @@ function downloadFile(editor) {
 		document.body.appendChild(element);
 		element.click();
 		document.body.removeChild(element);
+		let activeTabName = document.getElementById('tabList').getElementsByClassName('active')[0].firstChild.firstChild;
+		activeTabName.innerHTML = inputName;
 	}
 }
 
@@ -343,6 +347,9 @@ function removeActive() {
 Create an new tab with a new editor session.*/
 function addNewTab(editor, sessions, code, filename) {
 
+	var firstTabButton = $("#tab-0").children('a').eq(1)[0];
+	firstTabButton.style.display = "";
+
 	//Create a new session and save it in the array
 	EditSession = ace.require("ace/edit_session").EditSession;
 	var sess = new EditSession(sessionStorage.getItem('genesisCode'), "ace/mode/python");
@@ -378,19 +385,29 @@ function addNewTab(editor, sessions, code, filename) {
 	var closeTab = document.createElement("A");
 	closeTab.className = 'fa fa-times';
 	closeTab.href = '#';
-	closeTab.style.float = "left";
+	closeTab.style.float = "right";
 	closeTab.style.margin = "5px";
 	closeTab.style.color = "#B22222";
+	newLi.appendChild(closeTab);
 	closeTab.addEventListener('click', function() {
 		var liToRemove = this.parentNode;
 		var liId = liToRemove.id;
+
 		//If the deleted tab was the current one, the active tab becomes the previous one.
 		if (liToRemove.classList.contains("active")) {
 			liToRemove.removeAttribute('class', 'active');
+			editor.session = null;
 			editor.setSession(sessions[liId.split('-')[1]-1]);
-			var idPreviousLi = "tab-" + (liId.split('-')[1]-1).toString();
-			document.getElementById(idPreviousLi).setAttribute('class', 'active');
-			document.getElementById(idPreviousLi).firstChild.click();
+			
+			if(liId == "tab-0") {
+				var idNextLi = "tab-1";
+				document.getElementById(idNextLi).setAttribute('class', 'active');
+				document.getElementById(idNextLi).firstChild.click();
+			}else {
+				var idPreviousLi = "tab-" + (liId.split('-')[1]-1).toString();
+				document.getElementById(idPreviousLi).setAttribute('class', 'active');
+				document.getElementById(idPreviousLi).firstChild.click();
+			}
 		}
 		//Delete the tab and it's session.
 		sessions.splice(liId.split('-')[1], 1);
@@ -399,11 +416,16 @@ function addNewTab(editor, sessions, code, filename) {
 			this.id = "tab-" + (this.id.split('-')[1] - 1);
 		});
 		liToRemove.remove();
-	});
-	//Append all elements at their right place.
-	newLi.appendChild(closeTab);
 
-	var newTabText = document.createElement('P');
+		var liNumber = $("#tabList > li").length - 1;
+		if(liNumber == 1) {
+			var deleteButton = $("#tab-0").children('a').eq(1)[0];
+			deleteButton.style.display = "none";
+		}
+		console.log(liNumber);
+	});
+
+	var newTabText = document.createElement('SPAN');
 	newTabText.style.float = "left";
 	newTab.appendChild(newTabText);
 	newLi.insertBefore(newTab, closeTab);
