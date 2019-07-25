@@ -39,10 +39,6 @@
 					<button type="button" class="btn btn-light text-success" id="resetCamera" title="Reset the camera to the initial position."><i class="fas fa-camera"></i> Reset Camera</button>
 					<button type="button" class="btn btn-light text-success" id="clearConsole" title="Clear the output console."><i class="fas fa-broom"></i> Clear Console</button>
 				</div>
-				<div id="docButton">
-					<a type="button" class="btn btn-light text-success" alt="Read some documentation" title="Read some documentation"
-					href="https://lpy-anthony.readthedocs.io/en/latest/user/turtleBasic.html" target="_blank"><i class="fas fa-book"></i> Documentation</a>
-				</div>
 			</div>
 			<div class="row" id="row-main">
 				<div class="col-5" id="colTextEditor" style="position: relative;">
@@ -213,7 +209,7 @@ endlsystem
     			var h = window.innerHeight;
     			console.log(h);
 		    	//if (h > 1070) {
-		    		$('#code').css('height', (h - (h * 0.128)).toString() + 'px');
+		    		$('#code').css('height', (h - (h * 0.137)).toString() + 'px');
 		    		$('#renderCanvas').css('height', (h - (h * 0.3)).toString() + 'px');
 		    		$('#printOutput').css('height', (h - (h * 0.8)).toString() + 'px');
 		    	//}
