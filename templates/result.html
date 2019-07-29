@@ -35,19 +35,16 @@
 					<button type="button" class="btn btn-light text-success" id="stop" title="Stop the current animation."><i class="fas fa-hand-paper"></i> Stop</button>
 				</div>
 				<div>
-					<button type="button" class="btn btn-light text-success" id="parameters" title="Toggle fields where you can set some advanced parameters." data-toggle="collapse" data-target="#paramFields"
-						role="button" aria-expanded="false" aria-controls="collapseParameters"><i class="fas fa-cog"></i> Parameters</button>
+					<button type="button" class="btn btn-light text-success" id="parameters" title="Toggle fields where you can set some advanced parameters." data-toggle="collapse" data-target="#paramFields" role="button" aria-expanded="false" aria-controls="collapseParameters"><i class="fas fa-cog"></i> Parameters</button>
 					<button type="button" class="btn btn-light text-success" id="resetCamera" title="Reset the camera to the initial position."><i class="fas fa-camera"></i> Reset Camera</button>
-				</div>
-				<div id="docButton">
-					<a type="button" class="btn btn-light text-success" alt="Read some documentation" title="Read some documentation"
-					href="https://lpy-anthony.readthedocs.io/en/latest/user/turtleBasic.html" target="_blank"><i class="fas fa-book"></i> Documentation</a>
+					<button type="button" class="btn btn-light text-success" id="clearConsole" title="Clear the output console."><i class="fas fa-broom"></i> Clear Console</button>
 				</div>
 			</div>
 			<div class="row" id="row-main">
 				<div class="col-5" id="colTextEditor" style="position: relative;">
 					<ul class="nav nav-tabs" id="tabList" style="background-color: #1D2021;">
-						<li class="active" role="presentation" id="tab-0"><a id="tab-main" href="#" style="color:#8ec07c;">Main Tab</a></li>
+						<li class="active" role="presentation" id="tab-0"><a id="tab-main" href="#" style="color:#8ec07c;"><span>New Tab</span></a><a href="#" id="removeFirstTab" class="fa fa-times" 
+							style="float: right; margin: 5px; color: #B22222; display: none;"></a></li>
 						<li id="addTab" role="presentation"><a href="#" style="color:#8ec07c;"><i class="fa fa-plus-square" aria-hidden="true"></i></a></li>
 					</ul>
 					<textarea placeholder="Axiom and rules" type="text" name="code" wrap=off>Axiom: 
@@ -64,13 +61,13 @@ endlsystem
 				<input type="hidden" name="step" id="step" readonly>
 				<input type="hidden" name="currentStep" id="currentStep" readonly>
 				<div class="col-7" id="colCanvas">
-					<ul class="nav nav-tabs" id="outputTabs" style="background-color: #CCCCCC;">
-						<li class="active" role="presentation"><a id="renderTab" href="#" style="color:#0000FF;">3D Render</a></li>
+					<!--<ul class="nav nav-tabs" id="outputTabs" style="background-color: #CCCCCC;">
+						<li class="active" role="presentation"><a id="renderTab" href="#" style="color:#0000FF;">3D Renderer</a></li>
 						<li role="presentation"><a id="outputTab" href="#" style="color:#0000FF;">Console Output</a></li>
 						<li><a href="#" style="color:#F22F2F; display: none" id="clearConsole">Clear Console</a></li>
-					</ul>
+					</ul>-->
 					<canvas width="600" height="800" id="renderCanvas"></canvas>
-					<textarea type="text" class="bg-dark text-light" name="printOutput" id="printOutput" style="display: none;" readonly></textarea>
+					<textarea type="text" class="bg-dark text-light" name="printOutput" id="printOutput" readonly></textarea>
 				</div>
 				<div class="col-2 collapse paramHidden" id="paramFields">
 					<div class="row">
@@ -85,6 +82,10 @@ endlsystem
 							<button type="button" class="btn btn-light text-success" title="Add a new color." id="addColor"><i class="fas fa-plus"></i></button>
 							<button type="button" class="btn btn-light text-success" title="Delete the last color." id="deleteColor"><i class="fas fa-minus"></i></button>
 						</div>
+						<div>
+							<label for="rendererBackground" class="text-success" style="font-size: 1.125em;">Renderer background color :</label>
+							<input type="color" name="colorBackground" id="colorBackground" value="#F8F9FA" />
+						</div>
 					</div>
 					<h3 class="text-success"> Variables</h3>
 					<div>
@@ -95,6 +96,7 @@ endlsystem
 								<td>Action</td>
 							</tr>
 						</table>
+						<p style="display: none" class="text-danger text-center" id="wrongParamName">A parameter name must contain only alphanumeric characters, "-" and "_" only. Furthermore, it must begin with at least one letter.</p>
 						<center><button type="button" class="btn btn-white text-success" id="newVariable" data-toggle="collapse" data-target="#newVariableForm" role="button" aria-expanded="false" 
 							aria-controls="collapseVariableInfos" >New variable <i class="fas fa-plus"></i></button></center>
 						<div class="collapse" id="newVariableForm">
@@ -122,7 +124,7 @@ endlsystem
 	      				</div>
 	      				<div class="modal-body">
 	        				<b><center><label for="filename">Enter a name for the file (up to 100 caracters) : </label></b>
-		        			<input class="flex-column" type="text" name="filename" id="filename" minlength="1" maxlength="100" size="40" value="file.lpy" required></center>
+		        			<input class="flex-column" type="text" name="filename" id="filename" minlength="1" maxlength="100" value="file.lpy" required></center>
 		        		</div>
 		        		<div class="modal-footer">
         					<button type="button" class="btn btn-primary" id="modalSaveButton">Save</button>
@@ -206,10 +208,11 @@ endlsystem
 			function resize() {
     			var h = window.innerHeight;
     			console.log(h);
-		    	if (h > 1050) {
-		    		$('#code').css('height', (h - 109).toString() + 'px');
-		    		$('#renderCanvas').css('height', (h - 109).toString() + 'px');
-		    	}
+		    	//if (h > 1070) {
+		    		$('#code').css('height', (h - (h * 0.137)).toString() + 'px');
+		    		$('#renderCanvas').css('height', (h - (h * 0.3)).toString() + 'px');
+		    		$('#printOutput').css('height', (h - (h * 0.8)).toString() + 'px');
+		    	//}
 			};
 
 			$(window).on('resize', function () {
@@ -227,12 +230,28 @@ endlsystem
 			document.getElementById("stop").addEventListener('click', () => stop());
 			document.getElementById("parameters").addEventListener('click', () => displayParameters());
 			document.getElementById("addTab").addEventListener("click", () => addNewTab(editor, sessions, sessionStorage.getItem('genesisCode')));
-			document.getElementById("renderTab").addEventListener("click", () => activateRenderTab());
-			document.getElementById("outputTab").addEventListener("click", () => activateOutputTab());
+			//document.getElementById("renderTab").addEventListener("click", () => activateRenderTab());
+			//document.getElementById("outputTab").addEventListener("click", () => activateOutputTab());
 			document.getElementById("addVariable").addEventListener("click", () => addVariable());
 			document.getElementById("clearConsole").addEventListener("click", function() {
 				$("#printOutput").val(""); 
 			});
+			document.getElementById("removeFirstTab").addEventListener("click", function() {
+				editor.setSession(sessions[1]);
+				$('textarea[name="code"]').val(editor.getSession().getValue());
+				document.getElementById("tab-1").setAttribute('class', 'active');
+				document.getElementById("tab-1").firstChild.click();
+				$(this.parentNode).nextUntil(document.getElementById("addTab")).each(function() {
+					this.id = "tab-" + (this.id.split('-')[1] - 1);
+				});
+				this.parentNode.remove();
+				sessions.shift();
+				var liNumber = $("#tabList > li").length - 1;
+				if(liNumber == 1) {
+					var deleteButton = $("#tab-0").children('a').eq(1)[0];
+					deleteButton.style.display = "none";
+				}
+			})
 			//document.getElementById("modalLoadButton").addEventListener("click", () => loadFromURL(editor));
 			
 		</script>

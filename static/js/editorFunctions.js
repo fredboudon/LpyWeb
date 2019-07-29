@@ -16,6 +16,8 @@ $(document).ready(function() {
 
     initialiseColorPanel(dTurtle);
 
+    $('#printOutput').val("Console Output \nAll the outputs of 'print' written in the code editor will appear here.");
+
     //Add onclick events for some buttons
     document.getElementById('resetCamera').onclick = function() {
 		dTurtle.ResetCamera();
@@ -28,6 +30,10 @@ $(document).ready(function() {
 	document.getElementById('deleteColor').onclick = function() {
 		deleteLastColor(dTurtle);
 	};
+
+	document.getElementById("colorBackground").onchange = function() {
+		changeBackgroundColor(dTurtle);
+	}
 	
 	//Creation of the Ajax Requests for Run, Step and Rewind
 	if(document.getElementById('runCode')) {
@@ -143,13 +149,16 @@ function unlockButtons() {
 
 //Clear the code editor and the render
 function clearEditor(editor, mode) {
+	var activeTab = document.getElementsByClassName("active")[0];
 	if(mode == "addTab") {
 		editor.getSession().setValue(sessionStorage.getItem('genesisCode'));
+		activeTab.firstChild.firstChild.innerHTML = "New Tab";
 		$('#runCode').click();
 		unlockButtons();
 	}else {
 		if(confirm("Do you really want to reset the text editor and the 3D render ?")) {
 			editor.getSession().setValue(sessionStorage.getItem('genesisCode'));
+			activeTab.firstChild.firstChild.innerHTML = "New Tab";
 			$('#runCode').click();
 			unlockButtons();
 		}
@@ -199,6 +208,8 @@ function downloadFile(editor) {
 		document.body.appendChild(element);
 		element.click();
 		document.body.removeChild(element);
+		let activeTabName = document.getElementById('tabList').getElementsByClassName('active')[0].firstChild.firstChild;
+		activeTabName.innerHTML = inputName;
 	}
 }
 
@@ -264,6 +275,7 @@ function stop() {
 	$("#stop").attr("title", "There is no animation currently processing");
 }
 
+//Change the elements width when the parameters are collapsed.
 function displayParameters() {
 	if($("#paramFields").hasClass("paramHidden")) {
 		$("#paramFields").removeClass("paramHidden");
@@ -322,6 +334,12 @@ function deleteLastColor(drawTurtle) {
 	}
 }
 
+//Change the renderer background color according to the color selected
+function changeBackgroundColor(drawTurtle) {
+	var colorValue = document.getElementById("colorBackground").value;
+	drawTurtle.scene.clearColor = new BABYLON.Color3.FromHexString(colorValue);
+}
+
 /*Removes the active class of all tabs*/
 function removeActive() {
 	$("#tabList").children().each(function() {
@@ -332,6 +350,9 @@ function removeActive() {
 /*Takes the editor, the array of sessions, the base code (with Axiom: ...) to initialise the new editor session and a filename (optional) in case of upload.
 Create an new tab with a new editor session.*/
 function addNewTab(editor, sessions, code, filename) {
+	//When a new tab is added, there are enough tabs to allow the closure of the previous one.
+	var firstTabButton = $("#tab-0").children('a').eq(1)[0];
+	firstTabButton.style.display = "";
 
 	//Create a new session and save it in the array
 	EditSession = ace.require("ace/edit_session").EditSession;
@@ -357,6 +378,7 @@ function addNewTab(editor, sessions, code, filename) {
 	newTab.style.color = "#8ec07c";
 	newTab.style.align = "right";
 	newTab.style.clear = "both";
+	//Swich to the right session when a tab is pressed.
 	newTab.addEventListener('click', function() {
 		removeActive();
 		editor.setSession(sessions[this.parentNode.id.split('-')[1]]);
@@ -368,19 +390,29 @@ function addNewTab(editor, sessions, code, filename) {
 	var closeTab = document.createElement("A");
 	closeTab.className = 'fa fa-times';
 	closeTab.href = '#';
-	closeTab.style.float = "left";
+	closeTab.style.float = "right";
 	closeTab.style.margin = "5px";
 	closeTab.style.color = "#B22222";
+	newLi.appendChild(closeTab);
 	closeTab.addEventListener('click', function() {
 		var liToRemove = this.parentNode;
 		var liId = liToRemove.id;
+
 		//If the deleted tab was the current one, the active tab becomes the previous one.
 		if (liToRemove.classList.contains("active")) {
 			liToRemove.removeAttribute('class', 'active');
+			editor.session = null;
 			editor.setSession(sessions[liId.split('-')[1]-1]);
-			var idPreviousLi = "tab-" + (liId.split('-')[1]-1).toString();
-			document.getElementById(idPreviousLi).setAttribute('class', 'active');
-			document.getElementById(idPreviousLi).firstChild.click();
+			
+			if(liId == "tab-0") {
+				var idNextLi = "tab-1";
+				document.getElementById(idNextLi).setAttribute('class', 'active');
+				document.getElementById(idNextLi).firstChild.click();
+			}else {
+				var idPreviousLi = "tab-" + (liId.split('-')[1]-1).toString();
+				document.getElementById(idPreviousLi).setAttribute('class', 'active');
+				document.getElementById(idPreviousLi).firstChild.click();
+			}
 		}
 		//Delete the tab and it's session.
 		sessions.splice(liId.split('-')[1], 1);
@@ -389,17 +421,23 @@ function addNewTab(editor, sessions, code, filename) {
 			this.id = "tab-" + (this.id.split('-')[1] - 1);
 		});
 		liToRemove.remove();
-	});
-	//Append all elements at their right place.
-	newLi.appendChild(closeTab);
 
-	var newTabText = document.createElement('P');
+		//Count the number of tabs left in order to allow the closure or not. (If there is only one tab left, it can't be closed.)
+		var liNumber = $("#tabList > li").length - 1;
+		if(liNumber == 1) {
+			var deleteButton = $("#tab-0").children('a').eq(1)[0];
+			deleteButton.style.display = "none";
+		}
+	});
+
+	var newTabText = document.createElement('SPAN');
 	newTabText.style.float = "left";
 	newTab.appendChild(newTabText);
 	newLi.insertBefore(newTab, closeTab);
 
 	if(filename === undefined){
-		newTabText.innerHTML = "New Tab (" + newTabText.parentNode.parentNode.id.split("-")[1] + ")";
+		//newTabText.innerHTML = "New Tab (" + newTabText.parentNode.parentNode.id.split("-")[1] + ")";
+		newTabText.innerHTML = "New Tab";
 		clearEditor(editor, "addTab");
 	}else {
 		newTabText.innerHTML = filename;
@@ -412,6 +450,7 @@ function addNewTab(editor, sessions, code, filename) {
 	addTab.parentNode.insertBefore(newLi, addTab);
 }
 
+/*
 function activateRenderTab() {
 	var renderTab = document.getElementById("renderTab").parentNode;
 	var render = document.getElementById("renderCanvas");
@@ -441,6 +480,7 @@ function activateOutputTab() {
 		clear.style.display = "";
 	}
 }
+*/
 
 function addVariable() {
 	var regex = /^[a-zA-Z]+[a-zA-Z0-9_-]*/;
@@ -451,12 +491,61 @@ function addVariable() {
 		document.getElementById('addVariable').setAttribute('type', 'reset')
 		document.getElementById('missingWarning').style.display = "none";
 		var newRow = document.createElement("TR");
-		var varName = document.createElement("TD");
+		var nameCell = document.createElement("TD");
+		var nameSpan = document.createElement("SPAN");
 		var nameText = $('#variableName').val();
-		varName.insertAdjacentHTML('afterbegin', nameText);
-		var varValue = document.createElement("TD");
+		nameSpan.insertAdjacentHTML('afterbegin', nameText);
+		var nameInput = document.createElement("INPUT");
+		nameInput.type = "hidden";
+		nameInput.setAttribute('value', nameText);
+		nameInput.setAttribute('pattern',"^[a-zA-Z][a-zA-Z0-9_-]*");
+		nameInput.setAttribute('required', 'true');
+		nameCell.appendChild(nameInput);
+		nameCell.appendChild(nameSpan);
+
+		$(nameCell).dblclick(function() {
+			$(this).children("span").remove();
+			this.firstChild.type = "text";
+			$(this).children("input").focus();
+		});
+
+		$(nameCell).focusout(function() {
+			let paramName = this.firstChild.value;
+			if(regex.test(paramName)) {
+				document.getElementById('wrongParamName').style.display = "none";
+				this.firstChild.type = "hidden";
+				let newSpan = document.createElement("SPAN");
+				newSpan.insertAdjacentHTML('afterbegin', paramName);
+				this.appendChild(newSpan);
+			}else {
+				document.getElementById('wrongParamName').style.display= "";
+			}
+		});
+
+		var valueCell = document.createElement("TD");
+		var valueSpan = document.createElement("SPAN");
 		var valueNumber = $('#variableValue').val();
-		varValue.insertAdjacentHTML('afterbegin', valueNumber);
+		valueSpan.insertAdjacentHTML('afterbegin', valueNumber);
+		var valueInput = document.createElement("INPUT");
+		valueInput.type = "hidden";
+		valueInput.setAttribute('value', valueNumber);
+		valueInput.setAttribute('required', 'true');
+		valueCell.appendChild(valueInput);
+		valueCell.appendChild(valueSpan);
+
+		$(valueCell).dblclick(function() {
+			$(this).children("span").remove();
+			this.firstChild.type = "number";
+			$(this).children("input").focus();
+		});
+
+		$(valueCell).focusout(function() {
+			this.firstChild.type = "hidden";
+			let paramValue = this.firstChild.value;
+			let newSpan = document.createElement("SPAN");
+			newSpan.insertAdjacentHTML('afterbegin', paramValue);
+			this.appendChild(newSpan);
+		});
 
 		var actionCell = document.createElement("TD");
 		var deleteVar = document.createElement("A");
@@ -469,8 +558,8 @@ function addVariable() {
 		actionCell.appendChild(deleteVar);
 		newRow.appendChild(actionCell);
 
-		newRow.insertBefore(varValue, actionCell);
-		newRow.insertBefore(varName, varValue);
+		newRow.insertBefore(valueCell, actionCell);
+		newRow.insertBefore(nameCell, valueCell);
 		document.getElementById("variableTable").appendChild(newRow);
 	} 	
 }
