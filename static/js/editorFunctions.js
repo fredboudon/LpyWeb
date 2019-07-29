@@ -149,13 +149,16 @@ function unlockButtons() {
 
 //Clear the code editor and the render
 function clearEditor(editor, mode) {
+	var activeTab = document.getElementsByClassName("active")[0];
 	if(mode == "addTab") {
 		editor.getSession().setValue(sessionStorage.getItem('genesisCode'));
+		activeTab.firstChild.firstChild.innerHTML = "New Tab";
 		$('#runCode').click();
 		unlockButtons();
 	}else {
 		if(confirm("Do you really want to reset the text editor and the 3D render ?")) {
 			editor.getSession().setValue(sessionStorage.getItem('genesisCode'));
+			activeTab.firstChild.firstChild.innerHTML = "New Tab";
 			$('#runCode').click();
 			unlockButtons();
 		}
@@ -425,7 +428,6 @@ function addNewTab(editor, sessions, code, filename) {
 			var deleteButton = $("#tab-0").children('a').eq(1)[0];
 			deleteButton.style.display = "none";
 		}
-		console.log(liNumber);
 	});
 
 	var newTabText = document.createElement('SPAN');

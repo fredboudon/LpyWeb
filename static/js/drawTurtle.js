@@ -16,7 +16,7 @@ class drawTurtle {
         this.canvas = document.getElementById("renderCanvas");
         this.engine = new BABYLON.Engine(this.canvas, true);
         this.scene = new BABYLON.Scene(this.engine);
-		this.scene.clearColor = new BABYLON.Color3(0.8, 0.8, 0.8);
+		this.scene.clearColor = new BABYLON.Color3.FromHexString("#F8F9FA");
 
 		this.camera = new BABYLON.ArcRotateCamera("Camera", 0, 0, 5, new BABYLON.Vector3(0, 0, 0), this.scene);
 		this.camera.setPosition(new BABYLON.Vector3(0, 0, 5));
