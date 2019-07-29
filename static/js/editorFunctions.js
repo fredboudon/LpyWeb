@@ -149,15 +149,14 @@ function unlockButtons() {
 
 //Clear the code editor and the render
 function clearEditor(editor, mode) {
-	var activeTab = document.getElementsByClassName("active")[0];
 	if(mode == "addTab") {
 		editor.getSession().setValue(sessionStorage.getItem('genesisCode'));
-		activeTab.firstChild.firstChild.innerHTML = "New Tab";
 		$('#runCode').click();
 		unlockButtons();
 	}else {
 		if(confirm("Do you really want to reset the text editor and the 3D render ?")) {
 			editor.getSession().setValue(sessionStorage.getItem('genesisCode'));
+			var activeTab = document.getElementsByClassName("active")[0];
 			activeTab.firstChild.firstChild.innerHTML = "New Tab";
 			$('#runCode').click();
 			unlockButtons();
@@ -483,7 +482,7 @@ function activateOutputTab() {
 */
 
 function addVariable() {
-	var regex = /^[a-zA-Z]+[a-zA-Z0-9_-]*/;
+	var regex = /^[_-]?[a-zA-Z]+[a-zA-Z0-9_-]*/;
 	if ( !(regex.test(($('#variableName').val()))) || ($('#variableValue').val().length === 0) ) {
 		document.getElementById('addVariable').removeAttribute('type', 'reset')
 		document.getElementById('missingWarning').style.display = "";
