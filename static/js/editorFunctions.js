@@ -272,6 +272,7 @@ function stop() {
 	$("#stop").attr("title", "There is no animation currently processing");
 }
 
+//Change the elements width when the parameters are collapsed.
 function displayParameters() {
 	if($("#paramFields").hasClass("paramHidden")) {
 		$("#paramFields").removeClass("paramHidden");
@@ -346,7 +347,7 @@ function removeActive() {
 /*Takes the editor, the array of sessions, the base code (with Axiom: ...) to initialise the new editor session and a filename (optional) in case of upload.
 Create an new tab with a new editor session.*/
 function addNewTab(editor, sessions, code, filename) {
-
+	//When a new tab is added, there are enough tabs to allow the closure of the previous one.
 	var firstTabButton = $("#tab-0").children('a').eq(1)[0];
 	firstTabButton.style.display = "";
 
@@ -374,6 +375,7 @@ function addNewTab(editor, sessions, code, filename) {
 	newTab.style.color = "#8ec07c";
 	newTab.style.align = "right";
 	newTab.style.clear = "both";
+	//Swich to the right session when a tab is pressed.
 	newTab.addEventListener('click', function() {
 		removeActive();
 		editor.setSession(sessions[this.parentNode.id.split('-')[1]]);
@@ -417,6 +419,7 @@ function addNewTab(editor, sessions, code, filename) {
 		});
 		liToRemove.remove();
 
+		//Count the number of tabs left in order to allow the closure or not. (If there is only one tab left, it can't be closed.)
 		var liNumber = $("#tabList > li").length - 1;
 		if(liNumber == 1) {
 			var deleteButton = $("#tab-0").children('a').eq(1)[0];
@@ -431,7 +434,8 @@ function addNewTab(editor, sessions, code, filename) {
 	newLi.insertBefore(newTab, closeTab);
 
 	if(filename === undefined){
-		newTabText.innerHTML = "New Tab (" + newTabText.parentNode.parentNode.id.split("-")[1] + ")";
+		//newTabText.innerHTML = "New Tab (" + newTabText.parentNode.parentNode.id.split("-")[1] + ")";
+		newTabText.innerHTML = "New Tab";
 		clearEditor(editor, "addTab");
 	}else {
 		newTabText.innerHTML = filename;
@@ -444,6 +448,7 @@ function addNewTab(editor, sessions, code, filename) {
 	addTab.parentNode.insertBefore(newLi, addTab);
 }
 
+/*
 function activateRenderTab() {
 	var renderTab = document.getElementById("renderTab").parentNode;
 	var render = document.getElementById("renderCanvas");
@@ -473,6 +478,7 @@ function activateOutputTab() {
 		clear.style.display = "";
 	}
 }
+*/
 
 function addVariable() {
 	var regex = /^[a-zA-Z]+[a-zA-Z0-9_-]*/;
