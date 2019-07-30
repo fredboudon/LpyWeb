@@ -41,7 +41,7 @@ class drawTurtle {
         options.addOptimization(new BABYLON.TextureOptimization(2, 1024));
         this.optimizer = new BABYLON.SceneOptimizer(this.scene, options);
 
-		this.InitializeMaterialsColors();
+		this.InitializeMaterialsColors();      
     }
 
 	

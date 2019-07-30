@@ -127,6 +127,13 @@ $(document).ready(function() {
 			event.preventDefault();
 		};
 	}
+
+	/*if(document.getElementById('modalLoadButton')) {
+		document.getElementById('modalLoadButton').onclick = function(event) {
+			
+		};
+	}*/
+
 });
 
 //Function that unlocks the action buttons (Run, Step, Animate and Rewind) after the end of the current animation
@@ -449,38 +456,6 @@ function addNewTab(editor, sessions, code, filename) {
 	addTab.parentNode.insertBefore(newLi, addTab);
 }
 
-/*
-function activateRenderTab() {
-	var renderTab = document.getElementById("renderTab").parentNode;
-	var render = document.getElementById("renderCanvas");
-	var outputTab = document.getElementById("outputTab").parentNode;
-	var output = document.getElementById("printOutput");
-	var clear = document.getElementById("clearConsole");
-	if (!(renderTab.classList.contains("active"))){
-		clear.style.display = "none";
-		output.style.display = "none";
-		outputTab.removeAttribute('class', 'active');
-		renderTab.setAttribute('class', 'active');
-		render.style.display = "";
-	}
-}
-
-function activateOutputTab() {
-	var outputTab = document.getElementById("outputTab").parentNode;
-	var output = document.getElementById("printOutput");
-	var renderTab = document.getElementById("renderTab").parentNode;
-	var render = document.getElementById("renderCanvas");
-	var clear = document.getElementById("clearConsole");
-	if (!(outputTab.classList.contains("active"))){
-		render.style.display = "none";
-		renderTab.removeAttribute('class', 'active');
-		outputTab.setAttribute('class', 'active');
-		output.style.display = "";
-		clear.style.display = "";
-	}
-}
-*/
-
 function addVariable() {
 	var regex = /^[_-]?[a-zA-Z]+[a-zA-Z0-9_-]*/;
 	if ( !(regex.test(($('#variableName').val()))) || ($('#variableValue').val().length === 0) ) {
@@ -561,4 +536,17 @@ function addVariable() {
 		newRow.insertBefore(nameCell, valueCell);
 		document.getElementById("variableTable").appendChild(newRow);
 	} 	
+}
+
+function takeScreenshot() {
+	var canvas = document.getElementById('renderCanvas');
+	var context = canvas.getContext("2d");
+	var dataURL = canvas.toDataURL('image/png', 1.0);
+	var imgFile = document.createElement('A');
+	imgFile.setAttribute('href', dataURL);
+	imgFile.setAttribute('download', 'screenshot.png');
+	imgFile.style.display = 'none';
+	document.body.appendChild(imgFile);
+	imgFile.click();
+	document.body.removeChild(imgFile);
 }

@@ -6,12 +6,14 @@ from flask import request, render_template, url_for, redirect, jsonify, session
 from flask import Markup
 from flask_socketio import SocketIO
 from threading import Lock
+from flask_cors import CORS
 
 	
 app = Flask(__name__)
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 app.secret_key = 'Iamasecretkey'
 socketio = SocketIO(app)
+cors = CORS(app)
 LSystem = None
 lock = Lock()
 
