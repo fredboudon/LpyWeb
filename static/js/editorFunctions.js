@@ -544,7 +544,7 @@ function takeScreenshot() {
 	var dataURL = canvas.toDataURL('image/png', 1.0);
 	var imgFile = document.createElement('A');
 	imgFile.setAttribute('href', dataURL);
-	imgFile.setAttribute('download', 'screenshot.png');
+	imgFile.setAttribute('download', 'LPyWeb_screenshot.png');
 	imgFile.style.display = 'none';
 	document.body.appendChild(imgFile);
 	imgFile.click();

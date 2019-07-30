@@ -14,7 +14,7 @@ class drawTurtle {
     constructor() {
 		
         this.canvas = document.getElementById("renderCanvas");
-        this.engine = new BABYLON.Engine(this.canvas, true);
+        this.engine = new BABYLON.Engine(this.canvas, true, { preserveDrawingBuffer: true, stencil: true });
         this.scene = new BABYLON.Scene(this.engine);
 		this.scene.clearColor = new BABYLON.Color3.FromHexString("#A3A3A3");
 
