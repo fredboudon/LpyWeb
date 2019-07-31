@@ -152,3 +152,7 @@ td input {
 #fileURL {
 	width: auto;
 }
+
+#contributors {
+	font-size: 18px;
+}

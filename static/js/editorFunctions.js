@@ -31,6 +31,14 @@ $(document).ready(function() {
 		deleteLastColor(dTurtle);
 	};
 
+	document.getElementById('hideAxes').onclick = function() {
+		hideAxes(dTurtle);
+	};
+
+	document.getElementById('showAxes').onclick = function() {
+		showAxes(dTurtle);
+	};
+
 	document.getElementById("colorBackground").onchange = function() {
 		changeBackgroundColor(dTurtle);
 	}
@@ -549,4 +557,42 @@ function takeScreenshot() {
 	document.body.appendChild(imgFile);
 	imgFile.click();
 	document.body.removeChild(imgFile);
+}
+
+function hideAxes(drawTurtle) {
+	for(let i = 0; i<drawTurtle.CoT.getChildMeshes().length; i++) {
+		drawTurtle.CoT.getChildMeshes()[i].isVisible = false;
+	}
+	var hideButton = document.getElementById('hideAxes');
+	hideButton.firstChild.remove();
+	hideButton.innerHTML = "";
+	hideButton.style.display = "none";
+
+	var showButton = document.getElementById('showAxes');
+	showButton.style.display = "";
+	var icon = document.createElement('I');
+	icon.setAttribute('class', 'far fa-eye');
+	showButton.appendChild(icon);
+	var text = document.createElement('SPAN');
+	text.innerHTML = " Show Axes";
+	showButton.appendChild(text);
+}
+
+function showAxes(drawTurtle) {
+	for(let i = 0; i<drawTurtle.CoT.getChildMeshes().length; i++) {
+		drawTurtle.CoT.getChildMeshes()[i].isVisible = true;
+	}
+	var showButton = document.getElementById('showAxes');
+	showButton.firstChild.remove();
+	showButton.innerHTML = "";
+	showButton.style.display = "none";
+
+	hideButton = document.getElementById('hideAxes');
+	hideButton.style.display = "";
+	var icon = document.createElement('I');
+	icon.setAttribute('class', 'far fa-eye-slash');
+	hideButton.appendChild(icon);
+	var text = document.createElement('SPAN');
+	text.innerHTML = " Hide Axes";
+	hideButton.appendChild(text);
 }

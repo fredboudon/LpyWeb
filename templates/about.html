@@ -6,13 +6,13 @@
 
 {% block content %}
 	<div class="row">
-		<div class="col-8">
+		<div class="col-6">
 			<!--<img src="{{ url_for('static', filename='img/screenLPyWeb.png') }})" alt="The LPyWeb Editor" class="img-responsive" style="width: 1200px">-->
 		</div>
-		<div class="col-4">
+		<div class="col-6">
 			<h1 class="text-center">{{ self.title() }}</h1>
 			<p class="text-justify">A precise type of formal grammar is used to describe the mecanisms involved in plants growth. Grammars of this type are called L-systems.
-			L-Py is a simulation software and a powerful language that mixes L-systems with the Python high-level modeling language. The software allows users to create their L-Py programs and to display the results thanks to the integrated PlantGL 3D Viewer.</p><br />
+			L-Py is a simulation software and a powerful language that mixes L-systems with the Python high-level modeling language. The software allows users to create their L-Py programs and to display the results thanks to the integrated PlantGL 3D Viewer.</p>
 			<div class="row links">
 				<div class="col-6">
 					<p class="text-center">To download and install the L-Py software :<br />
@@ -24,8 +24,7 @@
 				</div>
 			</div><br />
 			<h2 class="text-center">L-PyWeb</h2>
-			<p class="text-justify">L-PyWeb allows users to make their simulations online without installing any package.<br />
-				It uses the same primitives and keywords than the software version.<br />
+			<p class="text-justify">L-PyWeb allows users to make their simulations online without installing any package. It uses the same primitives and keywords than the software version.<br />
 			</p>
 			<div class="row links">
 				<div class="col-6">
@@ -38,7 +37,7 @@
 				</div>
 			</div><br />
 			<h3 class="text-center">Editor Keyboard Shortcuts</h3>
-			<p class="text-justify">LPyWeb embeds Ace Editor. It provides lots of useful shortcuts.<br />
+			<p class="text-justify">LPyWeb embeds Ace Editor. It provides lots of useful shortcuts. To open the editor menu, use CTRL+,<br />
 			<div class="row links">
 				<div class="col-6">
 					<p class="text-center">The list of shortcuts :<br />
@@ -48,7 +47,14 @@
 					<p class="text-center">Ace Website : <br />
 						<a href="https://ace.c9.io/" target="_blank" class="btn btn-md btn-info">Ace >></a></p>
 				</div>
-			</div>
+			</div><br />
+			<center><h3>Contributors</h3>
+			<ul id="contributors">
+				<li>Christophe Godin</li>
+				<li>Frédéric Boudon</li>
+				<li>Anthony Scriven</li>
+			</ul>
+			</center>
 		</div>
 	</div>
 {% endblock %}

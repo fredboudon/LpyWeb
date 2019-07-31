@@ -31,7 +31,7 @@ class drawTurtle {
 		this.materialColors = [];
         this.materialTextures = [];
 
-        var CoT = this.LocalAxes(42, 0);
+        this.CoT = this.LocalAxes(42, 0);
 
         var options = new BABYLON.SceneOptimizerOptions();
         options.addOptimization(new BABYLON.LensFlaresOptimization(0));
@@ -335,8 +335,7 @@ class drawTurtle {
             this.scene.removeTexture(this.materialTextures[i]);
         }
         this.graphicElems = [];
-        this.CoT = null;
-    }
+     }
 
     /**
      * Reset the position of the camera to it's inital state 
