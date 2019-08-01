@@ -92,6 +92,16 @@ main {
 	font-size: 0.875em;
 }
 
+#viewerPanel button {
+	display: block;
+    margin-left: auto;
+    margin-right: auto; 
+}
+
+#viewerPanel {
+	font-size: 0.875em;
+}
+
 li {
 	padding-left: 10px;
 	padding-right: 10px;

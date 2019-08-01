@@ -192,8 +192,9 @@ this.underscore(modules[i].paramList[0]);
 				this.setColor(modules[i].paramList[0]);
 				break;
 
-            case 'InterpolateColors':
+            /*case 'InterpolateColors':
                 this.interpolateColors(modules[i].paramList[0], modules[i].paramList[1], modules[i].paramList[2]);
+                break; */
 
 			case '@Dd':
 				break;
@@ -212,6 +213,9 @@ this.underscore(modules[i].paramList[0]);
 
 			case '@g':
 				break;
+
+            case 'Frame':
+                break;
 		}
 	}
 	

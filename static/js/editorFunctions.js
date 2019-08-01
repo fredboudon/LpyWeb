@@ -297,6 +297,8 @@ function displayParameters() {
 		$("#colCanvas").addClass("col-6");
 		$("#colTextEditor").removeClass("col-5");
 		$("#colTextEditor").addClass("col-4");
+		$("#collapseViewerPanel").prop("disabled", true);
+		$("#collapseViewerPanel").attr("title", "Please close the Simulation Parameters Panel before opening this one.");
 
 	}else {
 		$("#paramFields").addClass("paramHidden");
@@ -304,6 +306,26 @@ function displayParameters() {
 		$("#colCanvas").addClass("col-7");
 		$("#colTextEditor").removeClass("col-4");
 		$("#colTextEditor").addClass("col-5");
+		$("#collapseViewerPanel").prop("disabled", false);
+		$("#collapseViewerPanel").attr("title", "Toggle a Panel with more options about the 3D renderer.");
+	}
+}
+
+//Change the elements width when the viewer panel is collapsed.
+function displayPanel() {
+	if($("#viewerPanel").hasClass("paramHidden")) {
+		$("#viewerPanel").removeClass("paramHidden");
+		$("#colTextEditor").removeClass("col-5");
+		$("#colTextEditor").addClass("col-4");
+		$("#parameters").prop("disabled", true);
+		$("#parameters").attr("title", "Please close the viewer Panel before opening this one.");
+
+	}else {
+		$("#viewerPanel").addClass("paramHidden");
+		$("#colTextEditor").removeClass("col-4");
+		$("#colTextEditor").addClass("col-5");
+		$("#parameters").prop("disabled", false);
+		$("#parameters").attr("title", "Toggle fields where you can set some advanced parameters.");
 	}
 }
 
