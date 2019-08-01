@@ -486,6 +486,14 @@ function addNewTab(editor, sessions, code, filename) {
 	addTab.parentNode.insertBefore(newLi, addTab);
 }
 
+function collapseVariableForm() {
+	if($('#newVariable').children(0).hasClass('fas fa-plus')) {
+		$('#newVariable').children(0).attr('class', "fas fa-minus");
+	}else {
+		$('#newVariable').children(0).attr('class', "fas fa-plus");
+	}
+}
+
 function addVariable() {
 	var regex = /^[_-]?[a-zA-Z]+[a-zA-Z0-9_-]*/;
 	if ( !(regex.test(($('#variableName').val()))) || ($('#variableValue').val().length === 0) ) {

@@ -72,14 +72,14 @@ endlsystem
 						<input type="text" class="text-success" name="animationSpeed" id="animationSpeed" minlength="2" size="5" class="flex-column" value="500" data-toggle="popover" data-placement="top" data-trigger="focus" title="About animation speed : "data-content="Animation speed must be set above 50ms for performance reasons. (If the value is too low, some instructions may be skipped and the shape will not be drawn as expected. If the input value is less than 50ms, it will be set to 50ms automatically.)" required/></div>
 					</div>
 					<div class="row" id="lpyColors">
-						<h3 class="text-success">Colors</h3>
+						<h4 class="text-secondary">Colors</h4>
 						<p class="text-success">There are L-Py default colors. You can add (resp. delete) colors with the "+" (resp. "-") button. The color selected by default is the second one (index 1). To change color, you need to increment or decrement the index using ";" or "," primitives.</p>
 						<div>
 							<button type="button" class="btn btn-light text-success" title="Add a new color." id="addColor"><i class="fas fa-plus"></i></button>
 							<button type="button" class="btn btn-light text-success" title="Delete the last color." id="deleteColor"><i class="fas fa-minus"></i></button>
 						</div>
 					</div>
-					<h3 class="text-success"> Variables</h3>
+					<h4 class="text-secondary"> Variables</h4>
 					<div>
 						<table class="bg-white text-success" id="variableTable">
 							<tr>
@@ -90,7 +90,7 @@ endlsystem
 						</table>
 						<p style="display: none" class="text-danger text-center" id="wrongParamName">A parameter name must contain only alphanumeric characters, "-" and "_" only. Furthermore, it must begin with at least one letter.</p>
 						<center><button type="button" class="btn btn-white text-success" id="newVariable" data-toggle="collapse" data-target="#newVariableForm" role="button" aria-expanded="false" 
-							aria-controls="collapseVariableInfos" >New variable <i class="fas fa-plus"></i></button></center>
+							aria-controls="collapseVariableInfos" >New Variable Form <i class="fas fa-plus"></i></button></center>
 						<div class="collapse" id="newVariableForm">
 							<form>
 								<label for="variableName" class="text-success" style="font-size: 1.125em;">Name :</label>
@@ -212,6 +212,7 @@ endlsystem
 			document.getElementById("collapseViewerPanel").addEventListener('click', () => displayPanel());
 			document.getElementById("parameters").addEventListener('click', () => displayParameters());
 			document.getElementById("addTab").addEventListener("click", () => addNewTab(editor, sessions, sessionStorage.getItem('genesisCode')));
+			document.getElementById("newVariable").addEventListener("click", () => collapseVariableForm());
 			document.getElementById("addVariable").addEventListener("click", () => addVariable());
 			document.getElementById("clearConsole").addEventListener("click", function() {
 				$("#printOutput").val(""); 
