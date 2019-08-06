@@ -1,7 +1,14 @@
-# LpyWeb
-How to use LpyWeb project :
+# LPyWeb
 
-1- If you don't have Conda installed, download it from here (https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html)
+## What is LPyWeb ?
+> LPyWeb is the Web alternative of the L-Py software. It allows you to make your simulations online and quickly.
+It uses the L-Py language which mixes up formal grammar with Python in order to describe plant growth.
+
+<hr>
+
+## How to use LPyWeb project :
+
+1- If you don't have Conda installed, download it from [here](https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html)
 
 2- Then you need to create L-Py environnement by typing this command in a terminal :
 conda create -n lpy openalea.lpy boost=1.66 'mpfr<4' -c openalea
@@ -26,4 +33,4 @@ If you want to access to the application with other machines, you can run it wit
 (IP_HOST_MACHINE is the IP adress of the machine which run the flask application)
 You can check the IP adress using : "ip a show" or "ifconfig" (or ipconfig on Windows)
 
-You can also use ngrok (https://ngrok.com/) to share your local host with all users.
+You can also use ngrok (https://ngrok.com/) to share your local host with other users.

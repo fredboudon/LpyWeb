@@ -19,8 +19,8 @@
 						<i class="fas fa-file-upload"></i> Load from file</button>
 					<button type="button" class="btn btn-light text-success" id="importExample" title="Import a .lpy example file from the database." data-toggle="modal" data-target="#modalExample" style="display: none;">
 					<i class="fas fa-file-upload"></i> Load Example</button>
-					<button type="button" class="btn btn-light text-success" id="importURL" alt="Import a .lpy file from an URL." title="Import a .lpy file from an URL." data-toggle="modal" data-target="#modalFileURL">
-						<i class="fas fa-file-upload"></i> Load from URL</button>
+					<!--<button type="button" class="btn btn-light text-success" id="importURL" alt="Import a .lpy file from an URL." title="Import a .lpy file from an URL." data-toggle="modal" data-target="#modalFileURL">
+						<i class="fas fa-file-upload"></i> Load from URL</button>-->
 					<button type="button" class="btn btn-light text-success" id="downloadButton" alt="Save your program in a .lpy file and download it."
 					title="Save your program in a .lpy file and download it." data-toggle="modal" data-target="#modalFilename"><i class="fas fa-save"></i> Save</button>
 				</div>
@@ -90,7 +90,7 @@ endlsystem
 						</table>
 						<p style="display: none" class="text-danger text-center" id="wrongParamName">A parameter name must contain only alphanumeric characters, "-" and "_" only. Furthermore, it must begin with at least one letter.</p>
 						<center><button type="button" class="btn btn-white text-success" id="newVariable" data-toggle="collapse" data-target="#newVariableForm" role="button" aria-expanded="false" 
-							aria-controls="collapseVariableInfos" >New Variable Form <i class="fas fa-plus"></i></button></center>
+							aria-controls="collapseVariableInfos" >Variable Form <i class="fas fa-plus"></i></button></center>
 						<div class="collapse" id="newVariableForm">
 							<form>
 								<label for="variableName" class="text-success" style="font-size: 1.125em;">Name :</label>
@@ -233,11 +233,11 @@ endlsystem
 					deleteButton.style.display = "none";
 				}
 			});
-			document.getElementById("modalLoadButton").addEventListener("click", () => function(event){
+			/*document.getElementById("modalLoadButton").addEventListener("click", () => function(event){
 				$('#fileLoaded').load($('#fileURL').val());
 				editor.getSession().setValue($('#fileLoaded').val());
 				event.preventDefault();
-			});
+			});*/
 
 			document.getElementById("screenshot").addEventListener("click", () => takeScreenshot());
 
