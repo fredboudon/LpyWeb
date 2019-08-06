@@ -1,3 +1,4 @@
+![L-Py Logo](/static/img/LPyIcon.png)
 # LPyWeb
 
 ## What is LPyWeb ?
@@ -6,7 +7,7 @@ It uses the L-Py language which mixes up formal grammar with Python in order to 
 
 <hr>
 
-## How to use LPyWeb project :
+## How to use LPyWeb project ?
 
 1- If you don't have Conda installed, download it from [here](https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html)
 
@@ -29,8 +30,11 @@ conda create -n lpy openalea.lpy boost=1.66 'mpfr<4' -c openalea
 
 10- You can save your program and download it using the Save button.
 
-If you want to access to the application with other machines, you can run it with the command : flask run --host=IP_HOST_MACHINE.
+## How to share LPyWeb with other users ?
+
+If you want to access to the application with other machines without re-installing all the project, you can run it with the command : flask run --host=IP_HOST_MACHINE.
 (IP_HOST_MACHINE is the IP adress of the machine which run the flask application)
 You can check the IP adress using : "ip a show" or "ifconfig" (or ipconfig on Windows)
+Then you just have to enter http://IP_HOST_MACHINE:5000 in your navigator to have access to LPyWeb. However, the host machine and the client ones must be connected on the same network.
 
-You can also use ngrok (https://ngrok.com/) to share your local host with other users.
+An other way is to use [ngrok](https://ngrok.com/) to share your localhost with other users.
