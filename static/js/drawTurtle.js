@@ -20,7 +20,7 @@ class drawTurtle {
 
 		this.camera = new BABYLON.ArcRotateCamera("Camera", 0, 0, 5, new BABYLON.Vector3(0, 0, 0), this.scene);
 		this.camera.setPosition(new BABYLON.Vector3(0, 0, 5));
-        this.camera.wheelPrecision = 50.0;
+        this.camera.wheelPrecision = 100.0;
         this.camera.pinchPrecision = 100.0;
 		this.camera.attachControl(this.canvas, true);
 
