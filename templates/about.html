@@ -5,12 +5,12 @@
 {% block about %}{% endblock %}
 
 {% block content %}
-	<div class="row">
+	<div class="row" id="aboutPage">
 		<div class="col-6">
 			<!--<img src="{{ url_for('static', filename='img/screenLPyWeb.png') }})" alt="The LPyWeb Editor" class="img-responsive" style="width: 1200px">-->
 		</div>
 		<div class="col-6">
-			<h1 class="text-center">{{ self.title() }}</h1>
+			<h2 class="text-center">{{ self.title() }}</h2>
 			<p class="text-justify">A precise type of formal grammar is used to describe the mecanisms involved in plants growth. Grammars of this type are called L-systems.
 			L-Py is a simulation software and a powerful language that mixes L-systems with the Python high-level modeling language. The software allows users to create their L-Py programs and to display the results thanks to the integrated PlantGL 3D Viewer.</p>
 			<div class="row links">
@@ -23,7 +23,7 @@
 					<a href="https://en.wikipedia.org/wiki/L-system" target="_blank" class="btn btn-md btn-info">About L-systems >></a></p>
 				</div>
 			</div><br />
-			<h2 class="text-center">L-PyWeb</h2>
+			<h3 class="text-center">L-PyWeb</h3>
 			<p class="text-justify">L-PyWeb allows users to make their simulations online without installing any package. It uses the same primitives and keywords than the software version.<br />
 			</p>
 			<div class="row links">
@@ -36,7 +36,7 @@
 						<a href="https://lpy-anthony.readthedocs.io/en/latest/user/tutorial.html" target="_blank" class="btn btn-md btn-info">Tutorial >></a></p>
 				</div>
 			</div><br />
-			<h3 class="text-center">Editor Keyboard Shortcuts</h3>
+			<h4 class="text-center">Editor Keyboard Shortcuts</h4>
 			<p class="text-justify">LPyWeb embeds Ace Editor. It provides lots of useful shortcuts. To open the editor menu, use CTRL+,<br />
 			<div class="row links">
 				<div class="col-6">
@@ -48,7 +48,7 @@
 						<a href="https://ace.c9.io/" target="_blank" class="btn btn-md btn-info">Ace >></a></p>
 				</div>
 			</div><br />
-			<center><h3>Contributors</h3>
+			<center><h4>Contributors</h4>
 			<ul id="contributors">
 				<li>Christophe Godin</li>
 				<li>Frédéric Boudon</li>

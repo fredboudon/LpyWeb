@@ -11,32 +11,32 @@
 
 {% block content %}
 		<div class="container-fluid">
-			<div class="row bg-light">
+			<div class="row bg-light" id="rowButtons">
 				<div class="col-5">
-					<button type="button" class="btn btn-light text-success" id="clearEditor" title="Reset the editor text."><i class="fas fa-eraser"></i> New File</button>
+					<button type="button" class="btn btn-light text-success" id="clearEditor" title="Reset the editor text."><i class="fas fa-eraser"></i> <span>New File</span></button>
 					<input type="file" id="hiddenButton" accept=".lpy"/>
 					<button type="button" class="btn btn-light text-success" id="importFile" title="Import a .lpy file from your local storage.">
-						<i class="fas fa-file-upload"></i> Load from file</button>
+						<i class="fas fa-file-upload"></i> <span>Load from file</span></button>
 					<button type="button" class="btn btn-light text-success" id="importExample" title="Import a .lpy example file from the database." data-toggle="modal" data-target="#modalExample" style="display: none;">
-					<i class="fas fa-file-upload"></i> Load Example</button>
+					<i class="fas fa-file-upload"></i> <span>Load Example</span></button>
 					<!--<button type="button" class="btn btn-light text-success" id="importURL" alt="Import a .lpy file from an URL." title="Import a .lpy file from an URL." data-toggle="modal" data-target="#modalFileURL">
 						<i class="fas fa-file-upload"></i> Load from URL</button>-->
 					<button type="button" class="btn btn-light text-success" id="downloadButton" alt="Save your program in a .lpy file and download it."
-					title="Save your program in a .lpy file and download it." data-toggle="modal" data-target="#modalFilename"><i class="fas fa-save"></i> Save</button>
+					title="Save your program in a .lpy file and download it." data-toggle="modal" data-target="#modalFilename"><i class="fas fa-save"></i> <span>Save</span></button>
 				</div>
 				<div class="col-7">
 					<button type="submit" class="btn btn-light text-success" id="runCode"
-					title="Run your program and display the render."><i class="fas fa-play"></i> Run</button>
+					title="Run your program and display the render."><i class="fas fa-play"></i> <span>Run</span></button>
 					<button type="submit" class="btn btn-light text-success" id="rewind"
-					title="Run only the Axiom of the LSystem."><i class="fas fa-history"></i> Rewind</button>
+					title="Run only the Axiom of the LSystem."><i class="fas fa-history"></i> <span>Rewind</span></button>
 					<button type="submit" class="btn btn-light text-success" id="stepCode"
-					title="Run your program step by step."><i class="fas fa-step-forward"></i> Step</button>
-					<button type="button" class="btn btn-light text-success" id="animate" title="Play the growth animation."><i class="fas fa-film"></i> Animate</button>
-					<button type="button" class="btn btn-light text-success" id="stop" title="Stop the current animation."><i class="fas fa-hand-paper"></i> Stop</button>
-					<div style="display: inline-block; margin-left: 15%;">
-						<button type="button" class="btn btn-light text-success" id="parameters" title="Toggle fields where you can set some advanced parameters." data-toggle="collapse" data-target="#paramFields" role="button" aria-expanded="false" aria-controls="collapseParameters"><i class="fas fa-cog"></i> Simulation Parameters</button>
+					title="Run your program step by step."><i class="fas fa-step-forward"></i> <span>Step</span></button>
+					<button type="button" class="btn btn-light text-success" id="animate" title="Play the growth animation."><i class="fas fa-film"></i> <span>Animate</span></button>
+					<button type="button" class="btn btn-light text-success" id="stop" title="Stop the current animation."><i class="fas fa-hand-paper"></i> <span>Stop</span></button>
+					<div style="display: inline-block; float: right;">
+						<button type="button" class="btn btn-light text-success" id="parameters" title="Toggle fields where you can set some advanced parameters." data-toggle="collapse" data-target="#paramFields" role="button" aria-expanded="false" aria-controls="collapseParameters"><i class="fas fa-cog"></i> <span>Simulation Parameters</span></button>
 						<button type="button" class="btn btn-light text-success" id="collapseViewerPanel" title="Toggle a Panel with more options about the 3D renderer." data-toggle="collapse" data-target="#viewerPanel" 
-						role="button" aria-expanded="false" aria-controls="collapseViewerPanel"><i class="fas fa-cog"></i> 3D Viewer Panel</button>
+						role="button" aria-expanded="false" aria-controls="collapseViewerPanel"><i class="fas fa-cog"></i> <span>3D Viewer Panel</span></button>
 					</div>
 				</div>
 			</div>
@@ -134,7 +134,7 @@ endlsystem
 		        </div>
 		    </div>
 
-		    <div class="modal fade" id="modalFileURL" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		    <!--<div class="modal fade" id="modalFileURL" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	 			<div class="modal-dialog" role="document">
 	    			<div class="modal-content">
 	      				<div class="modal-header">
@@ -150,7 +150,7 @@ endlsystem
       					</div>     
 		        	</div>
 		        </div>
-		    </div>
+		    </div>-->
 		</div>
 	</form>
 {% endblock %}
@@ -161,7 +161,11 @@ endlsystem
 			var editor = ace.edit("code");
 			var textarea = $('textarea[name="code"]').hide();
 			var sessions = [];
-			document.getElementById('code').style.fontSize='16px';
+			if(window.innerHeight > 992) {
+				document.getElementById('code').style.fontSize='1em';
+			}else{
+				document.getElementById('code').style.fontSize='0.875em';
+			}
 			editor.setTheme("ace/theme/gruvbox");
 			editor.session.setMode("ace/mode/python");
 			editor.getSession().setValue(textarea.val());

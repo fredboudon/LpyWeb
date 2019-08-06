@@ -30,14 +30,15 @@
 		<body>
 	{% endblock %}
     	<div class="row-2 d-flex flex-column flex-md-row align-items-center p-0 px-md-4 bg-success border-bottom shadow-sm">
-			<a class="my-0 mr-md-auto font-weight-normal text-light navbar-brand" href="{{ url_for('home') }}">L-PyWeb</a>
+			<a class="my-0 mr-md-auto font-weight-normal text-light navbar-brand" href="{{ url_for('home') }}"><span>L-PyWeb</span></a>
 			<nav class="my-2 my-md-0 mr-md-3">
-	  			{% block home %} <a class='btn btn-success' type="button" title="Return to homepage" href="{{ url_for('home') }}"><i class="fas fa-home"></i> Home</a> {% endblock %}
-	  			{% block editor %}<a class='btn btn-success' type="button" title="Go to the L-Py Editor" href="{{ url_for('editor') }}"><i class="fab fa-pagelines"></i> L-Py Editor</a>
+	  			{% block home %} <a class='btn btn-success' type="button" title="Return to homepage" href="{{ url_for('home') }}"><i class="fas fa-home"></i> <span>Home</span></a> {% endblock %}
+	  			{% block editor %}<a class='btn btn-success' type="button" title="Go to the L-Py Editor" href="{{ url_for('editor') }}"><i class="fab fa-pagelines"></i> <span>L-Py Editor</span></a>
 	  			{% endblock %}
-	  			{% block about %}<a class='btn btn-success' type="button" title="To learn about L-Py" href="{{ url_for('about') }}" target="_blank"><i class="far fa-question-circle"></i> About L-Py</a>{% endblock %}
+	  			{% block about %}<a class='btn btn-success' type="button" title="To learn about L-Py" href="{{ url_for('about') }}" target="_blank"><i class="far fa-question-circle"></i> 
+	  				<span>About L-Py</span></a>{% endblock %}
 	  			<a class="btn btn-success" type="button" alt="Read some documentation" title="Read some documentation"
-					href="https://lpy-anthony.readthedocs.io/en/latest/user/turtleBasic.html" target="_blank"><i class="fas fa-book"></i> Documentation</a>
+					href="https://lpy-anthony.readthedocs.io/en/latest/user/turtleBasic.html" target="_blank"><i class="fas fa-book"></i> <span>Documentation</span></a>
 	  		</nav>
 		</div>
 		{% block content %}

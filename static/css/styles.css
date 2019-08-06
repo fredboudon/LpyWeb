@@ -159,10 +159,34 @@ td input {
 	width: auto;
 }
 
-#fileURL {
+/*#fileURL {
 	width: auto;
-}
+}*/
 
 #contributors {
-	font-size: 18px;
+	font-size: 1.125em;
 }
+
+@media (max-height: 991.98px){
+	#rowButtons span {
+		font-size: 0.875em;
+	}
+	nav span{
+		font-size: 0.875em;
+	}
+	.navbar-brand span {
+		font-size: 0.875em;
+	}
+	.footer {
+		height: 20px;
+		font-size: 0.875em
+	}
+	#printOutput {
+		font-size: 0.875em;
+	}
+	#aboutPage {
+		font-size: 0.75em;
+	}
+	.cover-container {
+		font-size: 0.75em;
+	}
