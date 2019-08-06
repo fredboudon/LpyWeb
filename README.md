@@ -1,5 +1,4 @@
-![L-Py Logo](/static/img/LPyIcon.png)
-# LPyWeb
+<img style="float: left;" src="/static/img/LPyIcon.png"><h1>LPyWeb</h1>
 
 ## What is LPyWeb ?
 > LPyWeb is the Web alternative of the L-Py software. It allows you to make your simulations online and quickly.
