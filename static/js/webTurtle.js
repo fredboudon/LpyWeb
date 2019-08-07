@@ -215,6 +215,7 @@ this.underscore(modules[i].paramList[0]);
 				break;
 
             case 'Frame':
+                this.Frame(modules[i].paramList[0]);
                 break;
 		}
 	}
@@ -440,6 +441,12 @@ this.underscore(modules[i].paramList[0]);
             this.turnAround();
             this.F(-length, topRadius);
             this.turnAround();
+        }
+    }
+
+    Frame(length = this.defaultStep) {
+        if (length > GEOM_EPSILON) {
+            this.drawTurtle.CreateFrame({ diameter: this.radius, height: length}, this.currentParams);
         }
     }
 
@@ -713,7 +720,7 @@ this.underscore(modules[i].paramList[0]);
 
      * @param {Number} angle The turning angle
      */
-    rollL(angle = this.angleIncrement) {
+    rollR(angle = this.angleIncrement) {
         var ra = angle * (GEOM_PI/180.);
         var matrix = new BABYLON.Matrix.RotationAxis(this.currentParams.heading, ra);
         this.currentParams.up = new BABYLON.Vector3.TransformCoordinates(this.currentParams.up, matrix);
@@ -727,8 +734,8 @@ this.underscore(modules[i].paramList[0]);
 
      * @param {Number} angle The turning angle
      */
-    rollR(angle = this.angleIncrement) {
-        this.rollL(-angle);
+    rollL(angle = this.angleIncrement) {
+        this.rollR(-angle);
     }
 
     // virtual void iRollL(real_t angle);
@@ -738,10 +745,10 @@ this.underscore(modules[i].paramList[0]);
      *
      * @param {Number} angle The turning angle
      */
-    iRollL(angle = this.angleIncrement) {
+    iRollR(angle = this.angleIncrement) {
         //TODO
 
-        this.rollL(angle);
+        this.rollR(angle);
         //if (__params ->guide && !__params ->guide ->is2D()) { // Not implemented yet
         //    Turtle3DPath * guide = (Turtle3DPath *)__params->guide.get();
         //    Matrix3 m2 = Matrix3::axisRotation(guide ->__lastHeading, ra);
@@ -759,7 +766,7 @@ this.underscore(modules[i].paramList[0]);
      * @param {Number} angle The turning angle
      */
     iRollR(angle = this.angleIncrement) {
-        this.iRollL(-angle);
+        this.iRollR(-angle);
     }
 
 	// inline void turnAround()

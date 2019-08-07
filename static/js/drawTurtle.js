@@ -129,6 +129,83 @@ class drawTurtle {
     }
 
     /**
+     * Draw the Turtle
+     * 
+     * @param {Object} settings The cylinder settings
+     * @param {Object} currentParams Current turtle parameters
+     */
+    CreateFrame(settings, currentParams) {
+        //Turtle's Heading
+        this.graphicElems.push(BABYLON.MeshBuilder.CreateCylinder('frameHCylinder', settings, this.scene));
+        var mesh = this.graphicElems[this.graphicElems.length - 1];
+
+        var mat = new BABYLON.StandardMaterial("#FF0000FF", this.scene);
+        mat.diffuseColor = new BABYLON.Color4.FromHexString("#FF0000FF");
+        mat.specularColor = new BABYLON.Color4.FromHexString("#00000000");
+        mat.emissiveColor = new BABYLON.Color4.FromHexString("#FF0000FF");
+        mat.ambientColor = new BABYLON.Color4.FromHexString("#FF0000FF");
+       
+        mesh.material = mat;
+        
+        var rotationMatrix = BABYLON.Vector3.RotationFromAxis(currentParams.up, currentParams.heading, currentParams.left);
+        var cylinderHeight = mesh.getBoundingInfo().boundingBox.vectorsWorld[1].y + -(mesh.getBoundingInfo().boundingBox.vectorsWorld[0].y);
+        mesh.translate(BABYLON.Axis.Y, cylinderHeight / 2, BABYLON.Space.LOCAL);
+
+        var CoT = new BABYLON.TransformNode("root");
+        CoT.position = currentParams.position;
+        CoT.rotation = rotationMatrix;
+        mesh.parent = CoT;
+
+        this.graphicElems.push(BABYLON.MeshBuilder.CreateCylinder('frameHCylinderTop', {height : settings.height / 6, diameterBottom : settings.diameter * 2, diameterTop : 0}, this.scene));
+        var mesh2 = this.graphicElems[this.graphicElems.length - 1];
+        mesh2.translate(BABYLON.Axis.Y, cylinderHeight / 2, BABYLON.Space.LOCAL);
+        mesh2.material = mat;
+        mesh2.parent = mesh;
+
+        //Turtle's Left
+        this.graphicElems.push(BABYLON.MeshBuilder.CreateCylinder('frameLCylinder', settings, this.scene));
+        var mesh3 = this.graphicElems[this.graphicElems.length - 1];
+
+        var mat2 = new BABYLON.StandardMaterial("#53FF00FF", this.scene);
+        mat2.diffuseColor = new BABYLON.Color4.FromHexString("#53FF00FF");
+        mat2.specularColor = new BABYLON.Color4.FromHexString("#00000000");
+        mat2.emissiveColor = new BABYLON.Color4.FromHexString("#53FF00FF");
+        mat2.ambientColor = new BABYLON.Color4.FromHexString("#53FF00FF");
+       
+        mesh3.material = mat2;
+        mesh3.rotate(BABYLON.Axis.X, (-90 * (Math.PI/180)), BABYLON.Space.LOCAL);
+        mesh3.translate(BABYLON.Axis.Y, cylinderHeight / 2, BABYLON.Space.LOCAL);
+        mesh3.parent = CoT
+
+        this.graphicElems.push(BABYLON.MeshBuilder.CreateCylinder('frameLCylinderTop', {height : settings.height / 6, diameterBottom : settings.diameter * 2, diameterTop : 0}, this.scene));
+        var mesh4 = this.graphicElems[this.graphicElems.length - 1];
+        mesh4.translate(BABYLON.Axis.Y, cylinderHeight / 2, BABYLON.Space.LOCAL);
+        mesh4.material = mat2;
+        mesh4.parent = mesh3;
+
+        //Turtle's Up
+        this.graphicElems.push(BABYLON.MeshBuilder.CreateCylinder('frameUCylinder', settings, this.scene));
+        var mesh5 = this.graphicElems[this.graphicElems.length - 1];
+
+        var mat3 = new BABYLON.StandardMaterial("#0000FFFF", this.scene);
+        mat3.diffuseColor = new BABYLON.Color4.FromHexString("#0000FFFF");
+        mat3.specularColor = new BABYLON.Color4.FromHexString("#00000000");
+        mat3.emissiveColor = new BABYLON.Color4.FromHexString("#0000FFFF");
+        mat3.ambientColor = new BABYLON.Color4.FromHexString("#0000FFFF");
+
+        mesh5.material = mat3;
+        mesh5.rotate(BABYLON.Axis.Z, (-90 * (Math.PI/180)), BABYLON.Space.LOCAL);
+        mesh5.translate(BABYLON.Axis.Y, cylinderHeight / 2, BABYLON.Space.LOCAL);
+        mesh5.parent = CoT
+
+        this.graphicElems.push(BABYLON.MeshBuilder.CreateCylinder('frameUCylinderTop', {height : settings.height / 6, diameterBottom : settings.diameter * 2, diameterTop : 0}, this.scene));
+        var mesh6 = this.graphicElems[this.graphicElems.length - 1];
+        mesh6.translate(BABYLON.Axis.Y, cylinderHeight / 2, BABYLON.Space.LOCAL);
+        mesh6.material = mat3;
+        mesh6.parent = mesh5;
+    }
+
+    /**
      * Create a cylinder with the turtle parameters given
      *
      * @param {String} id The cylinder identifier
