@@ -1,6 +1,6 @@
 /**
  * @file drawTurtle.js
- * @author Maxime Cauvin <maxime.cauvin@epitech.eu> Renan Berruex <renan.berruex@epitech.eu>
+ * @author Maxime Cauvin <maxime.cauvin@epitech.eu> and Renan Berruex <renan.berruex@epitech.eu> and Anthony Scriven <scriven.anthony@gmail.com>
  * @version 0.1
  */
 

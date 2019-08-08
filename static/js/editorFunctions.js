@@ -1,3 +1,10 @@
+/**
+ * @file editorFunctions.js
+ * @author Anthony Scriven <scriven.anthony@gmail.com>
+ * @version 0.1
+ */
+
+
 //Functions loaded when the page is open/ready to use
 $(document).ready(function() {
 	//Initialise popovers

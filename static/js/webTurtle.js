@@ -1,6 +1,6 @@
 /**
  * @file webTurtle.js
- * @author Renan Berruex <renan.berruex@epitech.eu> and Maxime Cauvin <maxime.cauvin@epitech.eu>
+ * @author Renan Berruex <renan.berruex@epitech.eu> and Maxime Cauvin <maxime.cauvin@epitech.eu> and Anthony Scriven <scriven.anthony@gmail.com>
  * @version 0.1
  */
 
@@ -72,6 +72,9 @@ class webTurtle {
 			case 'f':
 				this.f(modules[i].paramList[0]);
 				break;
+
+            case 'nF':
+                this.nF(modules[i].paramList[0], modules[i].paramList[1], modules[i].paramList[2], this.drawTurtle.materialColors[this.currentParams.colorIndex], "longCylinder")
 
 			case 'X':
 				break;
@@ -217,6 +220,10 @@ this.underscore(modules[i].paramList[0]);
             case 'Frame':
                 this.Frame(modules[i].paramList[0]);
                 break;
+
+            /*case 'LineTo':
+                this.lineTo(modules[i].paramList[0], modules[i].paramList[0]);
+                break;*/
 		}
 	}
 	
@@ -524,12 +531,13 @@ this.underscore(modules[i].paramList[0]);
     /**
      * Move the turtle forward by bursts and drawing multiple cylinders of the total distance
      *
-     * @param {Number} length	The distance movement and total length of all cylinders
-     * @param {Number} nbSteps	The number of cylinders to compose the big one.
-     * @param {Number} radius	The radius on the top of the cylinder
-     * @param {Number} id		The id of the cylinder
+     * @param {Number} length	     The distance movement and total length of all cylinders
+     * @param {Number} nbSteps	     The number of cylinders to compose the big one.
+     * @param {Number} radius	     The radius on the top of the cylinder
+     * @param {Number} materialColor The color of the cylinder
+     * @param {Number} id		     The id of the cylinder
      */
-    nF(length = this.defaultStep, nbSteps, endRadius, id, materialColor) {
+    nF(length = this.defaultStep, nbSteps, endRadius = 0.1, materialColor, id) {
 		var dl = length / nbSteps;
 		var radiusEvolution = (this.radius - endRadius) / nbSteps;
 

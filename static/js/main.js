@@ -1,6 +1,6 @@
 /**
  * @file main.js
- * @author Renan Berruex <renan.berruex@epitech.eu>
+ * @author Renan Berruex <renan.berruex@epitech.eu> and Anthony Scriven <scriven.anthony@gmail.com>
  * @version 0.1
  */
 
@@ -20,10 +20,8 @@ function display(drawTurtle, webTurtle, LString) {
         //ATTENTION PROBLEME AVEC LES SYMBOLES VIRUGULES (dans le lstring parser)
         lstrParser.lstr = LString;
         lstrParser.ParseLString();
-        //console.log(lstrParser.result);
         webTurtle.Start(lstrParser.result);
         drawTurtle.optimizer.start();
-        //console.log(drawTurtle.optimizer.currentFrameRate);
     }
 
     // Compteur de FPS
