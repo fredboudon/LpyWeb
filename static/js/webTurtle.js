@@ -195,24 +195,30 @@ this.underscore(modules[i].paramList[0]);
 				this.setColor(modules[i].paramList[0]);
 				break;
 
+            case '@D':
+                this.setScale(modules[i].paramList[0]);
+                break;
+
+            case '@Dd':
+                this.divScale(modules[i].paramList[0]);
+                break;
+
+            case '@Di':
+                this.multScale(modules[i].paramList[0]);
+                break;
+
             /*case 'InterpolateColors':
                 this.interpolateColors(modules[i].paramList[0], modules[i].paramList[1], modules[i].paramList[2]);
                 break; */
-
-			case '@Dd':
-				break;
-
-			case '@Di':
-				break;
-
-			case '@D':
-				break;
 
 			case 'surface':
 				break;
 
 			case '~':
 				break;
+
+            case '~l':
+                break;
 
 			case '@g':
 				break;
@@ -392,6 +398,18 @@ this.underscore(modules[i].paramList[0]);
         }
     }
 
+    divScale(scale = this.scaleMultiplier) {
+        this.currentParams.scale = this.currentParams.scale.scale(1 / scale);
+    }
+
+    multScale(scale = this.scaleMultiplier) {
+        this.currentParams.scale = this.currentParams.scale.scale(scale);
+    }
+
+    setScale(scale) {
+        this.currentParams.scale = new BABYLON.Vector3(scale, scale, scale);
+    }
+
     // inline void f() { f(default_step); }heading
     // virtual void f(real_t length);
     /**
@@ -537,7 +555,7 @@ this.underscore(modules[i].paramList[0]);
      * @param {Number} materialColor The color of the cylinder
      * @param {Number} id		     The id of the cylinder
      */
-    nF(length = this.defaultStep, nbSteps, endRadius = 0.1, materialColor, id) {
+    nF(length = this.defaultStep, nbSteps = 1, endRadius = 0.1, materialColor, id) {
 		var dl = length / nbSteps;
 		var radiusEvolution = (this.radius - endRadius) / nbSteps;
 

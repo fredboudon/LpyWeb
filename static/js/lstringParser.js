@@ -95,9 +95,9 @@ class LStringParser {
 		size = searchSymbol(lstr, i, size, "@M");		size = searchSymbol(lstr, i, size, "MoveTo");
 		size = searchSymbol(lstr, i, size, "MoveRel");
 
-		size = searchSymbol(lstr, i, size, "@Dd");		size = searchSymbol(lstr, i, size, "DiveScale");
-		size = searchSymbol(lstr, i, size, "@Di");		size = searchSymbol(lstr, i, size, "MultScale");
 		size = searchSymbol(lstr, i, size, "@D");		size = searchSymbol(lstr, i, size, "SetScale");
+		size = searchSymbol(lstr, i, size, "@Dd");		size = searchSymbol(lstr, i, size, "DivScale");
+		size = searchSymbol(lstr, i, size, "@Di");		size = searchSymbol(lstr, i, size, "MultScale");
 
 		size = searchSymbol(lstr, i, size, "F");
 		size = searchSymbol(lstr, i, size, "f");

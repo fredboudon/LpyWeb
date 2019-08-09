@@ -32,7 +32,7 @@ var PythonHighlightRules = function() {
         "Pinpoint|PinpointRel|LineTo|LineRel|OLineTo|OLineRel|setHead|" +
         "EulerAngles|nF|SectionResolution|StartScreenProjection|" +
         "InterpolateColors|TurnAround|GetPos|GetHead|GetUp|GetLeft|GetRight|" +
-        "GetFrame"
+        "GetFrame|DivScale|MultScale|SetScale|SetWidth"
     );
     var keywordMapper = this.createKeywordMapper({
         "invalid.deprecated": "debugger",

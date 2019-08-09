@@ -217,6 +217,7 @@ class drawTurtle {
         this.graphicElems.push(BABYLON.MeshBuilder.CreateCylinder(id, settings, this.scene));
         var cylinder = this.graphicElems[this.graphicElems.length - 1];
         cylinder.material = material;
+        cylinder.scaling = currentParams.scale;
 
         var rotationMatrix = BABYLON.Vector3.RotationFromAxis(currentParams.up, currentParams.heading, currentParams.left);
         var cylinderHeight = cylinder.getBoundingInfo().boundingBox.vectorsWorld[1].y + -(cylinder.getBoundingInfo().boundingBox.vectorsWorld[0].y);
@@ -241,6 +242,7 @@ class drawTurtle {
         this.graphicElems.push(BABYLON.MeshBuilder.CreateBox(id, settings, this.scene));
         var box = this.graphicElems[this.graphicElems.length - 1];
         box.material = material;
+        box.scaling = currentParams.scale;
 
         var rotationMatrix = BABYLON.Vector3.RotationFromAxis(currentParams.up, currentParams.heading, currentParams.left);
         var boxHeight = box.getBoundingInfo().boundingBox.vectorsWorld[1].y + -(box.getBoundingInfo().boundingBox.vectorsWorld[0].y);
@@ -264,6 +266,7 @@ class drawTurtle {
         this.graphicElems.push(BABYLON.MeshBuilder.CreatePlane(id, settings, this.scene));
         var plane = this.graphicElems[this.graphicElems.length - 1];
         plane.material = material;
+        plane.scaling = currentParams.scale;
 
         var rotationMatrix = BABYLON.Vector3.RotationFromAxis(currentParams.up, currentParams.heading, currentParams.left);
         var planeHeight = plane.getBoundingInfo().boundingBox.vectorsWorld[1].y + -(plane.getBoundingInfo().boundingBox.vectorsWorld[0].y);
@@ -288,6 +291,7 @@ class drawTurtle {
 
         var sphere = this.graphicElems[this.graphicElems.length - 1];
         sphere.material = material;
+        sphere.scaling = currentParams.scale;
 
         var rotationMatrix = BABYLON.Vector3.RotationFromAxis(currentParams.up, currentParams.heading, currentParams.left);
 
@@ -310,6 +314,7 @@ class drawTurtle {
 
         var disc = this.graphicElems[this.graphicElems.length - 1];
         disc.material = material;
+        disc.scaling = currentParams.scale;
 
         var rotationMatrix = BABYLON.Vector3.RotationFromAxis(currentParams.up, currentParams.heading, currentParams.left);
 
