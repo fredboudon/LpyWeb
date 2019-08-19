@@ -1,6 +1,6 @@
 /**
  * @file webTurtle.js
- * @author Renan Berruex <renan.berruex@epitech.eu> and Maxime Cauvin <maxime.cauvin@epitech.eu>
+ * @author Renan Berruex <renan.berruex@epitech.eu> and Maxime Cauvin <maxime.cauvin@epitech.eu> and Anthony Scriven <scriven.anthony@gmail.com>
  * @version 0.1
  */
 
@@ -72,6 +72,9 @@ class webTurtle {
 			case 'f':
 				this.f(modules[i].paramList[0]);
 				break;
+
+            case 'nF':
+                this.nF(modules[i].paramList[0], modules[i].paramList[1], modules[i].paramList[2], this.drawTurtle.materialColors[this.currentParams.colorIndex], "longCylinder")
 
 			case 'X':
 				break;
@@ -192,17 +195,21 @@ this.underscore(modules[i].paramList[0]);
 				this.setColor(modules[i].paramList[0]);
 				break;
 
-            case 'InterpolateColors':
+            case '@D':
+                this.setScale(modules[i].paramList[0]);
+                break;
+
+            case '@Dd':
+                this.divScale(modules[i].paramList[0]);
+                break;
+
+            case '@Di':
+                this.multScale(modules[i].paramList[0]);
+                break;
+
+            /*case 'InterpolateColors':
                 this.interpolateColors(modules[i].paramList[0], modules[i].paramList[1], modules[i].paramList[2]);
-
-			case '@Dd':
-				break;
-
-			case '@Di':
-				break;
-
-			case '@D':
-				break;
+                break; */
 
 			case 'surface':
 				break;
@@ -210,8 +217,19 @@ this.underscore(modules[i].paramList[0]);
 			case '~':
 				break;
 
+            case '~l':
+                break;
+
 			case '@g':
 				break;
+
+            case 'Frame':
+                this.Frame(modules[i].paramList[0]);
+                break;
+
+            /*case 'LineTo':
+                this.lineTo(modules[i].paramList[0], modules[i].paramList[0]);
+                break;*/
 		}
 	}
 	
@@ -380,6 +398,18 @@ this.underscore(modules[i].paramList[0]);
         }
     }
 
+    divScale(scale = this.scaleMultiplier) {
+        this.currentParams.scale = this.currentParams.scale.scale(1 / scale);
+    }
+
+    multScale(scale = this.scaleMultiplier) {
+        this.currentParams.scale = this.currentParams.scale.scale(scale);
+    }
+
+    setScale(scale) {
+        this.currentParams.scale = new BABYLON.Vector3(scale, scale, scale);
+    }
+
     // inline void f() { f(default_step); }heading
     // virtual void f(real_t length);
     /**
@@ -436,6 +466,12 @@ this.underscore(modules[i].paramList[0]);
             this.turnAround();
             this.F(-length, topRadius);
             this.turnAround();
+        }
+    }
+
+    Frame(length = this.defaultStep) {
+        if (length > GEOM_EPSILON) {
+            this.drawTurtle.CreateFrame({ diameter: this.radius, height: length}, this.currentParams);
         }
     }
 
@@ -513,12 +549,13 @@ this.underscore(modules[i].paramList[0]);
     /**
      * Move the turtle forward by bursts and drawing multiple cylinders of the total distance
      *
-     * @param {Number} length	The distance movement and total length of all cylinders
-     * @param {Number} nbSteps	The number of cylinders to compose the big one.
-     * @param {Number} radius	The radius on the top of the cylinder
-     * @param {Number} id		The id of the cylinder
+     * @param {Number} length	     The distance movement and total length of all cylinders
+     * @param {Number} nbSteps	     The number of cylinders to compose the big one.
+     * @param {Number} radius	     The radius on the top of the cylinder
+     * @param {Number} materialColor The color of the cylinder
+     * @param {Number} id		     The id of the cylinder
      */
-    nF(length = this.defaultStep, nbSteps, endRadius, id, materialColor) {
+    nF(length = this.defaultStep, nbSteps = 1, endRadius = 0.1, materialColor, id) {
 		var dl = length / nbSteps;
 		var radiusEvolution = (this.radius - endRadius) / nbSteps;
 
@@ -709,7 +746,7 @@ this.underscore(modules[i].paramList[0]);
 
      * @param {Number} angle The turning angle
      */
-    rollL(angle = this.angleIncrement) {
+    rollR(angle = this.angleIncrement) {
         var ra = angle * (GEOM_PI/180.);
         var matrix = new BABYLON.Matrix.RotationAxis(this.currentParams.heading, ra);
         this.currentParams.up = new BABYLON.Vector3.TransformCoordinates(this.currentParams.up, matrix);
@@ -723,8 +760,8 @@ this.underscore(modules[i].paramList[0]);
 
      * @param {Number} angle The turning angle
      */
-    rollR(angle = this.angleIncrement) {
-        this.rollL(-angle);
+    rollL(angle = this.angleIncrement) {
+        this.rollR(-angle);
     }
 
     // virtual void iRollL(real_t angle);
@@ -734,10 +771,10 @@ this.underscore(modules[i].paramList[0]);
      *
      * @param {Number} angle The turning angle
      */
-    iRollL(angle = this.angleIncrement) {
+    iRollR(angle = this.angleIncrement) {
         //TODO
 
-        this.rollL(angle);
+        this.rollR(angle);
         //if (__params ->guide && !__params ->guide ->is2D()) { // Not implemented yet
         //    Turtle3DPath * guide = (Turtle3DPath *)__params->guide.get();
         //    Matrix3 m2 = Matrix3::axisRotation(guide ->__lastHeading, ra);
@@ -755,7 +792,7 @@ this.underscore(modules[i].paramList[0]);
      * @param {Number} angle The turning angle
      */
     iRollR(angle = this.angleIncrement) {
-        this.iRollL(-angle);
+        this.iRollR(-angle);
     }
 
 	// inline void turnAround()

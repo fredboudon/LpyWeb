@@ -1,3 +1,10 @@
+/**
+ * @file editorFunctions.js
+ * @author Anthony Scriven <scriven.anthony@gmail.com>
+ * @version 0.1
+ */
+
+
 //Functions loaded when the page is open/ready to use
 $(document).ready(function() {
 	//Initialise popovers
@@ -29,6 +36,14 @@ $(document).ready(function() {
 
 	document.getElementById('deleteColor').onclick = function() {
 		deleteLastColor(dTurtle);
+	};
+
+	document.getElementById('hideAxes').onclick = function() {
+		hideAxes(dTurtle);
+	};
+
+	document.getElementById('showAxes').onclick = function() {
+		showAxes(dTurtle);
 	};
 
 	document.getElementById("colorBackground").onchange = function() {
@@ -127,6 +142,13 @@ $(document).ready(function() {
 			event.preventDefault();
 		};
 	}
+
+	/*if(document.getElementById('modalLoadButton')) {
+		document.getElementById('modalLoadButton').onclick = function(event) {
+			
+		};
+	}*/
+
 });
 
 //Function that unlocks the action buttons (Run, Step, Animate and Rewind) after the end of the current animation
@@ -149,15 +171,14 @@ function unlockButtons() {
 
 //Clear the code editor and the render
 function clearEditor(editor, mode) {
-	var activeTab = document.getElementsByClassName("active")[0];
 	if(mode == "addTab") {
 		editor.getSession().setValue(sessionStorage.getItem('genesisCode'));
-		activeTab.firstChild.firstChild.innerHTML = "New Tab";
 		$('#runCode').click();
 		unlockButtons();
 	}else {
 		if(confirm("Do you really want to reset the text editor and the 3D render ?")) {
 			editor.getSession().setValue(sessionStorage.getItem('genesisCode'));
+			var activeTab = document.getElementsByClassName("active")[0];
 			activeTab.firstChild.firstChild.innerHTML = "New Tab";
 			$('#runCode').click();
 			unlockButtons();
@@ -283,6 +304,8 @@ function displayParameters() {
 		$("#colCanvas").addClass("col-6");
 		$("#colTextEditor").removeClass("col-5");
 		$("#colTextEditor").addClass("col-4");
+		$("#collapseViewerPanel").prop("disabled", true);
+		$("#collapseViewerPanel").attr("title", "Please close the Simulation Parameters Panel before opening this one.");
 
 	}else {
 		$("#paramFields").addClass("paramHidden");
@@ -290,6 +313,26 @@ function displayParameters() {
 		$("#colCanvas").addClass("col-7");
 		$("#colTextEditor").removeClass("col-4");
 		$("#colTextEditor").addClass("col-5");
+		$("#collapseViewerPanel").prop("disabled", false);
+		$("#collapseViewerPanel").attr("title", "Toggle a Panel with more options about the 3D renderer.");
+	}
+}
+
+//Change the elements width when the viewer panel is collapsed.
+function displayPanel() {
+	if($("#viewerPanel").hasClass("paramHidden")) {
+		$("#viewerPanel").removeClass("paramHidden");
+		$("#colTextEditor").removeClass("col-5");
+		$("#colTextEditor").addClass("col-4");
+		$("#parameters").prop("disabled", true);
+		$("#parameters").attr("title", "Please close the viewer Panel before opening this one.");
+
+	}else {
+		$("#viewerPanel").addClass("paramHidden");
+		$("#colTextEditor").removeClass("col-4");
+		$("#colTextEditor").addClass("col-5");
+		$("#parameters").prop("disabled", false);
+		$("#parameters").attr("title", "Toggle fields where you can set some advanced parameters.");
 	}
 }
 
@@ -450,40 +493,16 @@ function addNewTab(editor, sessions, code, filename) {
 	addTab.parentNode.insertBefore(newLi, addTab);
 }
 
-/*
-function activateRenderTab() {
-	var renderTab = document.getElementById("renderTab").parentNode;
-	var render = document.getElementById("renderCanvas");
-	var outputTab = document.getElementById("outputTab").parentNode;
-	var output = document.getElementById("printOutput");
-	var clear = document.getElementById("clearConsole");
-	if (!(renderTab.classList.contains("active"))){
-		clear.style.display = "none";
-		output.style.display = "none";
-		outputTab.removeAttribute('class', 'active');
-		renderTab.setAttribute('class', 'active');
-		render.style.display = "";
+function collapseVariableForm() {
+	if($('#newVariable').children(0).hasClass('fas fa-plus')) {
+		$('#newVariable').children(0).attr('class', "fas fa-minus");
+	}else {
+		$('#newVariable').children(0).attr('class', "fas fa-plus");
 	}
 }
-
-function activateOutputTab() {
-	var outputTab = document.getElementById("outputTab").parentNode;
-	var output = document.getElementById("printOutput");
-	var renderTab = document.getElementById("renderTab").parentNode;
-	var render = document.getElementById("renderCanvas");
-	var clear = document.getElementById("clearConsole");
-	if (!(outputTab.classList.contains("active"))){
-		render.style.display = "none";
-		renderTab.removeAttribute('class', 'active');
-		outputTab.setAttribute('class', 'active');
-		output.style.display = "";
-		clear.style.display = "";
-	}
-}
-*/
 
 function addVariable() {
-	var regex = /^[a-zA-Z]+[a-zA-Z0-9_-]*/;
+	var regex = /^[_-]?[a-zA-Z]+[a-zA-Z0-9_-]*/;
 	if ( !(regex.test(($('#variableName').val()))) || ($('#variableValue').val().length === 0) ) {
 		document.getElementById('addVariable').removeAttribute('type', 'reset')
 		document.getElementById('missingWarning').style.display = "";
@@ -562,4 +581,55 @@ function addVariable() {
 		newRow.insertBefore(nameCell, valueCell);
 		document.getElementById("variableTable").appendChild(newRow);
 	} 	
+}
+
+function takeScreenshot() {
+	var canvas = document.getElementById('renderCanvas');
+	var context = canvas.getContext("2d");
+	var dataURL = canvas.toDataURL('image/png', 1.0);
+	var imgFile = document.createElement('A');
+	imgFile.setAttribute('href', dataURL);
+	imgFile.setAttribute('download', 'LPyWeb_screenshot.png');
+	imgFile.style.display = 'none';
+	document.body.appendChild(imgFile);
+	imgFile.click();
+	document.body.removeChild(imgFile);
+}
+
+function hideAxes(drawTurtle) {
+	for(let i = 0; i<drawTurtle.CoT.getChildMeshes().length; i++) {
+		drawTurtle.CoT.getChildMeshes()[i].isVisible = false;
+	}
+	var hideButton = document.getElementById('hideAxes');
+	hideButton.firstChild.remove();
+	hideButton.innerHTML = "";
+	hideButton.style.display = "none";
+
+	var showButton = document.getElementById('showAxes');
+	showButton.style.display = "";
+	var icon = document.createElement('I');
+	icon.setAttribute('class', 'far fa-eye');
+	showButton.appendChild(icon);
+	var text = document.createElement('SPAN');
+	text.innerHTML = " Show Axes";
+	showButton.appendChild(text);
+}
+
+function showAxes(drawTurtle) {
+	for(let i = 0; i<drawTurtle.CoT.getChildMeshes().length; i++) {
+		drawTurtle.CoT.getChildMeshes()[i].isVisible = true;
+	}
+	var showButton = document.getElementById('showAxes');
+	showButton.firstChild.remove();
+	showButton.innerHTML = "";
+	showButton.style.display = "none";
+
+	hideButton = document.getElementById('hideAxes');
+	hideButton.style.display = "";
+	var icon = document.createElement('I');
+	icon.setAttribute('class', 'far fa-eye-slash');
+	hideButton.appendChild(icon);
+	var text = document.createElement('SPAN');
+	text.innerHTML = " Hide Axes";
+	hideButton.appendChild(text);
 }
