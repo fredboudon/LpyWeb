@@ -459,7 +459,8 @@ this.underscore(modules[i].paramList[0]);
                 }
             }
             if (topRadius > -GEOM_EPSILON) {
-                this.currentParams.width = topRadius;
+                //this.currentParams.width = topRadius;
+                this.radius = topRadius;
             }
         }
         else if (length < -GEOM_EPSILON) {
