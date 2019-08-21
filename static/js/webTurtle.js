@@ -336,7 +336,7 @@ this.underscore(modules[i].paramList[0]);
         if (this.currentParams.generalizedCylinder && this.currentParams.pointList.length > 1) {
             var radiusTab = this.currentParams.radiusList;
             var scaling = function(i, distance) {
-                return radiusTab[i] * 5;
+                return radiusTab[i]*10;
             }
             this.drawTurtle.CreateExtrudeShape("tube" + (this.drawTurtle.graphicElems.length + 1).toString(), { shape: this.currentParams.shapeSection, path: this.currentParams.pointList, scaleFunction: scaling, sideOrientation: BABYLON.Mesh.DOUBLESIDE, radius: this.radius/2, cap: BABYLON.Mesh.CAP_ALL}, /*this.drawTurtle.materialTextures[0]*/ this.drawTurtle.materialColors[this.currentParams.colorIndex]);
         }
@@ -370,8 +370,7 @@ this.underscore(modules[i].paramList[0]);
         if (this.currentParams.generalizedCylinder && this.currentParams.pointList.length > 1) {
             var radiusTab = this.currentParams.radiusList;
             var scaling = function(i, distance) {
-                //return radiusTab[i] * 5;
-                return Math.sqrt(3);
+                return radiusTab[i]*10;
             }
             this.drawTurtle.CreateExtrudeShape("tube" + (this.drawTurtle.graphicElems.length + 1).toString(), { shape: this.currentParams.shapeSection, path: this.currentParams.pointList, scaleFunction: scaling,  sideOrientation: BABYLON.Mesh.DOUBLESIDE, cap: BABYLON.Mesh.CAP_ALL}, /*this.drawTurtle.materialTextures[0]*/ this.drawTurtle.materialColors[this.currentParams.colorIndex]);
         }
@@ -503,16 +502,7 @@ this.underscore(modules[i].paramList[0]);
     */
     sphere(radius = this.radius, materialColor, id) {
         if (radius > 0) {
-            if (!this.currentParams.generalizedCylinder) {
-                this.drawTurtle.CreateSphere(id, { diameter: radius }, this.currentParams, materialColor);
-            } else {
-                this.currentParams.pointList.push(this.currentParams.position.clone());
-                this.currentParams.radiusList.push(radius);
-            }
-            this.currentParams.position = this.currentParams.position.add(this.currentParams.heading.scale(radius * this.currentParams.scale.z));
-            if (this.currentParams.generalizedCylinder) {
-                this.currentParams.pointList.push(this.currentParams.position.clone());
-            }
+            this.drawTurtle.CreateSphere(id, { diameter: radius }, this.currentParams, materialColor);
         }
     }
 
@@ -1252,8 +1242,7 @@ this.underscore(modules[i].paramList[0]);
         if (this.currentParams.pointList.length > 1) {
             var radiusTab = this.currentParams.radiusList;
             var scaling = function(i, distance) {
-                //return radiusTab[i] * 5;
-                return Math.sqrt(2+radiusTab[i]*radiusTab[i]);
+                return radiusTab[i] * 10;
             }
             this.drawTurtle.CreateExtrudeShape("tube" + (this.drawTurtle.graphicElems.length + 1).toString(), { shape: this.currentParams.shapeSection, path: this.currentParams.pointList, scaleFunction: scaling, sideOrientation: BABYLON.Mesh.DOUBLESIDE, cap: BABYLON.Mesh.CAP_ALL}, /*this.drawTurtle.materialTextures[0]*/ this.drawTurtle.materialColors[this.currentParams.colorIndex]);
             this.currentParams.pointList = [];
