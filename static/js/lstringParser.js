@@ -11,6 +11,7 @@ class LStringParser {
     constructor(lstr) {
         this.lstr = lstr;
         this.result = [];
+        this.i = 0;
     }
 
 	getParsedLString() {
@@ -21,31 +22,31 @@ class LStringParser {
      * Parse the LString (this.lstr) and fill the this.result array wich is an array of module.
      */
     ParseLString() {
-		var i = 0;
+		this.i = 0;
 		var L = this.lstr.length;
 
-		while (i < L) {
-			if (this.getSizeSymbol(this.lstr, i) > 0) {
-				name = this.recupName(i);
-				i = i + name.length;
-				if (this.lstr[i] == '(') { //si mon module a des parametres
-					i++;
-					this.result.push(new Module(name, this.recupParam(i)));
+		while (this.i < L) {
+			if (this.getSizeSymbol(this.lstr, this.i) > 0) {
+				name = this.recupName();
+				this.i = this.i + name.length;
+				if (this.lstr[this.i] == '(') { //si mon module a des parametres
+					this.i++;
+					this.result.push(new Module(name, this.recupParam()));
 				}
 				else {//s'il n'en a pas
 					this.result.push(new Module(name, []));
-					i--;
+					this.i--;
 				}
             }
-			i++;
+			this.i++;
         }
     }
 	
-	recupName(i) {
-		var L = this.getSizeSymbol(this.lstr, i);
+	recupName() {
+		var L = this.getSizeSymbol(this.lstr, this.i);
 		var name = "";
 		for (var j = 0; j < L; j++) {
-			name += this.lstr[i+j];
+			name += this.lstr[this.i+j];
 		}
 		return (name);
 	}
@@ -53,18 +54,18 @@ class LStringParser {
 	/**
      * Return an array of number that contain module parameters (the module at the position i in the LString)
      */
-	recupParam(i) {
-		var tmp = i;
-		while (this.lstr[i] != ')') {
-			i++;
+	recupParam() {
+		var tmp = this.i;
+		while (this.lstr[this.i] != ')') {
+			this.i++;
 		}
-		var params = this.lstr.substring(tmp, i);// je recupere tout ce qu'il y a dans les parentheses
+		var params = this.lstr.substring(tmp, this.i);// je recupere tout ce qu'il y a dans les parentheses
 		var tab = params.split(",");//je split a chaque virgule
 		var arrayParam = new Array;
-		i = 0;
-		while (i < tab.length) {//pour chaque element, je le met en Number et je le push dans mon tableau de parametre
-			arrayParam.push(new Number(tab[i]));
-			i++;
+		var k = 0 
+		while (k < tab.length) {//pour chaque element, je le met en Number et je le push dans mon tableau de parametre
+			arrayParam.push(new Number(tab[k]));
+			k++;
 		}
 		return (arrayParam);
 	}
