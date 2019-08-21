@@ -64,7 +64,7 @@ class LStringParser {
 		var arrayParam = new Array;
 		var k = 0 
 		while (k < tab.length) {//pour chaque element, je le met en Number et je le push dans mon tableau de parametre
-			arrayParam.push(new Number(tab[k]));
+			arrayParam.push(parseFloat(tab[k]));
 			k++;
 		}
 		return (arrayParam);

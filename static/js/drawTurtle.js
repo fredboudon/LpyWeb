@@ -380,7 +380,7 @@ class drawTurtle {
      * @param {BABYLON.StandardMaterial} material The material to be applied on the shape
      */
     CreateExtrudeShape(id, settings, material) {
-        this.graphicElems.push(BABYLON.MeshBuilder.ExtrudeShape(id, settings, this.scene));
+        this.graphicElems.push(BABYLON.MeshBuilder.ExtrudeShapeCustom(id, settings, this.scene));
         var shape = this.graphicElems[this.graphicElems.length - 1];
         shape.material = material;
     }
