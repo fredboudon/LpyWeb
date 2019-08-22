@@ -51,7 +51,8 @@ class webTurtle {
             shapeSection: [],
             radiusList: [],
             colorIndex: 1,
-			customId: SHAPE_NOID,
+            colorBeforeGc: 1,
+            customId: SHAPE_NOID,
             customParentId: SHAPE_NOID
         };
     }
@@ -191,7 +192,7 @@ this.underscore(modules[i].paramList[0]);
 				break;
 
 			case ',':
-				//this.decColor(modules[i].paramList[0]);
+				this.decColor(modules[i].paramList[0]);
 				break;
 
 			case 'SetColor':
@@ -300,6 +301,7 @@ this.underscore(modules[i].paramList[0]);
             shapeSection: [],
             radiusList: [],
             colorIndex: 1,
+            colorBeforeGc: 1,
             customId: SHAPE_NOID,
             customParentId: SHAPE_NOID
         };
@@ -334,7 +336,7 @@ this.underscore(modules[i].paramList[0]);
      */
     Stop() {
         if (this.currentParams.generalizedCylinder && this.currentParams.pointList.length > 1) {
-            var initialColor = this.drawTurtle.materialColors[this.currentParams.colorIndex];
+            var initialColor = this.drawTurtle.materialColors[this.currentParams.colorBeforeGc];
             var radiusTab = this.currentParams.radiusList;
             var scaling = function(i, distance) {
                 return radiusTab[i]*10;
@@ -369,7 +371,7 @@ this.underscore(modules[i].paramList[0]);
     Pop() {
         //Currently using texture, the last parameter to the "Create.." function for standard color is: this.drawTurtle.materialColors[this.currentParams.colorIndex]
         if (this.currentParams.generalizedCylinder && this.currentParams.pointList.length > 1) {
-            var initialColor = this.drawTurtle.materialColors[this.currentParams.colorIndex];
+            var initialColor = this.drawTurtle.materialColors[this.currentParams.colorBeforeGc];
             var radiusTab = this.currentParams.radiusList;
             var scaling = function(i, distance) {
                 return radiusTab[i]*10;
@@ -1234,6 +1236,7 @@ this.underscore(modules[i].paramList[0]);
      */
     startGC() {
         this.currentParams.generalizedCylinder = true;
+        this.currentParams.colorBeforeGc = this.currentParams.colorIndex;
         //__params ->customId = popId();
         //__params ->customParentId = parentId;
     }
@@ -1244,7 +1247,7 @@ this.underscore(modules[i].paramList[0]);
      */
     stopGC() {
         if (this.currentParams.pointList.length > 1) {
-            var initialColor = this.drawTurtle.materialColors[this.currentParams.colorIndex];
+            var initialColor = this.drawTurtle.materialColors[this.currentParams.colorBeforeGc];
             var radiusTab = this.currentParams.radiusList;
             var scaling = function(i, distance) {
                 return radiusTab[i] * 10;
