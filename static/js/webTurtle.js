@@ -191,7 +191,7 @@ this.underscore(modules[i].paramList[0]);
 				break;
 
 			case ',':
-				this.decColor(modules[i].paramList[0]);
+				//this.decColor(modules[i].paramList[0]);
 				break;
 
 			case 'SetColor':
@@ -218,10 +218,10 @@ this.underscore(modules[i].paramList[0]);
 				break;
 
 			case '~':
+                if(modules[i].paramList[0] == "l") {
+                    this.leaf(modules[i].paramList[1], this.drawTurtle.materialColors[this.currentParams.colorIndex], "leaf");
+                }
 				break;
-
-            case '~l':
-                break;
 
 			case '@g':
 				break;
@@ -334,11 +334,12 @@ this.underscore(modules[i].paramList[0]);
      */
     Stop() {
         if (this.currentParams.generalizedCylinder && this.currentParams.pointList.length > 1) {
+            var initialColor = this.drawTurtle.materialColors[this.currentParams.colorIndex];
             var radiusTab = this.currentParams.radiusList;
             var scaling = function(i, distance) {
                 return radiusTab[i]*10;
             }
-            this.drawTurtle.CreateExtrudeShape("tube" + (this.drawTurtle.graphicElems.length + 1).toString(), { shape: this.currentParams.shapeSection, path: this.currentParams.pointList, scaleFunction: scaling, sideOrientation: BABYLON.Mesh.DOUBLESIDE, radius: this.radius/2, cap: BABYLON.Mesh.CAP_ALL}, /*this.drawTurtle.materialTextures[0]*/ this.drawTurtle.materialColors[this.currentParams.colorIndex]);
+            this.drawTurtle.CreateExtrudeShape("tube" + (this.drawTurtle.graphicElems.length + 1).toString(), { shape: this.currentParams.shapeSection, path: this.currentParams.pointList, scaleFunction: scaling, sideOrientation: BABYLON.Mesh.DOUBLESIDE, radius: this.radius/2, cap: BABYLON.Mesh.CAP_ALL}, initialColor);
         }
         this.pointList = [];
     }
@@ -368,11 +369,12 @@ this.underscore(modules[i].paramList[0]);
     Pop() {
         //Currently using texture, the last parameter to the "Create.." function for standard color is: this.drawTurtle.materialColors[this.currentParams.colorIndex]
         if (this.currentParams.generalizedCylinder && this.currentParams.pointList.length > 1) {
+            var initialColor = this.drawTurtle.materialColors[this.currentParams.colorIndex];
             var radiusTab = this.currentParams.radiusList;
             var scaling = function(i, distance) {
                 return radiusTab[i]*10;
             }
-            this.drawTurtle.CreateExtrudeShape("tube" + (this.drawTurtle.graphicElems.length + 1).toString(), { shape: this.currentParams.shapeSection, path: this.currentParams.pointList, scaleFunction: scaling,  sideOrientation: BABYLON.Mesh.DOUBLESIDE, cap: BABYLON.Mesh.CAP_ALL}, /*this.drawTurtle.materialTextures[0]*/ this.drawTurtle.materialColors[this.currentParams.colorIndex]);
+            this.drawTurtle.CreateExtrudeShape("tube" + (this.drawTurtle.graphicElems.length + 1).toString(), { shape: this.currentParams.shapeSection, path: this.currentParams.pointList, scaleFunction: scaling,  sideOrientation: BABYLON.Mesh.DOUBLESIDE, cap: BABYLON.Mesh.CAP_ALL}, initialColor);
         }
         if (this.paramStack.length > 0) {
             this.currentParams = this.paramStack.splice(this.paramStack.length - 1, 1)[0];
@@ -550,7 +552,7 @@ this.underscore(modules[i].paramList[0]);
      * @param {Number} color The color of the plane
      * @param {Number} id The id of the plane mesh
      */
-    plane(length = this.defaultStep, topRadius = this.radius, materialColor, id,) {
+    plane(length = this.defaultStep, topRadius = this.radius, materialColor, id) {
         if (length > 0) {
             this.drawTurtle.CreatePlane(id, {height: length, width: topRadius, sideOrientation: BABYLON.Mesh.DOUBLESIDE}, this.currentParams, materialColor);
 
@@ -558,6 +560,26 @@ this.underscore(modules[i].paramList[0]);
                 this.currentParams.width = topRadius;
             }
             this.currentParams.position = this.currentParams.position.add(this.currentParams.heading.scale(length * this.currentParams.scale.z));
+        }
+    }
+
+    leaf(length = this.defaultStep, materialColor, id) {
+        if (length > 0) {
+            //var pos = this.currentParams.position.clone();
+            var origin = new BABYLON.Vector3(0,0,0);
+            var points = [ { x: - (length/4), z: (length/3)}, 
+                            { x: - (length/4), z: (2 * length/3)},
+                            { x: 0, z: length},
+                            { x: (length/4), z: (2 * length/3)},
+                            { x: (length/4), z: (length/3)}
+                        ];
+            var leafShape = [];
+            leafShape.push(origin);
+            for(let i = 0; i < points.length; i++) {
+                leafShape.push(new BABYLON.Vector3(points[i].x, 0, points[i].z));
+            }
+            leafShape.push(origin);
+            this.drawTurtle.CreatePolygon(id, {shape: leafShape, sideOrientation: BABYLON.Mesh.DOUBLESIDE}, this.currentParams, materialColor);
         }
     }
 
@@ -681,24 +703,6 @@ this.underscore(modules[i].paramList[0]);
 			i += 1;
 		}
 		return (res);
-	}
-	
-    /**
-     * Manage the draw of a leaf
-     */
-	affLeaf(treeId, currentId, semiRadius) {
-	this.shiftTranslation({x: 0, y: 0, z: semiRadius + this.currentParams.leafPos});
-		_prefabCallback(this,
-			this.drawTurtle.originalLeafPrefab,
-			[treeId, currentId, "leaf"],
-			this.drawTurtle.seedBox[this.drawTurtle.seedIndex].leafFile,
-			this.currentParams.leafSize,
-			this.currentParams.leafSize,
-			this.currentParams.leafSize,
-			this.currentParams.position,
-			BABYLON.Vector3.RotationFromAxis(this.currentParams.up, this.currentParams.heading, this.currentParams.left),
-			this.drawTurtle.scene);
-	this.shiftTranslation({x: -0, y: 0, z: -(semiRadius +this.currentParams.leafPos)});
 	}
 	
 	//Set the radius of the Turtle
@@ -1240,11 +1244,12 @@ this.underscore(modules[i].paramList[0]);
      */
     stopGC() {
         if (this.currentParams.pointList.length > 1) {
+            var initialColor = this.drawTurtle.materialColors[this.currentParams.colorIndex];
             var radiusTab = this.currentParams.radiusList;
             var scaling = function(i, distance) {
                 return radiusTab[i] * 10;
             }
-            this.drawTurtle.CreateExtrudeShape("tube" + (this.drawTurtle.graphicElems.length + 1).toString(), { shape: this.currentParams.shapeSection, path: this.currentParams.pointList, scaleFunction: scaling, sideOrientation: BABYLON.Mesh.DOUBLESIDE, cap: BABYLON.Mesh.CAP_ALL}, /*this.drawTurtle.materialTextures[0]*/ this.drawTurtle.materialColors[this.currentParams.colorIndex]);
+            this.drawTurtle.CreateExtrudeShape("tube" + (this.drawTurtle.graphicElems.length + 1).toString(), { shape: this.currentParams.shapeSection, path: this.currentParams.pointList, scaleFunction: scaling, sideOrientation: BABYLON.Mesh.DOUBLESIDE, cap: BABYLON.Mesh.CAP_ALL}, initialColor );
             this.currentParams.pointList = [];
         }
         this.currentParams.generalizedCylinder = false;

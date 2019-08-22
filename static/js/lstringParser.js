@@ -12,10 +12,15 @@ class LStringParser {
         this.lstr = lstr;
         this.result = [];
         this.i = 0;
+        this.symbols = {F: ["F", "Frame"], f: ["f"], S: ["SB", "SetHead", "SetScale", "StartGC", "Sphere", "Surface", "Sweep", "SetContour", "SectionResolution", "SetWidth", "SetGuide", "SetColor"],
+        E: ["EndGC", "Elasticity", "EB", "EP", "EndGuide"], P: ["PinpointRel", "PglShape", "Pinpoint", "PositionOnGuide", "PP"], I: ["InterpolateColors", "IncWidth", "IncColor"], i: ["iRollL", "iRollR"],
+        M: ["MoveTo", "MoveRel", "MultScale"], Q: ["Quad"], B: ["Box", "BP"], L: ["Left", "Label", "LineTo", "LineRel"], U: ["Up"], D: ["Down", "DivScale", "DecWidth", "DecColor"], T: ["Tropism", "TurnAround"],
+        R: ["RollL", "RollR", "RollToVert", "Right"], C: ["Circle"], n: ["nF"], others: ["_", "[", "]", "+", "-", "/", "\\", "&", "^", "@M", "@R", "@D", "@Dd", "@Di", "@Gc", "@Ge", "@V", "@g", "@O", "@o",
+        "@B", "@b", "@L", "@Ts", "@Tp", "|", ",", "~", ";", "{", "}", "!"]};
     }
 
 	getParsedLString() {
-		return (this.result);
+		return this.result;
 	}
 
 	/**
@@ -48,7 +53,7 @@ class LStringParser {
 		for (var j = 0; j < L; j++) {
 			name += this.lstr[this.i+j];
 		}
-		return (name);
+		return name;
 	}
 	
 	/**
@@ -61,92 +66,44 @@ class LStringParser {
 		}
 		var params = this.lstr.substring(tmp, this.i);// je recupere tout ce qu'il y a dans les parentheses
 		var tab = params.split(",");//je split a chaque virgule
-		var arrayParam = new Array;
+		var arrayParam = [];
 		var k = 0 
 		while (k < tab.length) {//pour chaque element, je le met en Number et je le push dans mon tableau de parametre
-			arrayParam.push(parseFloat(tab[k]));
+			if(tab[k] == "l") {
+				arrayParam.push(tab[k]);
+			}else {
+				arrayParam.push(parseFloat(tab[k]));
+			}
 			k++;
 		}
-		return (arrayParam);
+		return arrayParam;
 	}
 
 	/**
 	 * Permit to discern a module than an other caracter in the LString
 	 */
+
     getSizeSymbol(lstr, i) {
 		var size = 0;
-		
-		size = searchSymbol(lstr, i, size, "["); 		size = searchSymbol(lstr, i, size, "SB");
-		size = searchSymbol(lstr, i, size, "]"); 		size = searchSymbol(lstr, i, size, "EB");
 
-		size = searchSymbol(lstr, i, size, "Pinpoint");
-		size = searchSymbol(lstr, i, size, "PinpointRel");
-		size = searchSymbol(lstr, i, size, "@R");	 	size = searchSymbol(lstr, i, size, "SetHead");
-		size = searchSymbol(lstr, i, size, "+"); 		size = searchSymbol(lstr, i, size, "Left");
-		size = searchSymbol(lstr, i, size, "-"); 		size = searchSymbol(lstr, i, size, "Right");
-		size = searchSymbol(lstr, i, size, "^"); 		size = searchSymbol(lstr, i, size, "Up");
-		size = searchSymbol(lstr, i, size, "&"); 		size = searchSymbol(lstr, i, size, "Down");
-		size = searchSymbol(lstr, i, size, "/");		size = searchSymbol(lstr, i, size, "RollL");
-		size = searchSymbol(lstr, i, size, "\\");		size = searchSymbol(lstr, i, size, "RollR");
-		size = searchSymbol(lstr, i, size, "iRollL");
-		size = searchSymbol(lstr, i, size, "iRollR");
-		size = searchSymbol(lstr, i, size, "|");		size = searchSymbol(lstr, i, size, "TurnAround");
-		size = searchSymbol(lstr, i, size, "@V");		size = searchSymbol(lstr, i, size, "RollToVert");
-
-		size = searchSymbol(lstr, i, size, "@M");		size = searchSymbol(lstr, i, size, "MoveTo");
-		size = searchSymbol(lstr, i, size, "MoveRel");
-
-		size = searchSymbol(lstr, i, size, "@D");		size = searchSymbol(lstr, i, size, "SetScale");
-		size = searchSymbol(lstr, i, size, "@Dd");		size = searchSymbol(lstr, i, size, "DivScale");
-		size = searchSymbol(lstr, i, size, "@Di");		size = searchSymbol(lstr, i, size, "MultScale");
-
-		size = searchSymbol(lstr, i, size, "F");
-		size = searchSymbol(lstr, i, size, "f");
-		size = searchSymbol(lstr, i, size, "nF");
-		size = searchSymbol(lstr, i, size, "@Gc");		size = searchSymbol(lstr, i, size, "StartGC");
-		size = searchSymbol(lstr, i, size, "@Ge");		size = searchSymbol(lstr, i, size, "EndGC");
-		size = searchSymbol(lstr, i, size, "{");		size = searchSymbol(lstr, i, size, "BP");
-		size = searchSymbol(lstr, i, size, "}");		size = searchSymbol(lstr, i, size, "EP");
-		size = searchSymbol(lstr, i, size, ".");		size = searchSymbol(lstr, i, size, "PP");
-		size = searchSymbol(lstr, i, size, "LineTo");
-		size = searchSymbol(lstr, i, size, "OLineTo");
-		size = searchSymbol(lstr, i, size, "LineRel");
-		size = searchSymbol(lstr, i, size, "OLineRel");
-		size = searchSymbol(lstr, i, size, "@O");		size = searchSymbol(lstr, i, size, "Sphere");
-		size = searchSymbol(lstr, i, size, "@o");		size = searchSymbol(lstr, i, size, "Circle");
-		size = searchSymbol(lstr, i, size, "@B");		size = searchSymbol(lstr, i, size, "Box");
-		size = searchSymbol(lstr, i, size, "@b");		size = searchSymbol(lstr, i, size, "Quad");
-		size = searchSymbol(lstr, i, size, "@L");		size = searchSymbol(lstr, i, size, "Label");
-		size = searchSymbol(lstr, i, size, "Surface");
-		size = searchSymbol(lstr, i, size, "~");
-		size = searchSymbol(lstr, i, size, "~l");
-		size = searchSymbol(lstr, i, size, "@g");		size = searchSymbol(lstr, i, size, "PglShape");
-		size = searchSymbol(lstr, i, size, "Frame");
-		size = searchSymbol(lstr, i, size, "SetContour");
-		size = searchSymbol(lstr, i, size, "SectionResolution");
-		size = searchSymbol(lstr, i, size, "SetGuide");
-		size = searchSymbol(lstr, i, size, "EndGuide");
-		size = searchSymbol(lstr, i, size, "Sweep");
-		size = searchSymbol(lstr, i, size, "PositionOnGuide");
-
-		size = searchSymbol(lstr, i, size, "_");		size = searchSymbol(lstr, i, size, "IncWidth");
-		size = searchSymbol(lstr, i, size, "!");		size = searchSymbol(lstr, i, size, "DecWidth");
-		size = searchSymbol(lstr, i, size, "SetWidth");
-
-		size = searchSymbol(lstr, i, size, ";");		size = searchSymbol(lstr, i, size, "IncColor");
-		size = searchSymbol(lstr, i, size, ",");		size = searchSymbol(lstr, i, size, "DecColor");
-		size = searchSymbol(lstr, i, size, "SetColor");
-		size = searchSymbol(lstr, i, size, "InterpolateColors");
-
-		size = searchSymbol(lstr, i, size, "@Ts");		size = searchSymbol(lstr, i, size, "Elasticity");
-		size = searchSymbol(lstr, i, size, "@Tp");		size = searchSymbol(lstr, i, size, "Tropism");
-		return (size);
-    }
+		if(lstr[i] in this.symbols) {
+			this.symbols[lstr[i]].forEach(function(element) {
+				size = searchSymbol(lstr, i, size, element);
+			});
+		}else {
+			this.symbols["others"].forEach(function(element) {
+				size = searchSymbol(lstr, i, size, element);
+			});
+		}
+		return size;
+	}
 }
+
 function searchSymbol(lstr, i, tmp, symbol) {//true if finded
 	for (j = 0; j < symbol.length; j++) {
 		if (lstr[i+j] != symbol[j])
-			return (tmp);
+			return tmp;
 	}
-	return (symbol.length);
+	
+	return symbol.length;
 }

@@ -358,7 +358,7 @@ class drawTurtle {
      * @param {BABYLON.StandardMaterial} material The material to be applied on the polygon
      */
     CreatePolygon(id, settings, currentParams, material) {
-        this.graphicElems.push(BABYLON.MeshBuilder.CreateDisc(id, settings, this.scene));
+        this.graphicElems.push(BABYLON.MeshBuilder.CreatePolygon(id, settings, this.scene));
         var polygon = this.graphicElems[this.graphicElems.length - 1];
         polygon.material = material;
 
@@ -366,6 +366,8 @@ class drawTurtle {
         var polygonHeight = polygon.getBoundingInfo().boundingBox.vectorsWorld[1].y + -(polygon.getBoundingInfo().boundingBox.vectorsWorld[0].y);
         polygon.translate(BABYLON.Axis.Y, polygonHeight / 2, BABYLON.Space.LOCAL);
 
+        polygon.rotate(BABYLON.Axis.Z, (-90 * (Math.PI/180)), BABYLON.Space.LOCAL);
+        polygon.rotate(BABYLON.Axis.Y, (-90 * (Math.PI/180)), BABYLON.Space.LOCAL);
         var CoT = new BABYLON.TransformNode("root");
         CoT.position = currentParams.position;
         CoT.rotation = rotationMatrix;
