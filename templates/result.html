@@ -19,8 +19,6 @@
 						<i class="fas fa-file-upload"></i> <span>Load from file</span></button>
 					<button type="button" class="btn btn-light text-success" id="importExample" title="Import a .lpy example file from the database." data-toggle="modal" data-target="#modalExample" style="display: none;">
 					<i class="fas fa-file-upload"></i> <span>Load Example</span></button>
-					<!--<button type="button" class="btn btn-light text-success" id="importURL" alt="Import a .lpy file from an URL." title="Import a .lpy file from an URL." data-toggle="modal" data-target="#modalFileURL">
-						<i class="fas fa-file-upload"></i> Load from URL</button>-->
 					<button type="button" class="btn btn-light text-success" id="downloadButton" alt="Save your program in a .lpy file and download it."
 					title="Save your program in a .lpy file and download it." data-toggle="modal" data-target="#modalFilename"><i class="fas fa-save"></i> <span>Save</span></button>
 				</div>
@@ -133,24 +131,6 @@ endlsystem
 		        	</div>
 		        </div>
 		    </div>
-
-		    <!--<div class="modal fade" id="modalFileURL" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-	 			<div class="modal-dialog" role="document">
-	    			<div class="modal-content">
-	      				<div class="modal-header">
-	      					<h3 class="modal-title"> Load a file from the Web</h3>
-	        				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	      				</div>
-	      				<div class="modal-body">
-	        				<b><center><label for="fileURL">Enter the URL of the file you want to load in the editor : </label></b>
-		        			<input class="flex-column" type="url" name="fileURL" id="fileURL" placeholder="https://example.com" pattern="https://.*" required></center>
-		        		</div>
-		        		<div class="modal-footer">
-        					<button type="button" class="btn btn-primary" id="modalLoadButton" data-dismiss="modal">Load</button>
-      					</div>     
-		        	</div>
-		        </div>
-		    </div>-->
 		</div>
 	</form>
 {% endblock %}
@@ -194,11 +174,9 @@ endlsystem
 			function resize() {
     			var h = window.innerHeight;
     			console.log(h);
-		    	//if (h > 1070) {
-		    		$('#code').css('height', (h - (h * 0.137)).toString() + 'px');
-		    		$('#renderCanvas').css('height', (h - (h * 0.3)).toString() + 'px');
-		    		$('#printOutput').css('height', (h - (h * 0.8)).toString() + 'px');
-		    	//}
+	    		$('#code').css('height', (h - (h * 0.137)).toString() + 'px');
+	    		$('#renderCanvas').css('height', (h - (h * 0.3)).toString() + 'px');
+	    		$('#printOutput').css('height', (h - (h * 0.8)).toString() + 'px');
 			};
 
 			$(window).on('resize', function () {
@@ -237,11 +215,6 @@ endlsystem
 					deleteButton.style.display = "none";
 				}
 			});
-			/*document.getElementById("modalLoadButton").addEventListener("click", () => function(event){
-				$('#fileLoaded').load($('#fileURL').val());
-				editor.getSession().setValue($('#fileLoaded').val());
-				event.preventDefault();
-			});*/
 
 			document.getElementById("screenshot").addEventListener("click", () => takeScreenshot());
 

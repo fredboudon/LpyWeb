@@ -65,9 +65,6 @@ $(document).ready(function() {
 					wTurtle.Reset(dTurtle);
 
 					$('#printOutput').val(data.output);
-					/*if(data.output != undefined) {
-						window.open("output.html", "LPyWeb Output", "resizable=yes");
-					}*/
 					
 					if(data.error != undefined) {
 						console.log(data.error);
@@ -142,13 +139,6 @@ $(document).ready(function() {
 			event.preventDefault();
 		};
 	}
-
-	/*if(document.getElementById('modalLoadButton')) {
-		document.getElementById('modalLoadButton').onclick = function(event) {
-			
-		};
-	}*/
-
 });
 
 //Function that unlocks the action buttons (Run, Step, Animate and Rewind) after the end of the current animation
@@ -479,7 +469,6 @@ function addNewTab(editor, sessions, code, filename) {
 	newLi.insertBefore(newTab, closeTab);
 
 	if(filename === undefined){
-		//newTabText.innerHTML = "New Tab (" + newTabText.parentNode.parentNode.id.split("-")[1] + ")";
 		newTabText.innerHTML = "New Tab";
 		clearEditor(editor, "addTab");
 	}else {

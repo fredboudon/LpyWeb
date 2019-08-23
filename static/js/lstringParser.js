@@ -1,6 +1,6 @@
 /**
  * @file lstringParser.js
- * @author Renan Berruex <renan.berruex@epitech.eu>
+ * @author Renan Berruex <renan.berruex@epitech.eu> and Anthony Scriven <scriven.anthony@gmail.com>
  * @version 1.0
  */
 

@@ -103,19 +103,16 @@ class drawTurtle {
         var pilot_local_axisX = BABYLON.Mesh.CreateLines("pilot_local_axisX", [
             new BABYLON.Vector3.Zero(), new BABYLON.Vector3(0, 0, size)
         ], this.scene);
-        //new BABYLON.Vector3(size * 0.95, 0.05 * size, 0), new BABYLON.Vector3(0, size, 0), new BABYLON.Vector3(size * 0.95, -0.05 * size, 0)
         pilot_local_axisX.color = new BABYLON.Color3(1, shade, shade);
 
         var pilot_local_axisY = BABYLON.Mesh.CreateLines("pilot_local_axisY", [
             new BABYLON.Vector3.Zero(), new BABYLON.Vector3(-size, 0, 0)
         ], this.scene);
-        //new BABYLON.Vector3(-0.05 * size, size * 0.95, 0), new BABYLON.Vector3(size, 0, 0), new BABYLON.Vector3(0.05 * size, size * 0.95, 0)
         pilot_local_axisY.color = new BABYLON.Color3(shade, 1, shade);
 
         var pilot_local_axisZ = BABYLON.Mesh.CreateLines("pilot_local_axisZ", [
             new BABYLON.Vector3.Zero(), new BABYLON.Vector3(0, size, 0)
         ], this.scene);
-        //new BABYLON.Vector3(0, -0.05 * size, size * 0.95), new BABYLON.Vector3(0, 0, size), new BABYLON.Vector3(0, 0.05 * size, size * 0.95)
         pilot_local_axisZ.color = new BABYLON.Color3(shade, shade, 1);
 
         var local_origin = BABYLON.MeshBuilder.CreateBox("local_origin", { size: 1 }, this.scene);

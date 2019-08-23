@@ -5,7 +5,6 @@
  */
 
 const GEOM_EPSILON = 1e-5;
-//const GEOM_TOLERANCE = 1e-10;
 const GEOM_RAD = 0.01745329052;
 const GEOM_PI = Math.PI;
 
@@ -172,7 +171,6 @@ class webTurtle {
                 break;
 
 			case '@L':
-                //this.label(modules[i].paramList[0], modules[i].paramList[1], this.drawTurtle.materialColors[0], "label")
 				break;
 
 			case '_':
@@ -211,9 +209,8 @@ this.underscore(modules[i].paramList[0]);
                 this.multScale(modules[i].paramList[0]);
                 break;
 
-            /*case 'InterpolateColors':
-                this.interpolateColors(modules[i].paramList[0], modules[i].paramList[1], modules[i].paramList[2]);
-                break; */
+            case 'InterpolateColors':
+                break; 
 
 			case 'surface':
 				break;
@@ -230,10 +227,6 @@ this.underscore(modules[i].paramList[0]);
             case 'Frame':
                 this.Frame(modules[i].paramList[0]);
                 break;
-
-            /*case 'LineTo':
-                this.lineTo(modules[i].paramList[0], modules[i].paramList[0]);
-                break;*/
 		}
 	}
 	
@@ -567,7 +560,6 @@ this.underscore(modules[i].paramList[0]);
 
     leaf(length = this.defaultStep, materialColor, id) {
         if (length > 0) {
-            //var pos = this.currentParams.position.clone();
             var origin = new BABYLON.Vector3(0,0,0);
             var points = [ { x: - (length/4), z: (length/3)}, 
                             { x: - (length/4), z: (2 * length/3)},
@@ -1189,9 +1181,7 @@ this.underscore(modules[i].paramList[0]);
      * @param {Number} alpha The mixing alpha
      */
     interpolateColors(val1, val2, alpha = 0.5) {
-        /*var newColor = new BABYLON.Color4.Lerp(this.drawTurtle.materialColors[val1], this.drawTurtle.materialColors[val2], alpha);
-        this.drawTurtle.materialColors.push(newColor);
-        this.setColor(this.drawTurtle.materialColors.length - 1);*/
+        //TODO
     }
     
     // void setCustomAppearance(const AppearancePtr app);
