@@ -19,12 +19,12 @@ class drawTurtle {
 		this.scene.clearColor = new BABYLON.Color3.FromHexString("#A3A3A3");
 
 		this.camera = new BABYLON.ArcRotateCamera("Camera", 0, 0, 5, new BABYLON.Vector3(0, 0, 0), this.scene);
-		this.camera.setPosition(new BABYLON.Vector3(0, 0, 5));
+		this.camera.setPosition(new BABYLON.Vector3(0, 0, 15));
         this.camera.wheelPrecision = 100.0;
         this.camera.pinchPrecision = 100.0;
 		this.camera.attachControl(this.canvas, true);
 
-        this.light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, -5, 3), this.scene);
+        this.light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 15, 0), this.scene);
         this.light.intensity = 1;
 
         this.graphicElems = [];
@@ -363,8 +363,9 @@ class drawTurtle {
         var polygonHeight = polygon.getBoundingInfo().boundingBox.vectorsWorld[1].y + -(polygon.getBoundingInfo().boundingBox.vectorsWorld[0].y);
         polygon.translate(BABYLON.Axis.Y, polygonHeight / 2, BABYLON.Space.LOCAL);
 
-        polygon.rotate(BABYLON.Axis.Z, (-90 * (Math.PI/180)), BABYLON.Space.LOCAL);
-        polygon.rotate(BABYLON.Axis.Y, (-90 * (Math.PI/180)), BABYLON.Space.LOCAL);
+        polygon.rotate(BABYLON.Axis.Z, (90 * (Math.PI/180)), BABYLON.Space.LOCAL);
+        polygon.rotate(BABYLON.Axis.Y, (90 * (Math.PI/180)), BABYLON.Space.LOCAL);
+
         var CoT = new BABYLON.TransformNode("root");
         CoT.position = currentParams.position;
         CoT.rotation = rotationMatrix;
@@ -423,7 +424,7 @@ class drawTurtle {
      */
 
     ResetCamera() {
-        this.camera.setPosition(new BABYLON.Vector3(0, 0, 5));
+        this.camera.setPosition(new BABYLON.Vector3(0, 0, 15));
         this.camera.target = new BABYLON.Vector3(0,0,0);
         this.camera.attachControl(this.canvas, true);
     }

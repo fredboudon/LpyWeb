@@ -215,6 +215,10 @@ this.underscore(modules[i].paramList[0]);
 			case 'surface':
 				break;
 
+            case 'Sweep':
+                //this.Sweep(modules[i].paramList[0], modules[i].paramList[1], modules[i].paramList[2], modules[i].paramList[3], modules[i].paramList[4], modules[i].paramList[5], this.drawTurtle.materialColors[this.currentParams.colorIndex]);
+                break;
+
 			case '~':
                 if(modules[i].paramList[0] == "l") {
                     this.leaf(modules[i].paramList[1], this.drawTurtle.materialColors[this.currentParams.colorIndex], "leaf");
@@ -1250,6 +1254,11 @@ this.underscore(modules[i].paramList[0]);
         this.currentParams.customParentId = SHAPE_NOID;
     }
 
+    Sweep(path, section, length = this.defaultStep, dlength = this.radius, radius = 1, radiusvariation = null, material) {
+        //TODO
+        //this.drawTurtle.CreateExtrudeShape("Sweep" + (this.drawTurtle.graphicElems.length + 1).toString(), { shape: section, path: path, sideOrientation: BABYLON.Mesh.DOUBLESIDE, cap: BABYLON.Mesh.CAP_ALL}, material);
+    }
+
     // void _applyTropism();
     /**
      * Apply tropism to the turtle with the current parameters
@@ -1260,12 +1269,6 @@ this.underscore(modules[i].paramList[0]);
 
     // virtual void label(const std::string& text, int size = -1 );
     label(text, size = -1) {
-        //TODO
-    }
-
-	// inline void frame() { frame(default_step); }
-    // virtual void frame(real_t heigth, real_t cap_heigth_ratio = 0.2, real_t cap_radius_ratio = 2, real_t color = 1.0, real_t transparency = 0.0);
-    frame(height, capHeightRatio = 0.2, capRadiusRatio = 2, color = 1.0, transparency = 0.0) {
         //TODO
     }
 
