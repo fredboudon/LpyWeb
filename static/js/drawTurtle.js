@@ -24,7 +24,7 @@ class drawTurtle {
         this.camera.pinchPrecision = 100.0;
 		this.camera.attachControl(this.canvas, true);
 
-        this.light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 15, 0), this.scene);
+        this.light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 15, 15), this.scene);
         this.light.intensity = 1;
 
         this.graphicElems = [];
