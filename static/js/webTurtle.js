@@ -216,7 +216,7 @@ this.underscore(modules[i].paramList[0]);
 				break;
 
             case 'Sweep':
-                //this.Sweep(modules[i].paramList[0], modules[i].paramList[1], modules[i].paramList[2], modules[i].paramList[3], modules[i].paramList[4], modules[i].paramList[5], this.drawTurtle.materialColors[this.currentParams.colorIndex]);
+                this.Sweep(modules[i].paramList[0], modules[i].paramList[1], modules[i].paramList[2], modules[i].paramList[3], modules[i].paramList[4], modules[i].paramList[5], this.drawTurtle.materialColors[this.currentParams.colorIndex]);
                 break;
 
 			case '~':
@@ -317,7 +317,7 @@ this.underscore(modules[i].paramList[0]);
     ResetShapeSection(circleResolution) {
         this.currentParams.shapeSection = [];
         for (var i = 0; i <= 360; i += (360 / circleResolution)) {
-            this.currentParams.shapeSection.push(new BABYLON.Vector3((this.radius/2) * Math.cos((Math.PI * i) / 180), (this.radius/2) * Math.sin((Math.PI * i) / 180), 0));
+            this.currentParams.shapeSection.push(new BABYLON.Vector3(Math.cos((Math.PI * i) / 180), Math.sin((Math.PI * i) / 180), 0));
         }
     }
 
@@ -336,7 +336,7 @@ this.underscore(modules[i].paramList[0]);
             var initialColor = this.drawTurtle.materialColors[this.currentParams.colorBeforeGc];
             var radiusTab = this.currentParams.radiusList;
             var scaling = function(i, distance) {
-                return radiusTab[i]*10;
+                return radiusTab[i] * 0.5;
             }
             this.drawTurtle.CreateExtrudeShape("tube" + (this.drawTurtle.graphicElems.length + 1).toString(), { shape: this.currentParams.shapeSection, path: this.currentParams.pointList, scaleFunction: scaling, sideOrientation: BABYLON.Mesh.DOUBLESIDE, radius: this.radius/2, cap: BABYLON.Mesh.CAP_ALL}, initialColor);
         }
@@ -371,7 +371,7 @@ this.underscore(modules[i].paramList[0]);
             var initialColor = this.drawTurtle.materialColors[this.currentParams.colorBeforeGc];
             var radiusTab = this.currentParams.radiusList;
             var scaling = function(i, distance) {
-                return radiusTab[i]*10;
+                return radiusTab[i] * 0.5;
             }
             this.drawTurtle.CreateExtrudeShape("tube" + (this.drawTurtle.graphicElems.length + 1).toString(), { shape: this.currentParams.shapeSection, path: this.currentParams.pointList, scaleFunction: scaling,  sideOrientation: BABYLON.Mesh.DOUBLESIDE, cap: BABYLON.Mesh.CAP_ALL}, initialColor);
         }
@@ -1244,7 +1244,7 @@ this.underscore(modules[i].paramList[0]);
             var initialColor = this.drawTurtle.materialColors[this.currentParams.colorBeforeGc];
             var radiusTab = this.currentParams.radiusList;
             var scaling = function(i, distance) {
-                return radiusTab[i] * 10;
+                return radiusTab[i] * 0.5;
             }
             this.drawTurtle.CreateExtrudeShape("tube" + (this.drawTurtle.graphicElems.length + 1).toString(), { shape: this.currentParams.shapeSection, path: this.currentParams.pointList, scaleFunction: scaling, sideOrientation: BABYLON.Mesh.DOUBLESIDE, cap: BABYLON.Mesh.CAP_ALL}, initialColor );
             this.currentParams.pointList = [];

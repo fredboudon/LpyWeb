@@ -36,7 +36,12 @@ class LStringParser {
 				this.i = this.i + name.length;
 				if (this.lstr[this.i] == '(') { //si mon module a des parametres
 					this.i++;
-					this.result.push(new Module(name, this.recupParam()));
+					if (name == "Sweep") {
+						var sweepParams = this.recupParam(true);
+						this.result.push(new Module(name, sweepParams));
+					}else {
+						this.result.push(new Module(name, this.recupParam()));
+					}
 				}
 				else {//s'il n'en a pas
 					this.result.push(new Module(name, []));
@@ -59,17 +64,27 @@ class LStringParser {
 	/**
      * Return an array of number that contain module parameters (the module at the position i in the LString)
      */
-	recupParam() {
+	recupParam(sweep = false) {
+		if(sweep) {
+			var path = this.curveToJS();
+			var section = this.curveToJS();
+			this.i = this.i + 3;
+		}
+
 		var tmp = this.i;
 		while (this.lstr[this.i] != ')') {
 			this.i++;
 		}
-		var params = this.lstr.substring(tmp, this.i);// je recupere tout ce qu'il y a dans les parentheses
+		var params = this.lstr.substring(tmp, this.i);
 		var tab = params.split(",");//je split a chaque virgule
 		var arrayParam = [];
+		if(sweep) {
+			arrayParam.push(path);
+			arrayParam.push(section);
+		}
 		var k = 0 
 		while (k < tab.length) {//pour chaque element, je le met en Number et je le push dans mon tableau de parametre
-			if(tab[k] == "l") {
+			if(isNaN(parseFloat(tab[k]))) {
 				arrayParam.push(tab[k]);
 			}else {
 				arrayParam.push(parseFloat(tab[k]));
@@ -77,6 +92,33 @@ class LStringParser {
 			k++;
 		}
 		return arrayParam;
+	}
+
+	curveToJS() {
+		var tmp = this.i;
+		var tab = [];
+
+		while (this.lstr[this.i] != '[') {
+			tmp++;
+			this.i++;
+		}
+		while (this.lstr[this.i] != ']') {
+			this.i++;
+		}
+		var params = this.lstr.substring(tmp, this.i);
+		tab = params.split("(");//je split a chaque parenthèse ouvrante <=> chaque Vector3
+		tab.shift();
+		for(let i = 0; i<tab.length; i++) {
+			tab[i] = tab[i].replace("),Vector3", "");
+			tab[i] = tab[i].split(",");
+			for(let j = 0; j < 3; j++) {
+				tab[i][j] = parseFloat(tab[i][j]);
+			}
+			tab[i] = new BABYLON.Vector3(tab[i][0], tab[i][1], tab[i][2]);
+		}
+		this.i ++;
+
+		return tab;
 	}
 
 	/**
