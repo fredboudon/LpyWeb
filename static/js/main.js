@@ -17,7 +17,6 @@ function display(drawTurtle, webTurtle, LString) {
         alert("Syntax error");
     else {
         var lstrParser = new LStringParser();
-        //ATTENTION PROBLEME AVEC LES SYMBOLES VIRUGULES (dans le lstring parser)
         lstrParser.lstr = LString;
         lstrParser.ParseLString();
         webTurtle.Start(lstrParser.result);

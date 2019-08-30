@@ -33,6 +33,7 @@
 	{% block body %}
 		<body>
 	{% endblock %}
+	<!-- Navbar -->
     	<div class="row-2 d-flex flex-column flex-md-row align-items-center p-0 px-md-4 bg-success border-bottom shadow-sm">
 			<a class="my-0 mr-md-auto font-weight-normal text-light navbar-brand" href="{{ url_for('home') }}"><span>L-PyWeb</span></a>
 			<nav class="my-2 my-md-0 mr-md-3">
@@ -47,7 +48,7 @@
 		</div>
 		{% block content %}
 		{% endblock %}
-		
+	<!-- Footer -->	
 		<div class="bg-light footer">
 			<div class="text-center text-success"><p>L-PyWeb - &copy; 2019 Copyright: F. Boudon and C. Godin
 			{% block footer %}

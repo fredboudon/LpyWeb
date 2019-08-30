@@ -18,12 +18,14 @@ class drawTurtle {
         this.scene = new BABYLON.Scene(this.engine);
 		this.scene.clearColor = new BABYLON.Color3.FromHexString("#A3A3A3");
 
+        //Camera
 		this.camera = new BABYLON.ArcRotateCamera("Camera", 0, 0, 5, new BABYLON.Vector3(0, 0, 0), this.scene);
 		this.camera.setPosition(new BABYLON.Vector3(0, 0, 15));
         this.camera.wheelPrecision = 100.0;
         this.camera.pinchPrecision = 100.0;
 		this.camera.attachControl(this.canvas, true);
 
+        //Light
         this.light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 15, 15), this.scene);
         this.light.intensity = 1;
 
@@ -33,6 +35,7 @@ class drawTurtle {
 
         this.CoT = this.LocalAxes(42, 0);
 
+        //Optimizer
         var options = new BABYLON.SceneOptimizerOptions();
         options.addOptimization(new BABYLON.LensFlaresOptimization(0));
         options.addOptimization(new BABYLON.ShadowsOptimization(0));
@@ -379,10 +382,28 @@ class drawTurtle {
      * @param {Object} settings The shape settings
      * @param {BABYLON.StandardMaterial} material The material to be applied on the shape
      */
-    CreateExtrudeShape(id, settings, material) {
+    CreateGeneralizedCylinders(id, settings, material) {
         this.graphicElems.push(BABYLON.MeshBuilder.ExtrudeShapeCustom(id, settings, this.scene));
         var shape = this.graphicElems[this.graphicElems.length - 1];
         shape.material = material;
+    }
+
+    CreateSweep(id, settings, material) {
+        this.graphicElems.push(BABYLON.MeshBuilder.ExtrudeShapeCustom(id, settings, this.scene));
+        var shape = this.graphicElems[this.graphicElems.length - 1];
+        shape.material = material;
+
+        //var rotationMatrix = BABYLON.Vector3.RotationFromAxis(currentParams.up, currentParams.heading, currentParams.left);
+        //var shapeHeight = shape.getBoundingInfo().boundingBox.vectorsWorld[1].y + -(shape.getBoundingInfo().boundingBox.vectorsWorld[0].y);
+        //shape.translate(BABYLON.Axis.Y, polygonHeight / 2, BABYLON.Space.LOCAL);
+
+        //shape.rotate(BABYLON.Axis.Z, (90 * (Math.PI/180)), BABYLON.Space.LOCAL);
+        //shape.rotate(BABYLON.Axis.Y, (90 * (Math.PI/180)), BABYLON.Space.LOCAL);
+
+        //var CoT = new BABYLON.TransformNode("root");
+        //CoT.position = currentParams.position;
+        //CoT.rotation = rotationMatrix;
+        //shape.parent = CoT;
     }
 
     /**

@@ -34,7 +34,7 @@ class LStringParser {
 			if (this.getSizeSymbol(this.lstr, this.i) > 0) {
 				name = this.recupName();
 				this.i = this.i + name.length;
-				if (this.lstr[this.i] == '(') { //si mon module a des parametres
+				if (this.lstr[this.i] == '(') { //If the module have parameters
 					this.i++;
 					if (name == "Sweep") {
 						var sweepParams = this.recupParam(true);
@@ -65,6 +65,7 @@ class LStringParser {
      * Return an array of number that contain module parameters (the module at the position i in the LString)
      */
 	recupParam(sweep = false) {
+		//All if(sweep) conditions concern the sweep Module. The parser works without it.
 		if(sweep) {
 			var path = this.curveToJS();
 			var section = this.curveToJS();
@@ -76,14 +77,18 @@ class LStringParser {
 			this.i++;
 		}
 		var params = this.lstr.substring(tmp, this.i);
-		var tab = params.split(",");//je split a chaque virgule
+		var tab = params.split(","); //Splits the parameters at each ',' into a tab
 		var arrayParam = [];
 		if(sweep) {
 			arrayParam.push(path);
 			arrayParam.push(section);
+			this.i = this.i - tab[3].length - tab[4].length - tab[5].length - "Vector3".length;
+			for(let p = 0; p < 3; p++) {
+				tab.pop();
+			}
 		}
 		var k = 0 
-		while (k < tab.length) {//pour chaque element, je le met en Number et je le push dans mon tableau de parametre
+		while (k < tab.length) {//The parameter is parsed into a float if it's supposed to be a number. Else it keeps the parameter intact and push it into the returned array.
 			if(isNaN(parseFloat(tab[k]))) {
 				arrayParam.push(tab[k]);
 			}else {
@@ -91,8 +96,17 @@ class LStringParser {
 			}
 			k++;
 		}
+		if(sweep) {
+			var width = this.curveToJS();
+			arrayParam.push(width);
+		}
+		console.log(arrayParam);
 		return arrayParam;
 	}
+
+	/**
+     * Transform Python curves in BabylonJS Vector3
+     */
 
 	curveToJS() {
 		var tmp = this.i;
@@ -141,7 +155,7 @@ class LStringParser {
 	}
 }
 
-function searchSymbol(lstr, i, tmp, symbol) {//true if finded
+function searchSymbol(lstr, i, tmp, symbol) {
 	for (j = 0; j < symbol.length; j++) {
 		if (lstr[i+j] != symbol[j])
 			return tmp;

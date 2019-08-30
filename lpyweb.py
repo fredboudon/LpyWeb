@@ -1,6 +1,7 @@
 import os
 import sys
 import openalea.lpy as lpy
+import openalea.plantgl.all as pgl
 from flask import Flask
 from flask import request, render_template, url_for, redirect, jsonify, session
 from flask import Markup
@@ -62,6 +63,7 @@ def run():
 	lstring = l.derive()
 	ilstring = l.interpret(lstring)
 	txtlstring = str(ilstring)
+	# txtlstring = lstringtojson(ilstring)
 
 	outlog.close()
 	sys.stdout = out
@@ -125,6 +127,7 @@ def step():
 		LSystem = l
 		return jsonify({'LString' : txtlstring, 'currentStep' : session['currentStep'], 'step' : session['step']})
 
+#When Rewind is clicked, the server receives the code, interpret only the Axiom of the LString and sends the result.
 @app.route('/rewind', methods=['POST'])
 def rewind():
 	disconnect()
@@ -159,3 +162,22 @@ def dated_url_for(endpoint, **values):
                                      endpoint, filename)
             values['q'] = int(os.stat(file_path).st_mtime)
     return url_for(endpoint, **values)
+
+#Fred's code
+#Converts curves and LStrings into JSON
+
+# def iscurve(c):
+#     if isinstance(c, pgl.Curve2D) : return True
+#     return isinstance(c, pgl.LineicModel)
+# 
+# def curvetojson(c):
+#     # calcule des points et les transforme en chaine de caractere
+#     deltau = (c.lastKnot - c.firstKnot) / c.stride
+#     return '['+','.join([str(tuple(c.getPointAt(c.firstKnot + i * deltau))) for  i in range(c.stride+1)])+']'
+# 
+# def lstringtojson(lstring):
+#     lstrrepr = ''
+#     for module in lstring:
+#        modrepr = module.name +'(' + ','.join([str(param) if not iscurve(param) else curvetojson(param) for param in module])
+#        lstrrepr += ' '+modrepr
+#     return lstrrepr
