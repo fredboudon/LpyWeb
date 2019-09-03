@@ -1,13 +1,13 @@
 /**
  * @file webTurtle.js
- * @author Renan Berruex <renan.berruex@epitech.eu> and Maxime Cauvin <maxime.cauvin@epitech.eu>
+ * @author Renan Berruex <renan.berruex@epitech.eu> and Maxime Cauvin <maxime.cauvin@epitech.eu> and Anthony Scriven <scriven.anthony@gmail.com>
  * @version 0.1
  */
 
 const GEOM_EPSILON = 1e-5;
-//const GEOM_TOLERANCE = 1e-10;
 const GEOM_RAD = 0.01745329052;
-const GEOM_PI = 3.141592653589793;
+const GEOM_PI = Math.PI;
+
 const SHAPE_NOID = -1;
 
 /**
@@ -20,13 +20,12 @@ class webTurtle {
      * @param {drawTurtle} drawTurtle An instance of a drawTurtle
      */
     constructor(drawTurtle) {
-        this.paramStack = []	;
+        this.paramStack = [];
         this.drawTurtle = drawTurtle;
         this.currentParams = {};
         this.defaultStep = 1;
         this.angleIncrement = 60;
         this.widthIncrement = 1;
-        this.colorIncrement = 1;
         this.scaleMultiplier = 0.5;
 		this.radius = 0.1;
         this.id = SHAPE_NOID;
@@ -42,19 +41,21 @@ class webTurtle {
             lastId: SHAPE_NOID,
             width: 0.1,
             tropism: new BABYLON.Vector3(0,1,0),
-            elasticity: 0.02,
+            elasticity: 0.,
 			angle: 30,
             screenCoordinates: false,
             polygon: false,
             generalizedCylinder: false,
             pointList: [],
             shapeSection: [],
+            radiusList: [],
             colorIndex: 1,
-			customId: SHAPE_NOID,
+            colorBeforeGc: 1,
+            customId: SHAPE_NOID,
             customParentId: SHAPE_NOID
         };
     }
-
+    //Calls the right function according to the module given in argument
 	lstringInterpret(modules, i){
 		switch (modules[i].name) {
 			case '[':
@@ -66,12 +67,15 @@ class webTurtle {
 				break;
 
 			case 'F':
-				this.F(modules[i].paramList[0], modules[i].paramList[1], this.drawTurtle.materialColors[0], "cylinder");
+				this.F(modules[i].paramList[0], modules[i].paramList[1], this.drawTurtle.materialColors[this.currentParams.colorIndex], "cylinder");
 				break;
 
 			case 'f':
 				this.f(modules[i].paramList[0]);
 				break;
+
+            case 'nF':
+                this.nF(modules[i].paramList[0], modules[i].paramList[1], modules[i].paramList[2], this.drawTurtle.materialColors[this.currentParams.colorIndex], "longCylinder")
 
 			case 'X':
 				break;
@@ -98,14 +102,16 @@ class webTurtle {
 				break;
 
 			case '@Gc':
+                this.startGC();
 				break;
 
 			case '@Ge':
+                this.stopGC();
 				break;
 
 			case '{':
 				break;
-
+ 
 			case '}':
 				break;
 
@@ -149,10 +155,20 @@ class webTurtle {
 				break;
 
 			case '@O':
+                this.sphere(modules[i].paramList[0], this.drawTurtle.materialColors[this.currentParams.colorIndex], "sphere");
 				break;
 
 			case '@o':
+                this.disc(modules[i].paramList[0], this.drawTurtle.materialColors[this.currentParams.colorIndex], "disc");
 				break;
+
+            case '@B':
+                this.box(modules[i].paramList[0], modules[i].paramList[1], this.drawTurtle.materialColors[this.currentParams.colorIndex], "box");
+                break;
+
+            case '@b':
+                this.plane(modules[i].paramList[0], modules[i].paramList[1], this.drawTurtle.materialColors[this.currentParams.colorIndex], "plane");
+                break;
 
 			case '@L':
 				break;
@@ -181,23 +197,40 @@ this.underscore(modules[i].paramList[0]);
 				this.setColor(modules[i].paramList[0]);
 				break;
 
-			case '@Dd':
-				break;
+            case '@D':
+                this.setScale(modules[i].paramList[0]);
+                break;
 
-			case '@Di':
-				break;
+            case '@Dd':
+                this.divScale(modules[i].paramList[0]);
+                break;
 
-			case '@D':
-				break;
+            case '@Di':
+                this.multScale(modules[i].paramList[0]);
+                break;
+
+            case 'InterpolateColors':
+                break; 
 
 			case 'surface':
 				break;
 
+            case 'Sweep':
+                //this.Sweep(modules[i].paramList[0], modules[i].paramList[1], modules[i].paramList[2], modules[i].paramList[3], modules[i].paramList[4], modules[i].paramList[5], this.drawTurtle.materialColors[this.currentParams.colorIndex]);
+                break;
+
 			case '~':
+                if(modules[i].paramList[0] == "l") {
+                    this.leaf(modules[i].paramList[1], this.drawTurtle.materialColors[this.currentParams.colorIndex], "leaf");
+                }
 				break;
 
 			case '@g':
 				break;
+
+            case 'Frame':
+                this.Frame(modules[i].paramList[0]);
+                break;
 		}
 	}
 	
@@ -233,7 +266,19 @@ this.underscore(modules[i].paramList[0]);
     /**
      * Resetting the turtle
      */
-    Reset() {
+    Reset(drawTurtle) {
+        this.Stop();
+        this.paramStack = [];
+        this.drawTurtle = drawTurtle;
+        this.currentParams = {};
+        this.defaultStep = 1;
+        this.angleIncrement = 60;
+        this.widthIncrement = 1;
+        this.scaleMultiplier = 0.5;
+        this.radius = 0.1;
+        this.id = SHAPE_NOID;
+        this.parentId = SHAPE_NOID;
+        this.dynamicmode = true;
         this.currentParams = {
             position: new BABYLON.Vector3(0,0,0),
             heading: new BABYLON.Vector3(0,1,0),
@@ -251,14 +296,15 @@ this.underscore(modules[i].paramList[0]);
             generalizedCylinder: false,
             pointList: [],
             shapeSection: [],
+            radiusList: [],
             colorIndex: 1,
+            colorBeforeGc: 1,
             customId: SHAPE_NOID,
             customParentId: SHAPE_NOID
         };
 	    // if (!this.currentParams.crossSection) {
         //     setDefaultCrossSection();
         // }
-        this.paramStack = [];
         this.ResetShapeSection(64);
         // this.pathInfos = {};
     }
@@ -271,7 +317,7 @@ this.underscore(modules[i].paramList[0]);
     ResetShapeSection(circleResolution) {
         this.currentParams.shapeSection = [];
         for (var i = 0; i <= 360; i += (360 / circleResolution)) {
-            this.currentParams.shapeSection.push(new BABYLON.Vector3(0.075 * Math.cos((Math.PI * i) / 180), 0.075 * Math.sin((Math.PI * i) / 180), 0));
+            this.currentParams.shapeSection.push(new BABYLON.Vector3(Math.cos((Math.PI * i) / 180), Math.sin((Math.PI * i) / 180), 0));
         }
     }
 
@@ -281,13 +327,18 @@ this.underscore(modules[i].paramList[0]);
     Dump() {
         console.log("Turtle params:", this.currentParams);
     }
-    
+
     /**
      * Stopping the turtle
      */
     Stop() {
         if (this.currentParams.generalizedCylinder && this.currentParams.pointList.length > 1) {
-            this.drawTurtle.CreateExtrudeShape("tube" + (this.drawTurtle.graphicElems.length + 1).toString(), { shape: this.currentParams.shapeSection, path: this.currentParams.pointList, sideOrientation: BABYLON.Mesh.DOUBLESIDE, radius: 0.075 }, this.drawTurtle.materialTextures[0]);
+            var initialColor = this.drawTurtle.materialColors[this.currentParams.colorBeforeGc];
+            var radiusTab = this.currentParams.radiusList;
+            var scaling = function(i, distance) {
+                return radiusTab[i] * 0.5;
+            }
+            this.drawTurtle.CreateGeneralizedCylinders("tube" + (this.drawTurtle.graphicElems.length + 1).toString(), { shape: this.currentParams.shapeSection, path: this.currentParams.pointList, scaleFunction: scaling, sideOrientation: BABYLON.Mesh.DOUBLESIDE, radius: this.radius/2, cap: BABYLON.Mesh.CAP_ALL}, initialColor);
         }
         this.pointList = [];
     }
@@ -317,7 +368,12 @@ this.underscore(modules[i].paramList[0]);
     Pop() {
         //Currently using texture, the last parameter to the "Create.." function for standard color is: this.drawTurtle.materialColors[this.currentParams.colorIndex]
         if (this.currentParams.generalizedCylinder && this.currentParams.pointList.length > 1) {
-            this.drawTurtle.CreateExtrudeShape("tube" + (this.drawTurtle.graphicElems.length + 1).toString(), { shape: this.currentParams.shapeSection, path: this.currentParams.pointList, sideOrientation: BABYLON.Mesh.DOUBLESIDE, radius: 0.075 }, this.drawTurtle.materialTextures[0]);
+            var initialColor = this.drawTurtle.materialColors[this.currentParams.colorBeforeGc];
+            var radiusTab = this.currentParams.radiusList;
+            var scaling = function(i, distance) {
+                return radiusTab[i] * 0.5;
+            }
+            this.drawTurtle.CreateGeneralizedCylinders("tube" + (this.drawTurtle.graphicElems.length + 1).toString(), { shape: this.currentParams.shapeSection, path: this.currentParams.pointList, scaleFunction: scaling,  sideOrientation: BABYLON.Mesh.DOUBLESIDE, cap: BABYLON.Mesh.CAP_ALL}, initialColor);
         }
         if (this.paramStack.length > 0) {
             this.currentParams = this.paramStack.splice(this.paramStack.length - 1, 1)[0];
@@ -355,6 +411,18 @@ this.underscore(modules[i].paramList[0]);
         }
     }
 
+    divScale(scale = this.scaleMultiplier) {
+        this.currentParams.scale = this.currentParams.scale.scale(1 / scale);
+    }
+
+    multScale(scale = this.scaleMultiplier) {
+        this.currentParams.scale = this.currentParams.scale.scale(scale);
+    }
+
+    setScale(scale) {
+        this.currentParams.scale = new BABYLON.Vector3(scale, scale, scale);
+    }
+
     // inline void f() { f(default_step); }heading
     // virtual void f(real_t length);
     /**
@@ -366,6 +434,7 @@ this.underscore(modules[i].paramList[0]);
         // if (length > 0 && this.currentParams.guide) { // Not implemented yet
         //     this.applyGuide();
         // }
+
         if (this.currentParams.elasticity > GEOM_EPSILON) {
             this.applyTropism();
         }
@@ -386,7 +455,7 @@ this.underscore(modules[i].paramList[0]);
      * @param {Number} color The color of the cylinder
      * @param {Number} budId The id of the cylinder mesh
      */
-    F(length, topRadius = this.radius, materialColor, id) {
+    F(length = this.defaultStep, topRadius = this.radius, materialColor, id) {
         if (length > 0) {
             if (this.currentParams.elasticity > GEOM_EPSILON) {
                 this.applyTropism();
@@ -396,6 +465,7 @@ this.underscore(modules[i].paramList[0]);
                     this.drawTurtle.CreateCylinder(id, { diameterBottom: this.radius, diameterTop: topRadius, height: length }, this.currentParams, materialColor);
                 } else {
                     this.currentParams.pointList.push(this.currentParams.position.clone());
+                    this.currentParams.radiusList.push(this.radius);
                 }
                 this.currentParams.position = this.currentParams.position.add(this.currentParams.heading.scale(length * this.currentParams.scale.z));
                 if (this.currentParams.generalizedCylinder) {
@@ -404,6 +474,10 @@ this.underscore(modules[i].paramList[0]);
             }
             if (topRadius > -GEOM_EPSILON) {
                 this.currentParams.width = topRadius;
+                this.radius = topRadius;
+                if (this.currentParams.generalizedCylinder) {
+                    this.currentParams.radiusList.push(topRadius);
+                }
             }
         }
         else if (length < -GEOM_EPSILON) {
@@ -413,17 +487,125 @@ this.underscore(modules[i].paramList[0]);
         }
     }
 
+    /**
+    * Draw the Turtle (The HLU axis)
+    *
+    * @param {Number} length : The length of the arrows of the Turtle
+    **/
+    Frame(length = this.defaultStep) {
+        if (length > GEOM_EPSILON) {
+            this.drawTurtle.CreateFrame({ diameter: this.radius, height: length}, this.currentParams);
+        }
+    }
+
+    /**
+    * Draw a sphere of a given radius
+    *
+    * @param {Number} radius  The radius of the sphere.
+    * @param {Number} color The color of the sphere.
+    * @param {Number} id The id of the sphere mesh.
+    *
+    */
+    sphere(radius = this.radius, materialColor, id) {
+        if (radius > 0) {
+            this.drawTurtle.CreateSphere(id, { diameter: radius }, this.currentParams, materialColor);
+        }
+    }
+
+    /**
+    * Draw a disc of a given radius
+    *
+    * @param {Number} radius  The radius of the disc.
+    * @param {Number} color The color of the disc.
+    * @param {Number} id The id of the disc mesh.
+    *
+    */
+    disc(radius = this.radius, materialColor, id) {
+        if (radius > 0) {
+            this.drawTurtle.CreateDisc(id, { radius: radius, sideOrientation: BABYLON.Mesh.DOUBLESIDE }, this.currentParams, materialColor);
+        }
+    }
+
+    // void quad(real_t length, real_t topradius);
+    // inline void quad(real_t length) { quad(length,getWidth());}
+    // inline void quad() { quad(default_step,getWidth());}
+    /**
+     * Draw a box of a given length
+     *
+     * @param {Number} length The distance movement and length of the box
+     * @param {Number} topRadius The radius on the top of the box
+     * @param {Number} color The color of the box
+     * @param {Number} id The id of the box mesh
+     */
+    box(length = this.defaultStep, topRadius = this.radius, materialColor, id) {
+        if (length > 0) {
+            this.drawTurtle.CreateBox(id, {height: length, width: topRadius, depth: topRadius}, this.currentParams, materialColor);
+
+            if (topRadius > -GEOM_EPSILON) {
+                this.currentParams.width = topRadius;
+            }
+            this.currentParams.position = this.currentParams.position.add(this.currentParams.heading.scale(length * this.currentParams.scale.z));
+        }
+    }
+
+    /**
+     * Draw a plane of a given length
+     *
+     * @param {Number} length The distance movement and length of the plane
+     * @param {Number} topRadius The radius on the top of the plane
+     * @param {Number} materialColor The color of the plane
+     * @param {Number} id The id of the plane mesh
+     */
+    plane(length = this.defaultStep, topRadius = this.radius, materialColor, id) {
+        if (length > 0) {
+            this.drawTurtle.CreatePlane(id, {height: length, width: topRadius, sideOrientation: BABYLON.Mesh.DOUBLESIDE}, this.currentParams, materialColor);
+
+            if (topRadius > -GEOM_EPSILON) {
+                this.currentParams.width = topRadius;
+            }
+            this.currentParams.position = this.currentParams.position.add(this.currentParams.heading.scale(length * this.currentParams.scale.z));
+        }
+    }
+
+     /**
+     * Draw a leaf of a given length and color
+     *
+     * @param {Number} length The length of the leaf
+     * @param {Number} materialColor The color of the plane
+     * @param {Number} id The id of the leaf
+     */
+
+    leaf(length = this.defaultStep, materialColor, id) {
+        if (length > 0) {
+            var origin = new BABYLON.Vector3(0,0,0);
+            var points = [ { x: - (length/4), z: (length/3)}, 
+                            { x: - (length/4), z: (2 * length/3)},
+                            { x: 0, z: length},
+                            { x: (length/4), z: (2 * length/3)},
+                            { x: (length/4), z: (length/3)}
+                        ];
+            var leafShape = [];
+            leafShape.push(origin);
+            for(let i = 0; i < points.length; i++) {
+                leafShape.push(new BABYLON.Vector3(points[i].x, 0, points[i].z));
+            }
+            leafShape.push(origin);
+            this.drawTurtle.CreatePolygon(id, {shape: leafShape, sideOrientation: BABYLON.Mesh.DOUBLESIDE}, this.currentParams, materialColor);
+        }
+    }
+
     // void nF(real_t length, real_t dl);
     // void nF(real_t length, real_t dl, real_t radius, const QuantisedFunctionPtr radiusvariation = NULL);
     /**
      * Move the turtle forward by bursts and drawing multiple cylinders of the total distance
      *
-     * @param {Number} length	The distance movement and total length of all cylinders
-     * @param {Number} nbSteps	The number of cylinders to compose the big one.
-     * @param {Number} radius	The radius on the top of the cylinder
-     * @param {Number} id		The id of the cylinder
+     * @param {Number} length	     The distance movement and total length of all cylinders
+     * @param {Number} nbSteps	     The number of cylinders to compose the big one.
+     * @param {Number} radius	     The radius on the top of the cylinder
+     * @param {Number} materialColor The color of the cylinder
+     * @param {Number} id		     The id of the cylinder
      */
-    nF(length, nbSteps, endRadius, id, materialColor) {
+    nF(length = this.defaultStep, nbSteps = 1, endRadius = 0.1, materialColor, id) {
 		var dl = length / nbSteps;
 		var radiusEvolution = (this.radius - endRadius) / nbSteps;
 
@@ -534,26 +716,8 @@ this.underscore(modules[i].paramList[0]);
 		return (res);
 	}
 	
-    /**
-     * Manage the draw of a leaf
-     */
-	affLeaf(treeId, currentId, semiRadius) {
-	this.shiftTranslation({x: 0, y: 0, z: semiRadius + this.currentParams.leafPos});
-		_prefabCallback(this,
-			this.drawTurtle.originalLeafPrefab,
-			[treeId, currentId, "leaf"],
-			this.drawTurtle.seedBox[this.drawTurtle.seedIndex].leafFile,
-			this.currentParams.leafSize,
-			this.currentParams.leafSize,
-			this.currentParams.leafSize,
-			this.currentParams.position,
-			BABYLON.Vector3.RotationFromAxis(this.currentParams.up, this.currentParams.heading, this.currentParams.left),
-			this.drawTurtle.scene);
-	this.shiftTranslation({x: -0, y: 0, z: -(semiRadius +this.currentParams.leafPos)});
-	}
-	
 	//Set the radius of the Turtle
-	underscore(radius) {
+	underscore(radius = 0.1) {
 		this.radius = radius;
 	}
     
@@ -564,11 +728,8 @@ this.underscore(modules[i].paramList[0]);
      *
      * @param {Number} angle The turning angle
      */
-    left(angle) {
-        var ra = angle * GEOM_RAD;
-        var matrix = new BABYLON.Matrix.RotationAxis(this.currentParams.up, ra);
-        this.currentParams.heading = new BABYLON.Vector3.TransformCoordinates(this.currentParams.heading, matrix);
-        this.currentParams.left = new BABYLON.Vector3.TransformCoordinates(this.currentParams.left, matrix);
+    left(angle = this.angleIncrement) {
+        this.right(-angle);
     }
 
     // inline void right()
@@ -578,8 +739,11 @@ this.underscore(modules[i].paramList[0]);
      *
      * @param {Number} angle The turning angle
      */
-    right(angle) {
-        this.left(-angle);
+    right(angle = this.angleIncrement) {
+        var ra = (angle * (GEOM_PI/180));
+        var matrix = new BABYLON.Matrix.RotationAxis(this.currentParams.up, ra);
+        this.currentParams.heading = new BABYLON.Vector3.TransformCoordinates(this.currentParams.heading, matrix);
+        this.currentParams.left = new BABYLON.Vector3.TransformCoordinates(this.currentParams.left, matrix);
     }
     
     // inline void down()
@@ -589,8 +753,8 @@ this.underscore(modules[i].paramList[0]);
      *
      * @param {Number} angle The turning angle
      */
-    down(angle) {
-        var ra = angle * GEOM_RAD;
+    down(angle = this.angleIncrement) {
+        var ra = angle * (GEOM_PI/180.);
         var matrix = new BABYLON.Matrix.RotationAxis(this.currentParams.left, ra);
         this.currentParams.heading = new BABYLON.Vector3.TransformCoordinates(this.currentParams.heading, matrix);
         this.currentParams.up = new BABYLON.Vector3.TransformCoordinates(this.currentParams.up, matrix);
@@ -603,7 +767,7 @@ this.underscore(modules[i].paramList[0]);
      *
      * @param {Number} angle The turning angle
      */
-    up(angle) {
+    up(angle = this.angleIncrement) {
         this.down(-angle);
     }
     
@@ -614,8 +778,8 @@ this.underscore(modules[i].paramList[0]);
 
      * @param {Number} angle The turning angle
      */
-    rollL(angle) {
-        var ra = angle * GEOM_RAD;
+    rollR(angle = this.angleIncrement) {
+        var ra = angle * (GEOM_PI/180.);
         var matrix = new BABYLON.Matrix.RotationAxis(this.currentParams.heading, ra);
         this.currentParams.up = new BABYLON.Vector3.TransformCoordinates(this.currentParams.up, matrix);
         this.currentParams.left = new BABYLON.Vector3.TransformCoordinates(this.currentParams.left, matrix);
@@ -628,8 +792,8 @@ this.underscore(modules[i].paramList[0]);
 
      * @param {Number} angle The turning angle
      */
-    rollR(angle) {
-        this.rollL(-angle);
+    rollL(angle = this.angleIncrement) {
+        this.rollR(-angle);
     }
 
     // virtual void iRollL(real_t angle);
@@ -639,10 +803,10 @@ this.underscore(modules[i].paramList[0]);
      *
      * @param {Number} angle The turning angle
      */
-    iRollL(angle) {
+    iRollR(angle = this.angleIncrement) {
         //TODO
 
-        this.rollL(angle);
+        this.rollR(angle);
         //if (__params ->guide && !__params ->guide ->is2D()) { // Not implemented yet
         //    Turtle3DPath * guide = (Turtle3DPath *)__params->guide.get();
         //    Matrix3 m2 = Matrix3::axisRotation(guide ->__lastHeading, ra);
@@ -659,8 +823,8 @@ this.underscore(modules[i].paramList[0]);
      *
      * @param {Number} angle The turning angle
      */
-    iRollR(angle) {
-        this.iRollL(-angle);
+    iRollR(angle = this.angleIncrement) {
+        this.iRollR(-angle);
     }
 
 	// inline void turnAround()
@@ -981,7 +1145,7 @@ this.underscore(modules[i].paramList[0]);
      */
     setColor(colorIdx) {
         if (colorIdx >= this.drawTurtle.materialColors.length) {
-            console.warning("The color '" + colorIdx.toString() + "' hasn't been configured, this attempt will be ignored..");
+            console.log("The color '" + colorIdx.toString() + "' hasn't been configured, this attempt will be ignored..");
         } else {
             this.currentParams.colorIndex = colorIdx;
         }
@@ -992,13 +1156,17 @@ this.underscore(modules[i].paramList[0]);
     /**
      * Increment the index for material colors
      *
-     * @param {Number} colorInc The incrementing value
+     * @param {Number} colorInc The color index
      */
-    incColor(colorInc = this.colorIncrement) {
-        if (this.currentParams.colorIndex + colorInc < this.drawTurtle.materialColors.length) {
-            this.currentParams.colorIndex += colorInc;
+    incColor(colorInc) {
+        if (colorInc === undefined) {
+            if (this.currentParams.colorIndex + 1 < this.drawTurtle.materialColors.length) {
+                this.currentParams.colorIndex += 1;
+            } else {
+                console.log("The color '" + (this.currentParams.colorIndex + 1).toString() + "' hasn't been configured, this attempt will be ignored..");
+            }
         } else {
-            console.warning("The color '" + (this.currentParams.colorIndex + colorInc).toString() + "' hasn't been configured, this attempt will be ignored..");
+            this.setColor(colorInc);
         }
     }
     
@@ -1007,13 +1175,17 @@ this.underscore(modules[i].paramList[0]);
     /**
      * Decrement the index for material colors
      *
-     * @param {Number} colorDec The decrementing value
+     * @param {Number} colorDec The color index
      */
-    decColor(colorDec = this.colorIncrement) {
-        if (this.currentParams.colorIndex - colorInc >= 0) {
-            this.currentParams.colorIndex -= colorInc;
+    decColor(colorDec) {
+        if (colorDec === undefined) {
+            if (this.currentParams.colorIndex - 1 >= 0) {
+                this.currentParams.colorIndex -= 1;
+            } else {
+                console.log("The color '" + (this.currentParams.colorIndex - 1).toString() + "' is negative, this attempt will be ignored..");
+            }
         } else {
-            console.warning("The color index '" + (this.currentParams.colorIndex - colorInc).toString() + "' is negative, this attempt will be ignored..");
+            this.setColor(colorDec);
         }
     }
 
@@ -1071,6 +1243,7 @@ this.underscore(modules[i].paramList[0]);
      */
     startGC() {
         this.currentParams.generalizedCylinder = true;
+        this.currentParams.colorBeforeGc = this.currentParams.colorIndex;
         //__params ->customId = popId();
         //__params ->customParentId = parentId;
     }
@@ -1081,12 +1254,27 @@ this.underscore(modules[i].paramList[0]);
      */
     stopGC() {
         if (this.currentParams.pointList.length > 1) {
-            this.drawTurtle.CreateExtrudeShape("tube" + (this.drawTurtle.graphicElems.length + 1).toString(), { shape: this.currentParams.shapeSection, path: this.currentParams.pointList, sideOrientation: BABYLON.Mesh.DOUBLESIDE, radius: 0.075 }, this.drawTurtle.materialTextures[0]);
+            var initialColor = this.drawTurtle.materialColors[this.currentParams.colorBeforeGc];
+            var radiusTab = this.currentParams.radiusList;
+            var scaling = function(i, distance) {
+                return radiusTab[i] * 0.5;
+            }
+            this.drawTurtle.CreateGeneralizedCylinders("tube" + (this.drawTurtle.graphicElems.length + 1).toString(), { shape: this.currentParams.shapeSection, path: this.currentParams.pointList, scaleFunction: scaling, sideOrientation: BABYLON.Mesh.DOUBLESIDE, cap: BABYLON.Mesh.CAP_ALL}, initialColor );
             this.currentParams.pointList = [];
         }
         this.currentParams.generalizedCylinder = false;
         this.currentParams.customId = SHAPE_NOID;
         this.currentParams.customParentId = SHAPE_NOID;
+    }
+
+    //Draw a sweep surface
+    Sweep(path, section, length = this.defaultStep, dlength = this.radius, radius = 1, radiusvariation = null, material) {
+        //TODO
+        /* var scaling = function(i, distance) {
+            return (path[i].multiply(radiusvariation[i])).length(); 
+        }
+        this.drawTurtle.CreateSweep("Sweep" + (this.drawTurtle.graphicElems.length + 1).toString(), { shape: section, path: path, sideOrientation: BABYLON.Mesh.DOUBLESIDE, scaleFunction: scaling, cap: BABYLON.Mesh.CAP_ALL}, material);
+        */
     }
 
     // void _applyTropism();
@@ -1096,22 +1284,9 @@ this.underscore(modules[i].paramList[0]);
     applyTropism() {
         this.tendTo(this.currentParams.tropism, this.currentParams.elasticity);
     }
-    
-    // void quad(real_t length, real_t topradius);
-    // inline void quad(real_t length) { quad(length,getWidth());}
-    // inline void quad() { quad(default_step,getWidth());}
-    quad(length, topRadius) {
-        //TODO
-    }
 
     // virtual void label(const std::string& text, int size = -1 );
     label(text, size = -1) {
-        //TODO
-    }
-
-	// inline void frame() { frame(default_step); }
-    // virtual void frame(real_t heigth, real_t cap_heigth_ratio = 0.2, real_t cap_radius_ratio = 2, real_t color = 1.0, real_t transparency = 0.0);
-    frame(height, capHeightRatio = 0.2, capRadiusRatio = 2, color = 1.0, transparency = 0.0) {
         //TODO
     }
 

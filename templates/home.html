@@ -1,13 +1,10 @@
 {% extends "index.html" %}
 
-{% block body %}
-	<body>
-{% endblock %}
-
 {% block home %}{% endblock %}
 
 {% block content %}
-		<div class="img-responsive" style="background-image: url( {{ url_for('static', filename='img/homepageimg.png') }} ); height: 600px; background-repeat: no-repeat;"></div>
+  <!-- Homepage cover -->
+		<div class="img-responsive" style="background-image: url( {{ url_for('static', filename='img/screenLPyWeb.png') }} ); background-size: cover;"></div>
 		<div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
 			<main role="main" class="inner cover text-center">
     			<h1 class="cover-heading">Welcome to the online L-Py application !</h1>

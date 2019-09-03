@@ -1,50 +1,58 @@
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+/* Background color and font of the site */
 body {
-	background-color: #e9fce9; /* in RGB : 233,252,233 */
+	background-color: #e9fce9;  /*in RGB : 233,252,233 */
+	font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif;
 }
 
-.btn-group{
-    margin: 5px;
+/*Applies to images*/
+.img-responsive {
+	height: 600px;
+	background-repeat: no-repeat;
+	min-height : 100%;
+	min-width : 100%;
+	background-size: 100% 100%;
+	overflow-y: hidden;
+	overflow-x: hidden;
 }
 
-#docButton{
-	padding-top: 25%;
-}
-
+/*Footer style*/
 .footer {
 	position: absolute;
-	bottom: 0;
+	bottom: 0%;
 	width: 100%;
 	margin: 0 auto;
-	height: 30px;
+	height: 40px;
 }
 
-#wrapperHome {
-	height: 216px;
-    position: relative;
-}
-
-#wrapperEditor {
-	height: 119px;
-    position: relative;
-}
-
-#wrapperAbout {
-	height: 420px;
-    position: relative;
-}
-
+/*Color of the reectangles which contains the links in about page*/
 .links {
 	background-color: #FFFAF0;
 }
 
 /*Canvas*/
-
 #renderCanvas {
 	width: 100%;
   	height: auto;
 }
-/*Cover for the home page*/
 
+/*Console output*/
+#printOutput {
+	width: 100%;
+	height: auto;
+}
+
+/*Ace code editor*/
+#code {
+	width: 100%;
+	height: 100%;
+}
+
+/*Cover for the home page*/
 .cover {
   padding: 0 1.5rem;
 }
@@ -59,24 +67,114 @@ main {
 	left: 30%;
 }
 
-#sidebarTitle {
-	position: relative;
-	text-align: center;
-	font-size: 18px;
-	border-bottom: 1px solid;
-	padding-bottom: 5px;
-	margin-bottom: 10px;
-}
-
 #hiddenButton {
 	display: none;
 }
 
-/*Ace code editor*/
-#code { 
-    width: 100%;
+/*Settings panels */
+.paramHidden {
+	margin-right: -20%;
 }
 
-.ace_basic{
-	color: #FF00FF;
+#paramFields {
+	font-size: 0.875em;
+}
+
+#viewerPanel button {
+	display: block;
+    margin-left: auto;
+    margin-right: auto; 
+}
+
+#viewerPanel {
+	font-size: 0.875em;
+}
+
+li {
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 5px;
+	font-size: 0.875em;
+}
+
+/*Applies to the active tab*/
+.active {
+	border-top: 2px solid #238239;
+	background-color: #FFFFFF;
+}
+
+#tabList {	
+    border-bottom: 1px solid black;
+}
+
+#outputTabs {
+    border-bottom: 1px solid #CCCCCC;
+}
+
+#lpyColors {
+	margin-bottom: 5px;
+}
+
+/*Variables table*/
+#variableTable {
+	width: 100%;
+	height: auto;
+	margin-bottom: 10px;
+}
+
+#newVariableForm {
+	margin-top: 10px;
+}
+
+#variableName {
+	width: 100%;
+}
+
+#variableValue {
+	width: 100%;
+}
+
+td {
+	border: 1px solid green;
+	text-align: center;
+}
+
+td input {
+	position: relative;
+	width: 100%;
+	height: auto;
+}
+
+#filename {
+	width: auto;
+}
+
+#contributors {
+	font-size: 1.125em;
+}
+
+/* Media query : Check the size of the screen and adapt the height/width of elements according to it*/
+@media (max-height: 991.98px){
+	#rowButtons span {
+		font-size: 0.875em;
+	}
+	nav span{
+		font-size: 0.875em;
+	}
+	.navbar-brand span {
+		font-size: 0.875em;
+	}
+	.footer {
+		height: 20px;
+		font-size: 0.875em
+	}
+	#printOutput {
+		font-size: 0.875em;
+	}
+	#aboutPage {
+		font-size: 0.75em;
+	}
+	.cover-container {
+		font-size: 0.75em;
+	}
 }
